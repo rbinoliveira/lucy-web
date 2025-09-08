@@ -10,15 +10,12 @@ import {
 } from 'firebase/auth'
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { usePathname, useRouter } from 'next/navigation'
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-import { appRoutes } from '@/application/_shared/constants/app-routes.constant'
+import {
+  appPublicRoutes,
+  appRoutes,
+} from '@/application/_shared/constants/app-routes.constant'
 import { addAuthCookies } from '@/application/_shared/helpers/add-auth-cookies.helper'
 import { deleteAuthCookies } from '@/application/_shared/helpers/delete-auth-cookies.helper'
 import { handleError } from '@/application/_shared/helpers/error.helper'
@@ -35,7 +32,6 @@ type User = {
 
 type AuthContextType = {
   user: User | null
-  loading: boolean
   loginWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
 }
@@ -115,67 +111,68 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const signOut = useCallback(async () => {
+  async function signOut() {
     try {
-      if (auth.currentUser) {
-        await auth.signOut()
-      }
-      await deleteAuthCookies()
-      setUser(null)
-      if (pathname !== appRoutes.signIn) {
-        router.push(appRoutes.signIn)
-      }
+      await auth.signOut()
     } catch (err) {
       handleError({
         err,
       })
     }
-  }, [pathname, router])
+  }
 
-  const setUserAsLoggedIn = useCallback(
-    async (user: User | null) => {
-      if (user) {
-        if (user.role === 'admin') {
-          await addAuthCookies({
-            userId: user.id,
-          })
-          setUser(user)
-          if (pathname !== appRoutes.dashboard) {
-            router.push(appRoutes.dashboard)
-          }
-        } else {
-          await signOut()
-          handleError({
-            message: 'Usuário já associado a uma conta de paciente',
-          })
-        }
+  async function setUserAsLoggedIn(user: User | null) {
+    if (user) {
+      if (user.role === 'admin') {
+        await addAuthCookies({
+          userId: user.id,
+        })
       } else {
-        await signOut()
+        await auth.signOut()
+        handleError({
+          message: 'Usuário já associado a uma conta de paciente',
+        })
       }
-    },
-    [pathname, router, signOut],
-  )
+    } else {
+      await deleteAuthCookies()
+    }
+    setUser(user)
+  }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log('firebaseUser', firebaseUser)
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       let user = null
 
-      await linkToAuthProviders(firebaseUser)
+      await linkToAuthProviders(authUser)
 
-      if (firebaseUser) {
-        user = await getOrCreateFirestoreUser(firebaseUser)
+      if (authUser) {
+        user = await getOrCreateFirestoreUser(authUser)
       }
 
       await setUserAsLoggedIn(user)
+
       setLoading(false)
     })
 
     return unsubscribe
-  }, [setUserAsLoggedIn])
+  }, [])
+
+  useEffect(() => {
+    if (loading) {
+      return
+    }
+
+    const isRoutePublic = appPublicRoutes.includes(pathname)
+    if (isRoutePublic && user) {
+      router.push(appRoutes.dashboard)
+    }
+    if (!isRoutePublic && !user) {
+      router.push(appRoutes.signIn)
+    }
+  }, [user, pathname, router, loading])
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, loginWithGoogle, signOut }}>
       {children}
     </AuthContext.Provider>
   )
