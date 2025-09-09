@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusCircleIcon } from '@phosphor-icons/react'
+import { PlusCircle } from 'lucide-react'
 
 import { UI } from '@/application/_shared/components'
 import { ListMedicineService } from '@/application/medicine/services/list-medicine.service'
@@ -18,7 +18,7 @@ export default function Medicines() {
         </h1>
         <UI.Button>
           Adicionar
-          <PlusCircleIcon />
+          <PlusCircle />
         </UI.Button>
       </div>
       <UI.Table

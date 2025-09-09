@@ -1,4 +1,4 @@
-import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
+import { ChevronDown, ChevronLeft } from 'lucide-react'
 import * as React from 'react'
 
 import { UI } from '@/application/_shared/components'
@@ -36,7 +36,7 @@ export function Pagination({
             page === 1 ? 'cursor-not-allowed text-gray-300/30' : 'text-gray-300'
           }`}
         >
-          <CaretLeftIcon />
+          <ChevronLeft />
         </PaginationButton>
 
         {page > 1 + siblingsCount && (
@@ -88,7 +88,7 @@ export function Pagination({
               : 'text-gray-300'
           }`}
         >
-          <CaretRightIcon />
+          <ChevronDown />
         </PaginationButton>
       </>
     )

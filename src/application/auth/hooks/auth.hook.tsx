@@ -1,16 +1,20 @@
 'use client'
 
 import {
+  createUserWithEmailAndPassword,
   EmailAuthProvider,
-  GoogleAuthProvider,
   linkWithCredential,
   onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithCredential,
   signInWithPopup,
+  updateProfile,
   User as FirebaseUser,
 } from 'firebase/auth'
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import {
   appPublicRoutes,
@@ -20,9 +24,13 @@ import { addAuthCookies } from '@/application/_shared/helpers/add-auth-cookies.h
 import { deleteAuthCookies } from '@/application/_shared/helpers/delete-auth-cookies.helper'
 import { handleError } from '@/application/_shared/helpers/error.helper'
 import { generateRandomPassword } from '@/application/_shared/helpers/generate-password'
+import { getAuthCookies } from '@/application/_shared/helpers/get-auth-cookies.helper'
 import { auth, db, provider } from '@/application/_shared/libs/firebase'
+import { LoginSchema } from '@/application/auth/schemas/login.schema'
+import { RecoverPasswordSchema } from '@/application/auth/schemas/recover-password.schema'
+import { RegisterSchema } from '@/application/auth/schemas/register.schema'
 
-type User = {
+export type User = {
   id: string
   email: string
   name: string
@@ -32,8 +40,11 @@ type User = {
 
 type AuthContextType = {
   user: User | null
-  loginWithGoogle: () => Promise<void>
+  signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
+  signInWithCredentials: (data: LoginSchema) => Promise<void>
+  recoverPassword: (data: RecoverPasswordSchema) => Promise<void>
+  registerWithCredentials: (data: RegisterSchema) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -45,9 +56,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
 
-  async function loginWithGoogle() {
+  async function signInWithGoogle() {
     try {
       await signInWithPopup(auth, provider)
+    } catch (err) {
+      handleError({ err })
+    }
+  }
+
+  async function recoverPassword(data: RecoverPasswordSchema) {
+    try {
+      await sendPasswordResetEmail(auth, data.email)
+      toast('Success', {
+        description: 'E-mail enviado com sucesso',
+      })
+    } catch (err) {
+      handleError({ err })
+    }
+  }
+
+  async function registerWithCredentials(data: RegisterSchema) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password,
+      )
+      const user = userCredential.user
+
+      await updateProfile(user, {
+        displayName: data.name,
+      })
+
+      toast('Success', {
+        description: 'Conta criada com sucesso',
+      })
+    } catch (err) {
+      handleError({ err })
+    }
+  }
+
+  async function signInWithCredentials(data: LoginSchema) {
+    try {
+      await signInWithCredential(
+        auth,
+        EmailAuthProvider.credential(data.email, data.password),
+      )
     } catch (err) {
       handleError({ err })
     }
@@ -66,14 +120,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const password = generateRandomPassword()
 
       const credential = EmailAuthProvider.credential(email!, password)
-      await linkWithCredential(user, credential)
-    }
-
-    const hasGoogleProvider = user.providerData.some(
-      (p) => p.providerId === 'google.com',
-    )
-    if (!hasGoogleProvider) {
-      const credential = GoogleAuthProvider.credential()
       await linkWithCredential(user, credential)
     }
   }
@@ -124,9 +170,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function setUserAsLoggedIn(user: User | null) {
     if (user) {
       if (user.role === 'admin') {
-        await addAuthCookies({
-          userId: user.id,
-        })
+        await addAuthCookies({ user })
       } else {
         await auth.signOut()
         handleError({
@@ -171,8 +215,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, pathname, router, loading])
 
+  useEffect(() => {
+    async function getUser() {
+      const authCookie = await getAuthCookies()
+      if (authCookie) {
+        setUser(JSON.parse(authCookie))
+      }
+    }
+
+    getUser()
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user, loginWithGoogle, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signInWithGoogle,
+        signOut,
+        signInWithCredentials,
+        recoverPassword,
+        registerWithCredentials,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

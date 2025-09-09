@@ -1,14 +1,14 @@
 import '@/application/_shared/styles/globals.css'
 
 import type { Metadata } from 'next'
-import { Mulish } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
 import { RootProviders } from '@/application/_shared/providers/root.provider'
 
-const mulish = Mulish({
+const inter = Inter({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--mulish',
+  variable: '--inter',
 })
 
 export const metadata: Metadata = {
@@ -21,7 +21,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning className={mulish.className}>
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+      className={`${inter.className} antialiased`}
+    >
       <body>
         <RootProviders>{children}</RootProviders>
       </body>

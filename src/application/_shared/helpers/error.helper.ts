@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
 
 type ErrorType = {
@@ -13,12 +14,22 @@ export function handleError({ message, err }: ErrorType) {
     err.response?.data?.message &&
     err.response?.status !== 500
   ) {
-    toast('Error', {
+    return toast('Error', {
       description: err.response.data.message,
     })
-  } else {
-    toast('Error', {
-      description: message ?? 'Um erro inesperado ocorreu',
+  }
+
+  if (
+    err &&
+    err instanceof FirebaseError &&
+    err.code === 'auth/invalid-credential'
+  ) {
+    return toast('Error', {
+      description: 'E-mail ou senha inválidos',
     })
   }
+
+  return toast('Error', {
+    description: message ?? 'Um erro inesperado ocorreu',
+  })
 }

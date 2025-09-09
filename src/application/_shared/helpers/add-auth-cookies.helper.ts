@@ -1,13 +1,14 @@
 import { setCookie } from 'cookies-next'
 
 import { appCookies } from '@/application/_shared/constants/app-cookies.constant'
+import { User } from '@/application/auth/hooks/auth.hook'
 
 type AddAuthCookiesProps = {
-  userId: string
+  user: User
 }
 
 export async function addAuthCookies({
-  userId,
+  user,
 }: AddAuthCookiesProps): Promise<void> {
-  await setCookie(appCookies.USER_ID, userId)
+  await setCookie(appCookies.USER_ID, user)
 }

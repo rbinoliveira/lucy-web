@@ -1,10 +1,10 @@
 'use client'
 
-import clsx from 'clsx'
 import NextImage, { ImageProps as NextImageProps } from 'next/image'
 import { useEffect, useState } from 'react'
 
 import { UI } from '@/application/_shared/components'
+import { cn } from '@/application/_shared/libs/tw-merge'
 
 type ImageProps = NextImageProps & {
   imageClassName?: string
@@ -35,7 +35,7 @@ function Img({
   }, [src])
 
   if (isValidatting || isLoading) {
-    return <UI.Skeleton className={clsx('bg-primary-light', className)} />
+    return <UI.Skeleton className={cn('bg-primary-light', className)} />
   }
 
   if (!isValid) {

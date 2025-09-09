@@ -1,7 +1,7 @@
 'use client'
 
-import { XIcon } from '@phosphor-icons/react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
+import { X } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/application/_shared/libs/tw-merge'
@@ -73,7 +73,7 @@ function SheetContent({
       >
         {children}
         <SheetPrimitive.Close className="rounded-xs focus:outline-hidden absolute right-4 top-4 opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100">
-          <XIcon className="size-4" />
+          <X className="size-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>

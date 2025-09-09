@@ -1,5 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import clsx from 'clsx'
+
+import { cn } from '@/application/_shared/libs/tw-merge'
 
 type DropdownMenuProps = {
   trigger: React.ReactNode
@@ -17,7 +18,7 @@ function DropdownMenu({ trigger, items }: DropdownMenuProps) {
         {items.map((item, index) => (
           <MenuItem key={index}>
             <div
-              className={clsx(
+              className={cn(
                 'rounded-radius-alt text-sm font-semibold',
                 'data-[focus]:bg-primary data-[focus]:text-primary-contrast',
               )}

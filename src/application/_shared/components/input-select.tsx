@@ -7,7 +7,7 @@ import {
   ListboxOptions,
   Transition,
 } from '@headlessui/react'
-import { CaretDownIcon } from '@phosphor-icons/react'
+import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 import {
   Control,
@@ -59,7 +59,7 @@ function PrimitiveInputSelect({
         )}
       >
         {selected.name}
-        <CaretDownIcon
+        <ChevronDown
           className="group pointer-events-none text-lg text-text-four"
           aria-hidden="true"
         />

@@ -34,8 +34,8 @@ export type TableProps<T extends object> = {
 function Table<T extends object>({
   columns,
   data,
-  addButton,
-  noResultsData,
+  // addButton,
+  // noResultsData,
 }: TableProps<T>) {
   const { control } = useForm()
 

@@ -1,7 +1,6 @@
-import clsx from 'clsx'
-
 import { UI } from '@/application/_shared/components'
 import { useSidebar } from '@/application/_shared/components/sidebar'
+import { cn } from '@/application/_shared/libs/tw-merge'
 
 export function SidebarUserInfo() {
   const { state } = useSidebar()
@@ -10,7 +9,7 @@ export function SidebarUserInfo() {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex items-center gap-4',
         stateIsExpanded ? 'px-8' : 'px-4',
         'transition-[width] duration-200 ease-linear',

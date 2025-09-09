@@ -17,5 +17,5 @@
     "lib": "@/application/shared/lib",
     "hooks": "@/application/shared/hooks"
   },
-  "iconLibrary": "phosphor"
+  "iconLibrary": "lucide"
 }

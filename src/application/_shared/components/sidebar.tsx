@@ -1,6 +1,6 @@
 'use client'
 
-import { CaretDownIcon, SolarPanelIcon } from '@phosphor-icons/react'
+import { ChevronDown, Sun } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import * as React from 'react'
 
@@ -215,7 +215,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <SolarPanelIcon />
+      <Sun />
       <span className="sr-only">Toggle Sidebar</span>
     </UI.Button>
   )
@@ -303,7 +303,7 @@ function AppSidebarHeader() {
                 {user?.email}
               </span>
             </div>
-            <CaretDownIcon />
+            <ChevronDown />
           </div>
         }
         items={[

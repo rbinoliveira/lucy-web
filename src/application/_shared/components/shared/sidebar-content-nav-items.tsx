@@ -1,4 +1,4 @@
-import { ArchiveIcon } from '@phosphor-icons/react'
+import { Archive } from 'lucide-react'
 
 import { SidebarContentNavItem } from '@/application/_shared/components/shared/sidebar-content-nav-item'
 
@@ -6,11 +6,11 @@ export const sidebarContentNavItems: SidebarContentNavItem[] = [
   {
     title: 'Dashboard',
     href: '/dashboard',
-    icon: <ArchiveIcon />,
+    icon: <Archive />,
   },
   {
     title: 'Remédios',
     href: '/medicines',
-    icon: <ArchiveIcon />,
+    icon: <Archive />,
   },
 ]

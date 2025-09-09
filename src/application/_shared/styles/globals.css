@@ -7,18 +7,24 @@
     --background: #ffffff;
     --background-contrast: #f7f7fc;
     --background-secondary: #F7F7FC;
-    --border-one: #E1E1E1;
+    --border-one: #E5E7EB;
     --border-two: #E1E1FB;
     --primary: #5541D7;
     --primary-contrast: #ffffff;
     --primary-light: #A3C8FF;
-    --danger: #FF5A5F;
-    --text-one: #11142D;
-    --text-two: #92929D;
+    --danger-one: #DC2626;
+    --danger-two: #EF4444;
+    --text-one: #111827;
+    --text-two: #4B5563;
     --text-three: #667085;
     --text-four: #9A9AB0;
+    --text-five: #DBEAFE;
+    --text-six: #6B7280;
+    --text-seven: #374151;
+    --green-one: #10B981;
+    --blue-one: #0066CC;
+    --yellow-one: #F59E0B;
 
-    --mulish: "Mulish", serif;
     --radius: 8px;
     --radius-alt: 6px;
   }
@@ -33,20 +39,27 @@
   --color-primary: var(--primary);
   --color-primary-contrast: var(--primary-contrast);
   --color-primary-light: var(--primary-light);
-  --color-danger: var(--danger);
+  --color-danger-one: var(--danger-one);
+  --color-danger-two: var(--danger-two);
   --color-text-one: var(--text-one);
   --color-text-two: var(--text-two);
   --color-text-three: var(--text-three);
   --color-text-four: var(--text-four);
+  --color-text-five: var(--text-five); 
+  --color-text-six: var(--text-six);
+  --color-text-seven: var(--text-seven);
+  --color-green-one: var(--green-one);
+  --color-blue-one: var(--blue-one);
+  --color-yellow-one: var(--yellow-one);
 
-  --font-mulish: var(--mulish);
+  --font-inter: var(--inter);
   --radius-radius: var(--radius);
   --radius-radius-alt: var(--radius-alt);
 }
 
 @layer base {
   body {
-    @apply bg-background text-text-one font-mulish antialiased;
+    @apply bg-background text-text-one font-inter antialiased;
   }
 
   button, a {
@@ -59,6 +72,22 @@
 
   .linear-bg-one {
     background: linear-gradient(90deg, #0066CC 0%, #004499 100%);
+  }
+
+  .linear-bg-two {
+    background: linear-gradient(90deg, #0066CC 0%, #2563EB 100%);
+  }
+
+  .shadow-one {
+    box-shadow: 
+      0px 2px 4px rgba(0, 0, 0, 0.1),
+      0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-two {
+    box-shadow: 
+      0px 4px 6px rgba(0, 0, 0, 0.1),
+      0px 10px 15px rgba(0, 0, 0, 0.1);
   }
 }
 

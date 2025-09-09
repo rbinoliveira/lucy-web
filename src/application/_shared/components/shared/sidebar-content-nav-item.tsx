@@ -1,10 +1,10 @@
 'use client'
 
-import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { useSidebar } from '@/application/_shared/components/sidebar'
+import { cn } from '@/application/_shared/libs/tw-merge'
 
 export type SidebarContentNavItem = {
   title: string
@@ -28,15 +28,14 @@ export function SidebarContentNavItem({
   return (
     <li
       key={href}
-      className={clsx(
+      className={cn(
         'flex w-full items-center',
         stateIsExpanded ? 'justify-start' : 'justify-center',
       )}
     >
       <Link
         href={href}
-        className={clsx(
-          // 'transition-[width] duration-200 ease-linear',
+        className={cn(
           'rounded-radius flex w-full items-center',
           'gap-4 p-4 font-bold leading-[1.1875]',
           'hover:bg-primary hover:text-primary-contrast hover:[&_svg]:text-primary-contrast',

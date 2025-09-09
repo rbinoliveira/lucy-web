@@ -1,7 +1,6 @@
 'use client'
 
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
-import clsx from 'clsx'
 import * as React from 'react'
 
 import { generateInitials } from '@/application/_shared/helpers/name-manipulator.helper'
@@ -69,7 +68,7 @@ function Avatar({
 }: AvatarProps) {
   return (
     <AvatarContainer
-      className={clsx(
+      className={cn(
         {
           'size-8': size === 'base',
           'size-14': size === 'md',
@@ -81,7 +80,7 @@ function Avatar({
       )}
     >
       <AvatarImage
-        className={clsx({
+        className={cn({
           'rounded-full': roundedFull,
           'rounded-radius': !roundedFull,
         })}
@@ -89,7 +88,7 @@ function Avatar({
         alt={name}
       />
       <AvatarFallback
-        className={clsx({
+        className={cn({
           'rounded-full': roundedFull,
           'rounded-radius': !roundedFull,
         })}

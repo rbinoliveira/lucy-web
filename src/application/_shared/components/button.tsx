@@ -1,12 +1,13 @@
 import { Slot } from '@radix-ui/react-slot'
-import clsx from 'clsx'
 import * as React from 'react'
+
+import { cn } from '@/application/_shared/libs/tw-merge'
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
   children: React.ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'google' | 'link' | 'login'
   type?: 'button' | 'submit'
 }
 
@@ -22,22 +23,33 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const Comp = asChild ? Slot : 'button'
+
+    const variants = {
+      primary: [
+        'bg-primary h-[52px] justify-center items-center gap-2 flex-row',
+        'rounded-lg',
+      ],
+      secondary: [
+        'bg-white border-2 border-border h-[52px] justify-center items-center ',
+        'gap-2 flex-row w-full rounded-lg',
+      ],
+      ghost: [''],
+      google: [
+        'flex justify-center items-center gap-2 h-[52px] h-[64px]',
+        'border-2 border-border-one rounded-xl shadow-one font-semibold',
+        'text-lg',
+      ],
+      link: ['flex flex-col text-sm font-semibold text-blue-one'],
+      login: [
+        'h-[56px] flex justify-center items-center gap-2',
+        'w-full rounded-xl linear-bg-two shadow-two font-semibold',
+        'text-white',
+      ],
+    }
+
     return (
       <Comp
-        className={clsx(
-          'rounded-radius inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap transition-colors',
-          // 'focus-visible:outline-primary focus-visible:outline-4 focus-visible:outline-offset-2',
-          'disabled:pointer-events-none disabled:opacity-50',
-          '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-          {
-            'bg-primary text-primary-contrast border-primary border-2 px-6 py-[0.375rem] font-bold leading-[1.5]':
-              variant === 'primary',
-            'text-primary border-primary border-2 px-6 py-[0.375rem] font-bold leading-[1.5]':
-              variant === 'secondary',
-            '': variant === 'ghost',
-          },
-          className,
-        )}
+        className={cn(className, 'cursor-pointer', ...variants[variant])}
         type={type}
         ref={ref}
         {...props}

@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusIcon } from '@phosphor-icons/react'
+import { Plus } from 'lucide-react'
 
 import { UI } from '@/application/_shared/components'
 import { useAuth } from '@/application/auth/hooks/auth.hook'
@@ -18,7 +18,7 @@ export default function Dashboard() {
           <UI.Button variant="secondary">Set at once</UI.Button>
           <UI.Button>
             Products
-            <PlusIcon />
+            <Plus />
           </UI.Button>
         </div>
       </div>
