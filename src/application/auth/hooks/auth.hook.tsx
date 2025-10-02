@@ -1,19 +1,13 @@
 'use client'
 
 import {
-  createUserWithEmailAndPassword,
   EmailAuthProvider,
   linkWithCredential,
   onAuthStateChanged,
-  sendPasswordResetEmail,
-  signInWithCredential,
-  signInWithPopup,
-  updateProfile,
   User as FirebaseUser,
 } from 'firebase/auth'
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { toast } from 'sonner'
 
 import {
   appPublicRoutes,
@@ -24,14 +18,11 @@ import { deleteAuthCookies } from '@/application/_shared/helpers/delete-auth-coo
 import { handleError } from '@/application/_shared/helpers/error.helper'
 import { generateRandomPassword } from '@/application/_shared/helpers/generate-password'
 import { getAuthCookies } from '@/application/_shared/helpers/get-auth-cookies.helper'
-import { auth, provider } from '@/application/_shared/libs/firebase'
+import { auth } from '@/application/_shared/libs/firebase'
 import {
   getDocument,
   upsertDocument,
-} from '@/application/_shared/services/firebase.service'
-import { LoginSchema } from '@/application/auth/schemas/login.schema'
-import { RecoverPasswordSchema } from '@/application/auth/schemas/recover-password.schema'
-import { RegisterSchema } from '@/application/auth/schemas/register.schema'
+} from '@/application/_shared/services/shared.service'
 
 export type User = {
   id: string
@@ -45,11 +36,6 @@ export type User = {
 
 type AuthContextType = {
   user: User | null
-  signInWithGoogle: () => Promise<void>
-  signOut: () => Promise<void>
-  signInWithCredentials: (data: LoginSchema) => Promise<void>
-  recoverPassword: (data: RecoverPasswordSchema) => Promise<void>
-  registerWithCredentials: (data: RegisterSchema) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -60,57 +46,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const pathname = usePathname()
   const router = useRouter()
-
-  async function signInWithGoogle() {
-    try {
-      await signInWithPopup(auth, provider)
-    } catch (err) {
-      handleError({ err })
-    }
-  }
-
-  async function recoverPassword(data: RecoverPasswordSchema) {
-    try {
-      await sendPasswordResetEmail(auth, data.email)
-      toast('Success', {
-        description: 'E-mail enviado com sucesso',
-      })
-    } catch (err) {
-      handleError({ err })
-    }
-  }
-
-  async function registerWithCredentials(data: RegisterSchema) {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password,
-      )
-      const user = userCredential.user
-
-      await updateProfile(user, {
-        displayName: data.name,
-      })
-
-      toast('Success', {
-        description: 'Conta criada com sucesso',
-      })
-    } catch (err) {
-      handleError({ err })
-    }
-  }
-
-  async function signInWithCredentials(data: LoginSchema) {
-    try {
-      await signInWithCredential(
-        auth,
-        EmailAuthProvider.credential(data.email, data.password),
-      )
-    } catch (err) {
-      handleError({ err })
-    }
-  }
 
   async function linkToAuthProviders(user: FirebaseUser | null) {
     if (!user) {
@@ -154,16 +89,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       photo: userDocument.photo,
       cro: userDocument.cro,
       phone: userDocument.phone,
-    }
-  }
-
-  async function signOut() {
-    try {
-      await auth.signOut()
-    } catch (err) {
-      handleError({
-        err,
-      })
     }
   }
 
@@ -230,11 +155,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        signInWithGoogle,
-        signOut,
-        signInWithCredentials,
-        recoverPassword,
-        registerWithCredentials,
       }}
     >
       {children}

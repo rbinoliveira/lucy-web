@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
 
@@ -8,12 +7,7 @@ type ErrorType = {
 }
 
 export function handleError({ message, err }: ErrorType) {
-  if (
-    err &&
-    err instanceof AxiosError &&
-    err.response?.data?.message &&
-    err.response?.status !== 500
-  ) {
+  if (err && err.response?.data?.message && err.response?.status !== 500) {
     return toast('Error', {
       description: err.response.data.message,
     })

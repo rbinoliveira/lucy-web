@@ -17,24 +17,32 @@ import { cn } from '@/application/_shared/libs/tw-merge'
 export interface PrimitiveInputMaskedTextProps {
   isErrored?: boolean
   iconBefore?: React.ReactNode
-  iconAfter?: React.ReactNode
+  elementAfter?: React.ReactNode
   inputSize?: ExtendedInputTextProps['inputSize']
   className?: string
-  mask?: 'only-numbers' | 'phone'
+  mask?: 'only-numbers' | 'phone' | 'date'
   id?: string
 }
 
 const svgClassName = cn(
   'mx-3 absolute top-1/2 -translate-y-1/2',
-  '[&>*]:h-[1.125rem] [&>*]:w-[1.125rem] text-svg-placeholder',
+  '[&>*]:h-[1.125rem] [&>*]:w-[1.125rem] text-svg-placeholder [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem]',
 )
 
-const PrimitiveInputMaskedText = React.forwardRef<
+export const PrimitiveInputMaskedText = React.forwardRef<
   HTMLInputElement,
   PrimitiveInputMaskedTextProps
 >(
   (
-    { className, inputSize, isErrored, iconBefore, iconAfter, mask, ...props },
+    {
+      className,
+      inputSize,
+      isErrored,
+      iconBefore,
+      elementAfter,
+      mask,
+      ...props
+    },
     ref,
   ) => {
     const [isFocused, setIsFocused] = React.useState(false)
@@ -52,6 +60,13 @@ const PrimitiveInputMaskedText = React.forwardRef<
             break
           case 'phone':
             withMask(['(99) 9999-9999', '(99) 99999-9999'], {
+              placeholder: '',
+              showMaskOnFocus: false,
+              showMaskOnHover: false,
+            })(el)
+            break
+          case 'date':
+            withMask('99/99/9999', {
               placeholder: '',
               showMaskOnFocus: false,
               showMaskOnHover: false,
@@ -94,13 +109,11 @@ const PrimitiveInputMaskedText = React.forwardRef<
           className={cn(
             'focus:outline-none flex-1 px-3',
             iconBefore && 'pl-10',
-            iconAfter && 'pr-10',
+            elementAfter && 'pr-10',
           )}
         />
-        {iconAfter && (
-          <span className={cn(svgClassName, 'right-0 pointer-events-none')}>
-            {iconAfter}
-          </span>
+        {elementAfter && (
+          <span className={cn(svgClassName, 'right-0')}>{elementAfter}</span>
         )}
       </div>
     )
@@ -119,6 +132,7 @@ export type InputMaskedTextProps<T extends FieldValues> =
       name: Path<T>
       control: Control<T>
       defaultValue?: PathValue<T, Path<T>>
+      placeholder?: string
     }
 
 function InputMaskedText<T extends FieldValues>({

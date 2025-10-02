@@ -30,9 +30,26 @@ export function FormCardFooter({
   return (
     <div className={cn('w-full flex flex-col items-end', className)}>
       <Separator />
-      <div className="flex items-center justify-end gap-4 mt-8 w-full">
+      <div className="flex items-center justify-end gap-4 mt-6 w-full">
         {children}
       </div>
+    </div>
+  )
+}
+
+export function FormCardHeader({
+  title,
+  subtitle,
+  className,
+}: {
+  title: string
+  subtitle: string
+  className?: string
+}) {
+  return (
+    <div className={cn('flex flex-col gap-2', className)}>
+      <h1 className="text-xl font-bold">{title}</h1>
+      <h2 className="text-text-two">{subtitle}</h2>
     </div>
   )
 }

@@ -14,7 +14,7 @@ export function TableHeader({
     <thead
       data-slot="table-header"
       className={cn(
-        'w-full linear-one rounded-t-2xl py-[1.25rem] px-6',
+        'w-full linear-one rounded-t-2xl py-[1.25rem] px-6 table-cell',
         className,
       )}
       {...props}

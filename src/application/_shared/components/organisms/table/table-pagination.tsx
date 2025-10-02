@@ -3,7 +3,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 
-import page from '@/app/(authenticated)/dashboard/page'
 import {
   Button,
   ButtonProps,

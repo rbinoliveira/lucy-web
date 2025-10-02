@@ -21,7 +21,7 @@ export function TableBody({
       {data.items.map((row) => (
         <TableRow
           key={row.id}
-          className="px-6 py-[1.4063rem] border-t border-border-two"
+          className="px-6 py-[1.4063rem] border-t border-border-one"
         >
           {columns.map((column) => (
             <TableCell key={column.columnName}>{column.render(row)}</TableCell>

@@ -8,18 +8,19 @@ import { Button } from '@/application/_shared/components/atoms/button'
 import { Separator } from '@/application/_shared/components/atoms/separator'
 import { InputText } from '@/application/_shared/components/molecules/form/input-text'
 import { Image } from '@/application/_shared/components/molecules/image'
-import { useAuth } from '@/application/auth/hooks/auth.hook'
 import {
   LoginSchema,
   loginSchema,
 } from '@/application/auth/schemas/login.schema'
+import {
+  signInWithCredentials,
+  signInWithGoogle,
+} from '@/application/auth/services/auth.service'
 
 export function LoginForm() {
   const { control, handleSubmit } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   })
-
-  const { signInWithGoogle, signInWithCredentials } = useAuth()
 
   async function handleCreateSession(data: LoginSchema) {
     signInWithCredentials(data)

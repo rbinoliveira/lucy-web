@@ -4,6 +4,15 @@ export function ListPatientsPage() {
   return (
     <div className="flex flex-col gap-6">
       <Table
+        actions={{
+          search: {
+            placeholder: 'Buscar pacientes...',
+          },
+          add: {
+            label: 'Adicionar Paciente',
+            href: '/pacientes/adicionar',
+          },
+        }}
         columns={[
           {
             columnLabel: 'Paciente',

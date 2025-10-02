@@ -14,7 +14,7 @@ import { InputText } from '@/application/_shared/components/molecules/form/input
 import { appRoutes } from '@/application/_shared/constants/app-routes.constant'
 import { addAuthCookies } from '@/application/_shared/helpers/add-auth-cookies.helper'
 import { handleError } from '@/application/_shared/helpers/error.helper'
-import { upsertDocument } from '@/application/_shared/services/firebase.service'
+import { upsertDocument } from '@/application/_shared/services/shared.service'
 import { useAuth } from '@/application/auth/hooks/auth.hook'
 import { UserSchema, userSchema } from '@/application/auth/schemas/user.schema'
 

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import '@/application/_shared/styles/globals.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
