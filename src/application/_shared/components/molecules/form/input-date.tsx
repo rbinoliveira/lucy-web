@@ -19,6 +19,7 @@ import { Button } from '@/application/_shared/components/atoms/button'
 import { InputError } from '@/application/_shared/components/molecules/form/input-error'
 import { InputLabel } from '@/application/_shared/components/molecules/form/input-label'
 import { PrimitiveInputMaskedText } from '@/application/_shared/components/molecules/form/input-masked-text'
+import { isDateValid } from '@/application/_shared/helpers/date.helper'
 import { cn } from '@/application/_shared/libs/tw-merge'
 registerLocale('pt-BR', ptBR)
 
@@ -48,7 +49,7 @@ export type InputDateProps<T extends FieldValues> = PrimitiveInputDateProps &
 function InputDate<T extends FieldValues>({
   name,
   control,
-  defaultValue = '' as PathValue<T, Path<T>>,
+  defaultValue = null as PathValue<T, Path<T>>,
   label,
   className,
   inputSize = 'base',
@@ -56,12 +57,19 @@ function InputDate<T extends FieldValues>({
 }: InputDateProps<T>) {
   const [open, setOpen] = React.useState(false)
 
+  function updateOpen() {
+    setOpen(!open)
+  }
+
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
+      render={({
+        field: { onChange, value, onBlur },
+        fieldState: { error },
+      }) => (
         <div className={cn('flex w-full flex-col gap-2', className)}>
           <InputLabel label={label} htmlFor={name} inputSize={inputSize} />
           <div className="flex w-full [&>div]:w-full [&>div:nth-child(2)]:w-0">
@@ -70,7 +78,7 @@ function InputDate<T extends FieldValues>({
               customInput={
                 <PrimitiveInputMaskedText
                   elementAfter={
-                    <Button variant="ghost" onClick={() => setOpen(true)}>
+                    <Button variant="ghost" onClick={updateOpen}>
                       <Calendar />
                     </Button>
                   }
@@ -86,6 +94,7 @@ function InputDate<T extends FieldValues>({
               isErrored={!!error}
               inputSize={inputSize}
               onChange={onChange}
+              onBlur={onBlur}
               selected={value}
               open={open}
               onClickOutside={() => setOpen(false)}

@@ -7,21 +7,19 @@ import { useForm } from 'react-hook-form'
 
 import { Button } from '@/application/_shared/components/atoms/button'
 import { InputText } from '@/application/_shared/components/molecules/form/input-text'
-import { useAuth } from '@/application/auth/hooks/auth.hook'
 import {
   RecoverPasswordSchema,
   recoverPasswordSchema,
 } from '@/application/auth/schemas/recover-password.schema'
+import { sendPasswordReset } from '@/application/auth/services/auth.service'
 
 export function RecoverPasswordForm() {
   const { control, handleSubmit } = useForm<RecoverPasswordSchema>({
     resolver: zodResolver(recoverPasswordSchema),
   })
 
-  const { recoverPassword } = useAuth()
-
   async function handleRecoverPassword(data: RecoverPasswordSchema) {
-    recoverPassword(data)
+    sendPasswordReset(data)
   }
 
   return (

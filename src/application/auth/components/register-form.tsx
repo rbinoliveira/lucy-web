@@ -67,7 +67,7 @@ export function RegisterForm() {
         placeholder="dr.exemplo@clinica.com"
         inputSize="lg"
       />
-      <div className="grid grid-cols-2 items-center gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <InputText
           label="Senha"
           control={control}

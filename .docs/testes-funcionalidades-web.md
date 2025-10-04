@@ -12,34 +12,31 @@ Este documento descreve como testar as funcionalidades principais do sistema web
   1. Acessar a página de cadastro.
   2. Preencher os campos obrigatórios com dados válidos.
   3. Submeter o formulário.
-  4. Confirmar e-mail se houver verificação (opcional).
 - **Dados de Teste**:
-  - E-mail válido (ex.: dentista.teste+001@exemplo.com)
-  - Senha válida (política definida)
-  - Campos adicionais obrigatórios (nome, CRO, etc., se aplicável)
+  - E-mail válido
+  - Senha válida (pelo menos 6 caracteres)
+  - Campos adicionais obrigatórios (nome)
 - **Resultados Esperados**:
   - Conta criada com sucesso.
-  - Redirecionamento adequado (ex.: dashboard) ou mensagem de sucesso.
-  - Registro persistido no provedor de auth (ex.: Firebase Auth) e base de dados associada.
+  - Redirecionamento adequado (dashboard) e mensagem de sucesso.
 - **Fluxos e Edge Cases**:
   - E-mail inválido: exibir erro de validação.
-  - Senha fora da política: exibir erro e bloquear envio.
+  - Senha fora da política: exibir erro de validação.
   - E-mail já existente: bloquear cadastro com mensagem adequada.
-  - Campos obrigatórios vazios: impedir envio.
 
 ## 2. Cadastro do dentista por Google
 - **ID**: WEB-002
 - **Funcionalidade**: Cadastro via Google
 - **Objetivo**: Verificar que um novo dentista consegue se cadastrar usando conta Google.
 - **Passos**:
-  1. Acessar a tela de cadastro/login e escolher "Continuar com Google".
+  1. Acessar a tela de cadastro e escolher "Cadastrar com Google".
   2. Selecionar a conta Google de teste e conceder permissões.
   3. Concluir o fluxo de autenticação.
 - **Dados de Teste**:
-  - Conta Google de teste (não previamente cadastrada).
+  - Conta Google de teste
 - **Resultados Esperados**:
   - Usuário criado e autenticado.
-  - Redirecionamento/estado logado exibido.
+  - Redirecionamento para dashboard.
 - **Fluxos e Edge Cases**:
   - Cancelamento do pop-up: manter usuário deslogado.
   - Conta Google já vinculada: tratar como login (não duplicar contas).
@@ -57,11 +54,11 @@ Este documento descreve como testar as funcionalidades principais do sistema web
   - Senha correta
 - **Resultados Esperados**:
   - Autenticação bem-sucedida.
-  - Redirecionamento para área autenticada (ex.: dashboard).
+  - Redirecionamento para dashboard.
 - **Fluxos e Edge Cases**:
   - Senha incorreta: exibir erro.
   - Conta inexistente: exibir erro.
-  - E-mail não verificado: exibir orientação (se aplicável).
+  - Conta existente mas associado a paciente: exibir erro.
 
 ## 4. Login do dentista por Google
 - **ID**: WEB-004
@@ -73,10 +70,11 @@ Este documento descreve como testar as funcionalidades principais do sistema web
 - **Dados de Teste**:
   - Conta Google vinculada ao sistema.
 - **Resultados Esperados**:
-  - Autenticação e redirecionamento corretos.
+  - Autenticação e redirecionamento para dashboard.
 - **Fluxos e Edge Cases**:
   - Cancelar o pop-up: não autentica.
-  - Conta Google não vinculada: pode iniciar cadastro conforme regra de negócio.
+  - Conta Google não vinculada: criar e logar usuário.
+  - Conta existente mas associado a paciente: exibir erro.
 
 ## 5. Recuperação de senha do dentista
 - **ID**: WEB-005
@@ -92,10 +90,6 @@ Este documento descreve como testar as funcionalidades principais do sistema web
 - **Resultados Esperados**:
   - E-mail de reset enviado.
   - Link válido e atualização de senha bem-sucedida.
-- **Fluxos e Edge Cases**:
-  - E-mail inexistente: mensagem genérica ou fluxo silencioso, sem vazar existência.
-  - Link expirado: erro apropriado e opção de reenvio.
-  - Nova senha fora da política: rejeitar com mensagem.
 
 ## 6. Logout do dentista
 - **ID**: WEB-006

@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Calendar, Check, Phone, User } from 'lucide-react'
+import { AtSign, Calendar, Check, Phone, User } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/application/_shared/components/atoms/button'
@@ -9,21 +9,24 @@ import { FormCardFooter } from '@/application/_shared/components/molecules/form/
 import { InputDate } from '@/application/_shared/components/molecules/form/input-date'
 import { InputMaskedText } from '@/application/_shared/components/molecules/form/input-masked-text'
 import { InputText } from '@/application/_shared/components/molecules/form/input-text'
-import { UserSchema, userSchema } from '@/application/auth/schemas/user.schema'
+import { convertToNumberDate } from '@/application/_shared/helpers/date.helper'
+import {
+  SavePatientSchema,
+  savePatientSchema,
+} from '@/application/patient/schemas/save-patient.schema'
 
-export function CreatePatientForm() {
+export function SavePatientForm() {
   const {
     control,
-    register,
     handleSubmit,
-    reset,
     formState: { isValid },
-  } = useForm<UserSchema>({
-    resolver: zodResolver(userSchema),
+  } = useForm<SavePatientSchema>({
+    resolver: zodResolver(savePatientSchema),
   })
 
-  function onSubmit(data: UserSchema) {
-    console.log(data)
+  function onSubmit(data: SavePatientSchema) {
+    const formattedData = { ...data, password: convertToNumberDate(data.dob) }
+    console.log(formattedData)
   }
 
   return (
@@ -34,6 +37,13 @@ export function CreatePatientForm() {
         control={control}
         name="name"
         iconBefore={<User className="text-icon" fill="currentColor" />}
+      />
+      <InputText
+        placeholder="Ex: maria.silva.santos@gmail.com"
+        label="E-mail"
+        control={control}
+        name="email"
+        iconBefore={<AtSign className="text-icon" />}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <InputMaskedText

@@ -7,8 +7,8 @@ export const registerSchema = z
   .object({
     name: requiredString({ field: 'name' }),
     email: requiredEmail(),
-    password: requiredString({ field: 'password' }),
-    confirmPassword: requiredString({ field: 'confirmPassword' }),
+    password: requiredString({ field: 'senha', min: 6 }),
+    confirmPassword: requiredString({ field: 'confirmar senha' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'As senhas não coincidem',
