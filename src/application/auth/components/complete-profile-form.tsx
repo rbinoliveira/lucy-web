@@ -19,7 +19,7 @@ import { useAuth } from '@/application/auth/hooks/auth.hook'
 import { UserSchema, userSchema } from '@/application/auth/schemas/user.schema'
 
 export function CompleteProfileForm() {
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
   const {
     control,
     register,
@@ -36,10 +36,16 @@ export function CompleteProfileForm() {
   async function onSubmit(data: UserSchema) {
     try {
       if (!user?.id) return
-      await upsertDocument('users', user.id, data)
-      await addAuthCookies({
-        user: { ...data, id: user.id, photo: user.photo },
+      await upsertDocument('users', user.id, {
+        ...data,
+        photo: data.photo ?? '',
       })
+      const updatedUser = { ...data, id: user.id, photo: user.photo }
+      console.log(updatedUser)
+      await addAuthCookies({
+        user: updatedUser,
+      })
+      updateUser(updatedUser)
       toast('Success', {
         description: 'Perfil atualizado com sucesso',
       })

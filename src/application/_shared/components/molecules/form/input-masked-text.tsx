@@ -52,7 +52,7 @@ export const PrimitiveInputMaskedText = React.forwardRef<
         if (!el) return
         switch (mask) {
           case 'only-numbers':
-            withMask('999999999', {
+            withMask('9999999', {
               placeholder: '',
               showMaskOnFocus: false,
               showMaskOnHover: false,

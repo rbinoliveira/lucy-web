@@ -17,7 +17,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
-const provider = new GoogleAuthProvider()
+const googleProvider = new GoogleAuthProvider()
 const db = getFirestore(app)
 
 let analytics
@@ -29,4 +29,4 @@ if (typeof window !== 'undefined') {
   })
 }
 
-export { app, auth, provider, analytics, db }
+export { app, auth, googleProvider, analytics, db }

@@ -36,6 +36,7 @@ export type User = {
 
 type AuthContextType = {
   user: User | null
+  updateUser: (userUpdated: User) => void
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -47,36 +48,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
 
-  async function linkToAuthProviders(user: FirebaseUser | null) {
-    if (!user) {
+  async function linkToAuthProviders(firebaseUser: FirebaseUser | null) {
+    if (!firebaseUser) {
       return
     }
 
-    const hasEmailProvider = user.providerData.some(
+    const hasEmailProvider = firebaseUser.providerData.some(
       (p) => p.providerId === 'password',
     )
     if (!hasEmailProvider) {
-      const email = user.email
+      const email = firebaseUser.email
       const password = generateRandomPassword()
 
       const credential = EmailAuthProvider.credential(email!, password)
-      await linkWithCredential(user, credential)
+      await linkWithCredential(firebaseUser, credential)
     }
   }
 
-  async function getOrCreateFirestoreUser(user: FirebaseUser): Promise<User> {
-    const userDocument = await getDocument<User>('users', user.uid)
+  async function getOrCreateFirestoreUser(
+    firebaseUser: FirebaseUser,
+  ): Promise<User> {
+    console.log(firebaseUser)
+    const userDocument = await getDocument<User>('users', firebaseUser.uid)
 
     if (!userDocument) {
       const newUser: User = {
-        id: user.uid,
-        email: user.email ?? '',
-        name: user.displayName ?? '',
+        id: firebaseUser.uid,
+        email: firebaseUser.email ?? '',
+        name: firebaseUser.displayName ?? '',
         role: 'admin',
-        photo: user.photoURL ?? undefined,
+        photo: firebaseUser.photoURL ?? '',
       }
 
-      await upsertDocument<User>('users', user.uid, newUser)
+      await upsertDocument<User>('users', firebaseUser.uid, newUser)
 
       return newUser
     }
@@ -92,10 +96,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function setUserAsLoggedIn(user: User | null) {
-    if (user) {
-      if (user.role === 'admin') {
-        await addAuthCookies({ user })
+  async function setUserAsLoggedIn(userUpdated: User | null) {
+    if (userUpdated) {
+      if (userUpdated.role === 'admin') {
+        await addAuthCookies({ user: userUpdated })
       } else {
         await auth.signOut()
         handleError({
@@ -105,20 +109,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } else {
       await deleteAuthCookies()
     }
-    setUser(user)
+    setUser(userUpdated)
+  }
+
+  function updateUser(userUpdated: User) {
+    setUser(userUpdated)
   }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-      let user = null
+      let userUpdated = null
 
       await linkToAuthProviders(authUser)
 
       if (authUser) {
-        user = await getOrCreateFirestoreUser(authUser)
+        userUpdated = await getOrCreateFirestoreUser(authUser)
       }
 
-      await setUserAsLoggedIn(user)
+      await setUserAsLoggedIn(userUpdated)
 
       setLoading(false)
     })
@@ -155,6 +163,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        updateUser,
       }}
     >
       {children}

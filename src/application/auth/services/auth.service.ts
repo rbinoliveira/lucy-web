@@ -9,14 +9,14 @@ import {
 import { toast } from 'sonner'
 
 import { handleError } from '@/application/_shared/helpers/error.helper'
-import { auth, provider } from '@/application/_shared/libs/firebase'
+import { auth, googleProvider } from '@/application/_shared/libs/firebase'
 import { LoginSchema } from '@/application/auth/schemas/login.schema'
 import { RecoverPasswordSchema } from '@/application/auth/schemas/recover-password.schema'
 import { RegisterSchema } from '@/application/auth/schemas/register.schema'
 
 async function signInWithGoogle() {
   try {
-    await signInWithPopup(auth, provider)
+    await signInWithPopup(auth, googleProvider)
   } catch (err) {
     handleError({ err })
   }

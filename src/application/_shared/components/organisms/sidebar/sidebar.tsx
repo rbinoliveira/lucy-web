@@ -24,6 +24,7 @@ import { getCompoundName } from '@/application/_shared/helpers/name-manipulator.
 import { useIsMobile } from '@/application/_shared/helpers/use-mobile'
 import { cn } from '@/application/_shared/libs/tw-merge'
 import { useAuth } from '@/application/auth/hooks/auth.hook'
+import { signOut } from '@/application/auth/services/auth.service'
 
 const SIDEBAR_WIDTH = '256px'
 
@@ -285,7 +286,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 function AppSidebarHeader() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
 
   const isMobile = useIsMobile()
 
