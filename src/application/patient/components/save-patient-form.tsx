@@ -2,8 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AtSign, Calendar, Check, Phone, User } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 import { Button } from '@/application/_shared/components/atoms/button'
 import { FormCardFooter } from '@/application/_shared/components/molecules/form/form-card'
@@ -11,32 +11,39 @@ import { InputDate } from '@/application/_shared/components/molecules/form/input
 import { InputMaskedText } from '@/application/_shared/components/molecules/form/input-masked-text'
 import { InputText } from '@/application/_shared/components/molecules/form/input-text'
 import { convertToNumberDate } from '@/application/_shared/helpers/date.helper'
-import { handleError } from '@/application/_shared/helpers/error.helper'
-import api from '@/application/_shared/libs/axios'
 import { useAuth } from '@/application/auth/hooks/auth.hook'
+import { PatientModel } from '@/application/patient/models/patient.model'
 import {
   SavePatientFormSchema,
   savePatientFormSchema,
 } from '@/application/patient/schemas/save-patient.schema'
+import { CreatePatientService } from '@/application/patient/service/create-patient.service'
+import { UpdatePatientService } from '@/application/patient/service/update-patient.service'
 
-export function SavePatientForm() {
+type SavePatientFormProps = {
+  patient?: PatientModel
+}
+
+export function SavePatientForm({ patient }: SavePatientFormProps) {
   const { control, handleSubmit } = useForm<SavePatientFormSchema>({
     resolver: zodResolver(savePatientFormSchema),
+    defaultValues: patient,
   })
 
+  const pathname = usePathname()
+  const isEditPage = pathname.includes('editar')
+
   const { user } = useAuth()
+  const { mutate: createPatient } = CreatePatientService({})
+  const { mutate: updatePatient } = UpdatePatientService({})
 
   async function onSubmit(data: SavePatientFormSchema) {
-    try {
-      await api.post('/api/create-patient', {
-        ...data,
-        password: convertToNumberDate(data.dob),
-        ownerId: user?.id,
-      })
-      toast('Paciente cadastrado com sucesso')
-    } catch (error) {
-      handleError({ err: error })
+    const formattedData = {
+      ...data,
+      password: convertToNumberDate(data.dob),
+      ownerId: user?.id ?? '',
     }
+    isEditPage ? updatePatient(formattedData) : createPatient(formattedData)
   }
 
   return (

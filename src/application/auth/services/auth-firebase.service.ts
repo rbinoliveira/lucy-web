@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { addAuthCookies } from '@/application/_shared/helpers/add-auth-cookies.helper'
 import { handleError } from '@/application/_shared/helpers/error.helper'
 import { auth, db, googleProvider } from '@/application/_shared/libs/firebase'
-import { User } from '@/application/auth/hooks/auth.hook'
+import { UserModel } from '@/application/auth/models/user.model'
 import { LoginSchema } from '@/application/auth/schemas/login.schema'
 import { RecoverPasswordSchema } from '@/application/auth/schemas/recover-password.schema'
 import { RegisterSchema } from '@/application/auth/schemas/register.schema'
@@ -94,13 +94,13 @@ export async function createPatient() {
   }
 }
 
-export async function getUser(id: string): Promise<User | null> {
+export async function getUser(id: string): Promise<UserModel | null> {
   const snap = await getDoc(doc(db, 'users', id))
-  const data = snap.data() as User
+  const data = snap.data() as UserModel
   return snap.exists() ? data : null
 }
 
-export async function upsertUser(id: string, data: User): Promise<void> {
+export async function upsertUser(id: string, data: UserModel): Promise<void> {
   const docRef = doc(db, 'users', id)
   await setDoc(docRef, data, { merge: true })
 }

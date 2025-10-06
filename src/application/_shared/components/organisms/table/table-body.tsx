@@ -26,7 +26,6 @@ export function TableBody({
           {columns.map((column) => (
             <TableCell key={column.columnName}>{column.render(row)}</TableCell>
           ))}
-          <TableCell>action</TableCell>
         </TableRow>
       ))}
     </tbody>
@@ -34,5 +33,11 @@ export function TableBody({
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
-  return <td data-slot="table-cell" className={cn('', className)} {...props} />
+  return (
+    <td
+      data-slot="table-cell"
+      className={cn('flex items-center', className)}
+      {...props}
+    />
+  )
 }

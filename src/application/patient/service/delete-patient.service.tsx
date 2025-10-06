@@ -6,13 +6,13 @@ import { queryClient } from '@/application/_shared/libs/react-query'
 import { ServiceModel } from '@/application/_shared/models/service.model'
 import { listPatientsQueryKey } from '@/application/patient/service/list-patients.service'
 import {
-  updatePatientUseCase,
-  UpdatePatientUseCaseInput,
-} from '@/application/patient/use-cases/update-patient.use-case'
+  deletePatientUseCase,
+  DeletePatientUseCaseInput,
+} from '@/application/patient/use-cases/delete-patient.use-case'
 
-export function UpdatePatientService({ onSuccess }: ServiceModel) {
+export function DeletePatientService({ onSuccess }: ServiceModel) {
   const mutation = useMutation({
-    mutationFn: (data: UpdatePatientUseCaseInput) => updatePatientUseCase(data),
+    mutationFn: (data: DeletePatientUseCaseInput) => deletePatientUseCase(data),
     onSuccess: async () => {
       if (onSuccess) {
         onSuccess()
@@ -20,7 +20,7 @@ export function UpdatePatientService({ onSuccess }: ServiceModel) {
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === listPatientsQueryKey,
       })
-      toast('Patient updated successfully!')
+      toast('Paciente deletado com sucesso!')
     },
     onError: (error) => {
       handleError(error)

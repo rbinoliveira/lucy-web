@@ -51,7 +51,7 @@ function PrimitiveInputSelect({
           {
             'border-primary border-t-[1px] border-x-[1px] rounded-t-lg':
               isFocused,
-            'border-primary-light border-[1px] rounded-lg': !isFocused,
+            'border-border-one border-[1px] rounded-lg': !isFocused,
             '!border-danger border-[1px] rounded-lg': isErrored,
           },
           variant === 'base' ? 'px-4' : 'px-2',

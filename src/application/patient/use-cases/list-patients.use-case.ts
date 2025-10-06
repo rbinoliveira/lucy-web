@@ -11,7 +11,7 @@ import {
 
 import { db } from '@/application/_shared/libs/firebase'
 import { ListPaginatedModel } from '@/application/_shared/models/list-paginated.model'
-import { User } from '@/application/auth/hooks/auth.hook'
+import { PatientModel } from '@/application/patient/models/patient.model'
 
 export type ListPatientsUseCaseInput = {
   ownerId: string
@@ -20,7 +20,7 @@ export type ListPatientsUseCaseInput = {
   search?: string
 }
 
-export type ListPatientsUseCaseOutput = ListPaginatedModel<User>
+export type ListPatientsUseCaseOutput = ListPaginatedModel<PatientModel>
 
 export async function listPatientsUseCase({
   ownerId,
@@ -77,7 +77,7 @@ export async function listPatientsUseCase({
 
   const patients = snapshot.docs.map((doc) => ({
     id: doc.id,
-    ...(doc.data() as Omit<User, 'id'>),
+    ...(doc.data() as Omit<PatientModel, 'id'>),
   }))
 
   return {

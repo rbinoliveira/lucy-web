@@ -13,6 +13,7 @@
     --primary: #0066CC;
     --primary-contrast: #ffffff;
     --primary-light: #A3C8FF;
+    --primary-alternative: #2563EB;
     --secondary: #F3F4F6;
     --danger-one: #DC2626;
     --danger-two: #EF4444;
@@ -44,6 +45,7 @@
   --color-primary: var(--primary);
   --color-primary-contrast: var(--primary-contrast);
   --color-primary-light: var(--primary-light);
+  --color-primary-alternative: var(--primary-alternative);
   --color-secondary: var(--secondary);
   --color-danger-one: var(--danger-one);
   --color-danger-two: var(--danger-two);

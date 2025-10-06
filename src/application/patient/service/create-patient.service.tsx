@@ -1,30 +1,30 @@
-// import { useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
-// import { listPlansQueryKey } from '@/application/plan/services/list-plans.service'
-// import { toast } from '@/application/shared/components/toast/hooks'
-// import { handleError } from '@/application/shared/helpers'
-// import { ServiceInput } from '@/application/shared/types'
-// import {
-//   createPlanUseCase,
-//   CreatePlanUseCaseInput,
-// } from '@/domain/plan/use-cases/create-plan.use-case'
-// import { queryClient } from '@/infra/shared/libs'
+import { handleError } from '@/application/_shared/helpers/error.helper'
+import { queryClient } from '@/application/_shared/libs/react-query'
+import { ServiceModel } from '@/application/_shared/models/service.model'
+import { listPatientsQueryKey } from '@/application/patient/service/list-patients.service'
+import {
+  createPatientUseCase,
+  CreatePatientUseCaseInput,
+} from '@/application/patient/use-cases/create-patient.use-case copy'
 
-// export function CreatePlanService({ onSuccess }: ServiceInput) {
-//   const mutation = useMutation({
-//     mutationFn: (data: CreatePlanUseCaseInput) => createPlanUseCase(data),
-//     onSuccess: () => {
-//       if (onSuccess) {
-//         onSuccess()
-//       }
-//       queryClient.invalidateQueries({
-//         predicate: (query) => query.queryKey[0] === listPlansQueryKey,
-//       })
-//       toast({ variant: 'success', description: 'Plan created successfully!' })
-//     },
-//     onError: (error) => {
-//       handleError(error)
-//     },
-//   })
-//   return mutation
-// }
+export function CreatePatientService({ onSuccess }: ServiceModel) {
+  const mutation = useMutation({
+    mutationFn: (data: CreatePatientUseCaseInput) => createPatientUseCase(data),
+    onSuccess: () => {
+      if (onSuccess) {
+        onSuccess()
+      }
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === listPatientsQueryKey,
+      })
+      toast('Patient created successfully!')
+    },
+    onError: (error) => {
+      handleError(error)
+    },
+  })
+  return mutation
+}

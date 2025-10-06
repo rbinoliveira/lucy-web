@@ -19,30 +19,21 @@ import { handleError } from '@/application/_shared/helpers/error.helper'
 import { generateRandomPassword } from '@/application/_shared/helpers/generate-password'
 import { getAuthCookies } from '@/application/_shared/helpers/get-auth-cookies.helper'
 import { auth } from '@/application/_shared/libs/firebase'
+import { UserModel } from '@/application/auth/models/user.model'
 import {
   getUser,
   upsertUser,
 } from '@/application/auth/services/auth-firebase.service'
 
-export type User = {
-  id: string
-  email: string
-  name: string
-  role: string
-  photo?: string
-  cro?: string
-  phone?: string
-}
-
 type AuthContextType = {
-  user: User | null
-  updateUser: (userUpdated: User) => void
+  user: UserModel | null
+  updateUser: (userUpdated: UserModel) => void
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<UserModel | null>(null)
   const [loading, setLoading] = useState(true)
 
   const pathname = usePathname()
@@ -67,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function getOrCreateFirestoreUser(
     firebaseUser: FirebaseUser,
-  ): Promise<User> {
+  ): Promise<UserModel> {
     const userDocument = await getUser(firebaseUser.uid)
 
     if (!userDocument) {
@@ -75,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const parsedUserByCookies = userByCookies
         ? JSON.parse(userByCookies)
         : null
-      const newUser: User = {
+      const newUser: UserModel = {
         id: firebaseUser.uid,
         email: firebaseUser.email ?? '',
         name: firebaseUser.displayName ?? parsedUserByCookies?.name ?? '',
@@ -99,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function setUserAsLoggedIn(userUpdated: User | null) {
+  async function setUserAsLoggedIn(userUpdated: UserModel | null) {
     if (userUpdated) {
       if (userUpdated.role === 'admin') {
         await addAuthCookies({ user: userUpdated })
@@ -115,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(userUpdated)
   }
 
-  function updateUser(userUpdated: User) {
+  function updateUser(userUpdated: UserModel) {
     setUser(userUpdated)
   }
 

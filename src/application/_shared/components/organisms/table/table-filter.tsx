@@ -29,8 +29,6 @@ export function TableFilter({ search, add, className }: TableFilterProps) {
     <div className={cn('flex items-center justify-between', className)}>
       <div className="flex items-center gap-4">
         <InputSearch
-          control={control}
-          name="search"
           placeholder={search.placeholder}
           className="max-w-[320px]"
         />
@@ -42,6 +40,10 @@ export function TableFilter({ search, add, className }: TableFilterProps) {
             className="max-w-[150px]"
             variant="sm"
             options={[
+              {
+                label: '1',
+                value: 1,
+              },
               {
                 label: '10',
                 value: 10,

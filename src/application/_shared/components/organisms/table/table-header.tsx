@@ -23,7 +23,6 @@ export function TableHeader({
         {columns.map((column) => (
           <TableHead key={column.columnName}>{column.columnLabel}</TableHead>
         ))}
-        <TableHead>Actions</TableHead>
       </TableRow>
     </thead>
   )

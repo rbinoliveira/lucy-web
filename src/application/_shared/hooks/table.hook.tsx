@@ -9,7 +9,8 @@ type TableContextType = {
   search: string
   itemsPerPage: number
   updateCurrentPage: (page: number) => void
-  form: UseFormReturn<{ itemsPerPage: number; search: string }>
+  updateSearch: (search: string) => void
+  form: UseFormReturn<{ itemsPerPage: number }>
 }
 
 const TableContext = createContext<TableContextType>({} as TableContextType)
@@ -20,15 +21,14 @@ const DEFAULT_ITEMS_PER_PAGE = 10
 
 export function TableProvider({ children }: { children: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState<number>(DEFAULT_CURRENT_PAGE)
+  const [search, setSearch] = useState<string>(DEFAULT_SEARCH)
 
   const form = useForm({
     defaultValues: {
       itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
-      search: DEFAULT_SEARCH,
     },
   })
 
-  const search = form.watch('search')
   const itemsPerPage = form.watch('itemsPerPage')
 
   const pathname = usePathname()
@@ -37,13 +37,21 @@ export function TableProvider({ children }: { children: React.ReactNode }) {
     setCurrentPage(page)
   }
 
+  function updateSearch(search: string) {
+    setSearch(search)
+  }
+
   useEffect(() => {
     setCurrentPage(DEFAULT_CURRENT_PAGE)
+    setSearch(DEFAULT_SEARCH)
     form.reset({
       itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
-      search: DEFAULT_SEARCH,
     })
   }, [pathname, form])
+
+  useEffect(() => {
+    setCurrentPage(DEFAULT_CURRENT_PAGE)
+  }, [search])
 
   return (
     <TableContext.Provider
@@ -52,6 +60,7 @@ export function TableProvider({ children }: { children: React.ReactNode }) {
         search,
         itemsPerPage,
         updateCurrentPage,
+        updateSearch,
         form,
       }}
     >

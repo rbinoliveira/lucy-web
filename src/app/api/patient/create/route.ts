@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
 
 import { authAdmin, dbAdmin } from '@/application/_shared/libs/firebase-admin'
-import { savePatientFirestoreSchema } from '@/application/patient/schemas/save-patient.schema'
-import { createPatientInFirestore } from '@/application/patient/use-cases/patient-firebase-admin.service'
+import {
+  SavePatientUseCaseSchema,
+  savePatientUseCaseSchema,
+} from '@/application/patient/schemas/save-patient.schema'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    const parsed = savePatientFirestoreSchema.safeParse(body)
+    const parsed = savePatientUseCaseSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(
         { errors: parsed.error.flatten().fieldErrors },
@@ -70,4 +72,21 @@ export async function POST(req: Request) {
       { status: 500 },
     )
   }
+}
+
+export function createPatientInFirestore(
+  docId: string,
+  data: SavePatientUseCaseSchema,
+) {
+  const usersRef = dbAdmin.collection('users')
+
+  return usersRef.doc(docId).set({
+    id: docId,
+    name: data.name,
+    phone: data.phone,
+    dob: data.dob,
+    email: data.email,
+    ownerId: data.ownerId,
+    role: 'patient',
+  })
 }
