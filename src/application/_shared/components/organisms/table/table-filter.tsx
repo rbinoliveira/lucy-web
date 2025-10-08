@@ -65,11 +65,8 @@ export function TableFilter({ search, add, className }: TableFilterProps) {
           itens
         </div>
       </div>
-      <Button className="max-w-[213px]" asChild>
-        <Link href={add.href}>
-          <Plus size={16} />
-          {add.label}
-        </Link>
+      <Button className="max-w-[240px]" asChild icon={<Plus size={16} />}>
+        <Link href={add.href}>{add.label}</Link>
       </Button>
     </div>
   )

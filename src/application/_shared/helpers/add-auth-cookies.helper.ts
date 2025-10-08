@@ -1,10 +1,10 @@
 import { setCookie } from 'cookies-next'
 
 import { appCookies } from '@/application/_shared/constants/app-cookies.constant'
-import { User } from '@/application/auth/hooks/auth.hook'
+import { UserModel } from '@/application/auth/models/user.model'
 
 type AddAuthCookiesProps = {
-  user: User
+  user: UserModel
 }
 
 export async function addAuthCookies({

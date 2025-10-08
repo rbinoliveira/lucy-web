@@ -1,27 +1,39 @@
 'use client'
-
-import { useTheme } from 'next-themes'
+import { Check, TriangleAlert } from 'lucide-react'
 import { Toaster as Sonner, ToasterProps } from 'sonner'
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = 'system' } = useTheme()
+import { cn } from '@/application/_shared/libs/tw-merge'
 
+const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
-      theme={theme as ToasterProps['theme']}
+      {...props}
       className="toaster group"
       toastOptions={{
         classNames: {
-          toast:
-            'group toast group-[.toaster]:bg-white group-[.toaster]:text-neutral-950 group-[.toaster]:border-neutral-200 group-[.toaster]:shadow-lg',
-          description: 'group-[.toast]:text-neutral-500',
-          actionButton:
-            'group-[.toast]:bg-neutral-900 group-[.toast]:text-neutral-50',
-          cancelButton:
-            'group-[.toast]:bg-neutral-100 group-[.toast]:text-neutral-500',
+          toast: cn(
+            '!p-4 !gap-3 !border !bg-white [&>div:nth-child(2)]:!gap-1',
+            '!rounded-xl [&>div:nth-child(1)]:!h-8 [&>div:nth-child(1)]:!w-8',
+          ),
+          error: '!border-danger-three shadow-two',
+          success: '!border-green-two shadow-two',
+          title: '!font-semibold !text-sm !font-inter !text-text-one',
+          description: '!text-text-two !font-inter !text-xs',
         },
       }}
-      {...props}
+      icons={{
+        error: (
+          <div className="w-full h-full bg-danger-four rounded-full flex items-center justify-center">
+            <TriangleAlert size={16} className="text-danger-one" />
+          </div>
+        ),
+        success: (
+          <div className="w-full h-full bg-green-three rounded-full flex items-center justify-center">
+            <Check size={16} className="text-green-four" />
+          </div>
+        ),
+      }}
+      position="top-right"
     />
   )
 }

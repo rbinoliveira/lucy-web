@@ -1,4 +1,5 @@
 import { Slot } from '@radix-ui/react-slot'
+import { LoaderCircle } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/application/_shared/libs/tw-merge'
@@ -6,7 +7,7 @@ import { cn } from '@/application/_shared/libs/tw-merge'
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
-  children: React.ReactNode
+  children?: React.ReactNode
   variant?:
     | 'primary'
     | 'secondary'
@@ -16,6 +17,8 @@ export interface ButtonProps
     | 'login'
     | 'pagination'
   type?: 'button' | 'submit'
+  isLoading?: boolean
+  icon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -25,6 +28,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asChild = false,
       type = 'button',
       variant = 'primary',
+      isLoading = false,
+      disabled,
+      icon,
+      children,
       ...props
     },
     ref,
@@ -40,7 +47,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       secondary: [
         'bg-white h-[48px] bg-secondary justify-center',
         'gap-2 flex-row w-full rounded-xl items-center font-medium',
-        'text-text-seven',
+        'text-text-seven disabled:opacity-50 disabled:cursor-not-allowed',
       ],
       ghost: ['flex items-center justify-center'],
       google: [
@@ -67,8 +74,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn('cursor-pointer', ...variants[variant], className)}
         type={type}
         ref={ref}
+        disabled={disabled || isLoading}
         {...props}
-      />
+      >
+        <div className="flex items-center justify-center gap-2">
+          {isLoading ? (
+            <LoaderCircle className="animate-spin w-5 h-5 text-white" />
+          ) : (
+            icon
+          )}
+          {children}
+        </div>
+      </Comp>
     )
   },
 )

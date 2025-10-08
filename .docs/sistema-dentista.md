@@ -18,7 +18,6 @@ Além disso, o aplicativo busca contribuir para a redução do risco de resistê
 - [ ] 1.2 O Dentista deve conseguir logar via Google
 - [ ] 1.3 O Dentista deve conseguir criar uma conta com os dados 
 - [ ] 1.4 O Dentista deve conseguir recuperar sua senha
-- [ ] 1.5 O Dentista deve conseguir solicitar exclusão de conta
 - [ ] 2.1 O Dentista deve conseguir cadastrar um paciente
 - [ ] 2.2 O Dentista deve conseguir editar um paciente
 - [ ] 2.3 O Dentista deve conseguir remover um paciente

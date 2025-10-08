@@ -60,6 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     firebaseUser: FirebaseUser,
   ): Promise<UserModel> {
     const userDocument = await getUser(firebaseUser.uid)
+    console.log(userDocument)
 
     if (!userDocument) {
       const userByCookies = await getAuthCookies()
@@ -70,9 +71,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         id: firebaseUser.uid,
         email: firebaseUser.email ?? '',
         name: firebaseUser.displayName ?? parsedUserByCookies?.name ?? '',
-        role: 'admin',
+        role: 'dentist',
         photo: firebaseUser.photoURL ?? '',
       }
+
+      console.log(newUser)
 
       await upsertUser(firebaseUser.uid, newUser)
 
@@ -92,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function setUserAsLoggedIn(userUpdated: UserModel | null) {
     if (userUpdated) {
-      if (userUpdated.role === 'admin') {
+      if (userUpdated.role === 'admin' || userUpdated.role === 'dentist') {
         await addAuthCookies({ user: userUpdated })
       } else {
         await auth.signOut()

@@ -95,9 +95,8 @@ const PrimitiveInputText = React.forwardRef<
             variant="ghost"
             className={cn(svgClassName, 'right-0')}
             onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-          >
-            {isPasswordVisible ? <EyeOff /> : <Eye />}
-          </Button>
+            icon={isPasswordVisible ? <EyeOff /> : <Eye />}
+          />
         )}
       </div>
     )

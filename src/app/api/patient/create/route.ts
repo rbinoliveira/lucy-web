@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server'
 
+import {
+  normalizeName,
+  normalizePhone,
+} from '@/application/_shared/helpers/normalize-string.helper'
 import { authAdmin, dbAdmin } from '@/application/_shared/libs/firebase-admin'
 import {
   SavePatientUseCaseSchema,
@@ -28,7 +32,7 @@ export async function POST(req: Request) {
 
     if (!existingFirestoreUser.empty) {
       return NextResponse.json(
-        { error: 'Usuário já existe no banco de dados.' },
+        { error: 'E-mail já cadastrado na plataforma, tente outro e-mail.' },
         { status: 400 },
       )
     }
@@ -39,7 +43,7 @@ export async function POST(req: Request) {
     } catch (err: any) {
       if (err.code !== 'auth/user-not-found') {
         return NextResponse.json(
-          { error: 'Erro ao verificar usuário no Auth.' },
+          { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
           { status: 500 },
         )
       }
@@ -49,7 +53,7 @@ export async function POST(req: Request) {
       await createPatientInFirestore(authUser.uid, data)
 
       return NextResponse.json({
-        message: 'Usuário já existia no Auth. Criado no Firestore.',
+        message: 'Paciente criado com sucesso.',
         uid: authUser.uid,
       })
     }
@@ -63,18 +67,18 @@ export async function POST(req: Request) {
     await createPatientInFirestore(newAuthUser.uid, data)
 
     return NextResponse.json({
-      message: 'Usuário criado com sucesso no Auth e Firestore.',
+      message: 'Paciente criado com sucesso.',
       uid: newAuthUser.uid,
     })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Erro interno do servidor.' },
+      { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
       { status: 500 },
     )
   }
 }
 
-export function createPatientInFirestore(
+function createPatientInFirestore(
   docId: string,
   data: SavePatientUseCaseSchema,
 ) {
@@ -88,5 +92,7 @@ export function createPatientInFirestore(
     email: data.email,
     ownerId: data.ownerId,
     role: 'patient',
+    nameNormalized: normalizeName(data.name),
+    phoneNormalized: normalizePhone(data.phone),
   })
 }

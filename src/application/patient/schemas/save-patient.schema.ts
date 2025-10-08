@@ -9,7 +9,10 @@ export const savePatientSchema = z.object({
   id: optionalString({ field: 'id' }),
   name: requiredString({ field: 'nome' }),
   phone: requiredString({ field: 'telefone' }),
-  dob: requiredDate({ field: 'data de nascimento' }),
+  dob: z.union([
+    requiredDate({ field: 'data de nascimento' }),
+    requiredString({ field: 'data de nascimento' }),
+  ]),
   email: requiredEmail(),
   password: requiredString({ field: 'senha' }),
   ownerId: requiredString({ field: 'ownerId' }),
@@ -24,11 +27,6 @@ export const savePatientFormSchema = savePatientSchema.omit({
 
 export type SavePatientFormSchema = z.infer<typeof savePatientFormSchema>
 
-export const savePatientUseCaseSchema = savePatientSchema.extend({
-  dob: z.union([
-    requiredDate({ field: 'data de nascimento' }),
-    requiredString({ field: 'data de nascimento' }),
-  ]),
-})
+export const savePatientUseCaseSchema = savePatientSchema
 
 export type SavePatientUseCaseSchema = z.infer<typeof savePatientUseCaseSchema>

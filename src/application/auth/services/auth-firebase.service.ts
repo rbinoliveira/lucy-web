@@ -27,9 +27,7 @@ export async function signInWithGoogle() {
 export async function sendPasswordReset(data: RecoverPasswordSchema) {
   try {
     await sendPasswordResetEmail(auth, data.email)
-    toast('Success', {
-      description: 'E-mail enviado com sucesso',
-    })
+    toast.success('E-mail enviado com sucesso')
   } catch (err) {
     handleError({ err })
   }
@@ -47,15 +45,13 @@ export async function registerWithCredentials(data: RegisterSchema) {
       user: {
         email: data.email,
         name: data.name,
-        role: 'admin',
+        role: 'dentist',
         photo: '',
         id: userCredential.user.uid,
       },
     })
 
-    toast('Success', {
-      description: 'Conta criada com sucesso',
-    })
+    toast.success('Conta criada com sucesso')
   } catch (err) {
     handleError({ err })
   }

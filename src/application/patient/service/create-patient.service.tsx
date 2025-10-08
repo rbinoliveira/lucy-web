@@ -8,7 +8,7 @@ import { listPatientsQueryKey } from '@/application/patient/service/list-patient
 import {
   createPatientUseCase,
   CreatePatientUseCaseInput,
-} from '@/application/patient/use-cases/create-patient.use-case copy'
+} from '@/application/patient/use-cases/create-patient.use-case'
 
 export function CreatePatientService({ onSuccess }: ServiceModel) {
   const mutation = useMutation({
@@ -20,10 +20,10 @@ export function CreatePatientService({ onSuccess }: ServiceModel) {
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === listPatientsQueryKey,
       })
-      toast('Patient created successfully!')
+      toast.success('Paciente criado com sucesso!')
     },
     onError: (error) => {
-      handleError(error)
+      handleError({ err: error })
     },
   })
   return mutation

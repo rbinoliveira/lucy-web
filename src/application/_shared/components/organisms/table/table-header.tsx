@@ -19,7 +19,7 @@ export function TableHeader({
       )}
       {...props}
     >
-      <TableRow>
+      <TableRow itemsAmount={columns.length}>
         {columns.map((column) => (
           <TableHead key={column.columnName}>{column.columnLabel}</TableHead>
         ))}

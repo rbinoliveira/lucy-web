@@ -42,9 +42,7 @@ export function CompleteProfileForm() {
         user: updatedUser,
       })
       updateUser(updatedUser)
-      toast('Success', {
-        description: 'Perfil atualizado com sucesso',
-      })
+      toast.success('Perfil atualizado com sucesso')
       router.push(appRoutes.dashboard)
     } catch (err) {
       handleError({ err })

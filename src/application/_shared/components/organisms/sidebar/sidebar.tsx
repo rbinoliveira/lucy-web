@@ -292,7 +292,7 @@ function AppSidebarHeader() {
 
   const pathname = usePathname()
 
-  const currentScreen = sidebarContentNavItems.find((item) =>
+  const currentScreen = sidebarContentNavItems(user?.role).find((item) =>
     pathname.includes(item.href),
   )
 
@@ -315,7 +315,7 @@ function AppSidebarHeader() {
       <DropdownMenu
         trigger={
           <div className="flex items-center gap-3">
-            <Avatar name={user?.name} />
+            <Avatar name={user?.name} imageUrl={user?.photo} />
             <div className="flex flex-col items-start">
               <p className="line-clamp-1 text-left text-sm font-semibold">
                 {getCompoundName(user?.name)}

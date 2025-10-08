@@ -18,6 +18,6 @@ if (!getApps().length) {
   })
 }
 
-export const dbAdmin = getFirestore(envVars.GCP_FIRESTORE_DB_ID)
-export const storageAdmin = getStorage().bucket(envVars.GCP_STORAGE_BUCKET_ID)
+export const dbAdmin = getFirestore()
+export const storageAdmin = getStorage().bucket(envVars.FIREBASE_STORAGE_BUCKET)
 export const authAdmin = getAuth()

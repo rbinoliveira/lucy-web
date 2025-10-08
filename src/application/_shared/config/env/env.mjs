@@ -2,8 +2,7 @@ import { z } from 'zod'
 
 const server = z.object({
   GCP_SERVICE_ACCOUNT: z.string().min(1),
-  GCP_FIRESTORE_DB_ID: z.string().min(1),
-  GCP_STORAGE_BUCKET_ID: z.string().min(1),
+  FIREBASE_STORAGE_BUCKET: z.string().min(1),
 })
 
 const client = z.object({
@@ -20,8 +19,7 @@ const client = z.object({
 
 const processEnv = {
   GCP_SERVICE_ACCOUNT: process.env.GCP_SERVICE_ACCOUNT,
-  GCP_FIRESTORE_DB_ID: process.env.GCP_FIRESTORE_DB_ID,
-  GCP_STORAGE_BUCKET_ID: process.env.GCP_STORAGE_BUCKET_ID,
+  FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
   NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:
     process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

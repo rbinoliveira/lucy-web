@@ -1,3 +1,4 @@
+import { remove as removeAccents } from 'diacritics'
 import {
   collection,
   getCountFromServer,
@@ -30,33 +31,82 @@ export async function listPatientsUseCase({
 }: ListPatientsUseCaseInput): Promise<ListPatientsUseCaseOutput> {
   const usersRef = collection(db, 'users')
 
-  let baseQuery = query(
+  const baseQuery = query(
     usersRef,
     where('role', '==', 'patient'),
     where('ownerId', '==', ownerId),
-    orderBy('name'),
+    orderBy('nameNormalized'),
   )
 
+  // 🔹 Se tiver busca, normalizamos nome e telefone
   if (search && search.trim()) {
-    const end = search.replace(/.$/, (c) =>
+    const searchNormalized = removeAccents(search.trim().toLowerCase())
+    const searchPhone = search.replace(/\D/g, '')
+
+    const endName = searchNormalized.replace(/.$/, (c: string) =>
       String.fromCharCode(c.charCodeAt(0) + 1),
     )
-    baseQuery = query(
+
+    const endPhone = searchPhone.replace(/.$/, (c) =>
+      String.fromCharCode(c.charCodeAt(0) + 1),
+    )
+
+    // 🔹 Query por nome
+    const queryByName = query(
       usersRef,
       where('role', '==', 'patient'),
       where('ownerId', '==', ownerId),
-      orderBy('name'),
-      where('name', '>=', search),
-      where('name', '<', end),
+      orderBy('nameNormalized'),
+      where('nameNormalized', '>=', searchNormalized),
+      where('nameNormalized', '<', endName),
     )
+
+    // 🔹 Query por telefone
+    const queryByPhone = query(
+      usersRef,
+      where('role', '==', 'patient'),
+      where('ownerId', '==', ownerId),
+      orderBy('phoneNormalized'),
+      where('phoneNormalized', '>=', searchPhone),
+      where('phoneNormalized', '<', endPhone),
+    )
+
+    // 🔹 Buscar os dois conjuntos e unir IDs (evita duplicados)
+    const [snapName, snapPhone] = await Promise.all([
+      getDocs(queryByName),
+      getDocs(queryByPhone),
+    ])
+
+    const allDocs = [...snapName.docs, ...snapPhone.docs]
+    const uniqueDocsMap = new Map(allDocs.map((doc) => [doc.id, doc]))
+    const uniqueDocs = Array.from(uniqueDocsMap.values())
+
+    // 🔹 Paginação manual
+    const totalItems = uniqueDocs.length
+    const totalPages = Math.ceil(totalItems / itemsPerPage)
+    const start = (page - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    const pageDocs = uniqueDocs.slice(start, end)
+
+    const patients = pageDocs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<PatientModel, 'id'>),
+    }))
+
+    return {
+      items: patients,
+      totalItems,
+      totalPages,
+      currentPage: page,
+      itemsPerPage,
+    }
   }
 
-  // 📊 Contagem total
+  // 🔹 Caso não tenha busca
   const countSnap = await getCountFromServer(baseQuery)
   const totalItems = countSnap.data().count
   const totalPages = Math.ceil(totalItems / itemsPerPage)
 
-  // 📄 Paginação
   const skip = (page - 1) * itemsPerPage
   let startAfterDoc = null
 

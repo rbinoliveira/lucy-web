@@ -2,7 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AtSign, Calendar, Check, Phone, User } from 'lucide-react'
-import { usePathname } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/application/_shared/components/atoms/button'
@@ -30,12 +31,22 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
     defaultValues: patient,
   })
 
+  const { push } = useRouter()
+
   const pathname = usePathname()
   const isEditPage = pathname.includes('editar')
 
   const { user } = useAuth()
-  const { mutate: createPatient } = CreatePatientService({})
-  const { mutate: updatePatient } = UpdatePatientService({})
+  const { mutate: createPatient, isPending: isPendingCreatePatient } =
+    CreatePatientService({
+      onSuccess: () => push('/pacientes'),
+    })
+  const { mutate: updatePatient, isPending: isPendingUpdatePatient } =
+    UpdatePatientService({
+      onSuccess: () => push('/pacientes'),
+    })
+
+  const isLoading = isPendingCreatePatient || isPendingUpdatePatient
 
   async function onSubmit(data: SavePatientFormSchema) {
     const formattedData = {
@@ -79,16 +90,22 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
         />
       </div>
       <FormCardFooter>
-        <Button variant="secondary" className="max-w-[116px]">
-          Cancelar
+        <Button
+          variant="secondary"
+          className="max-w-[116px]"
+          disabled={isLoading}
+          asChild
+        >
+          <Link href="/pacientes">Cancelar</Link>
         </Button>
         <Button
           variant="primary"
           className="max-w-[205px]"
           onClick={handleSubmit(onSubmit)}
+          isLoading={isLoading}
+          icon={<Check size={16} />}
         >
-          <Check size={16} />
-          Completar
+          {isEditPage ? 'Salvar Alterações' : 'Cadastrar Paciente'}
         </Button>
       </FormCardFooter>
     </form>

@@ -20,6 +20,7 @@ export function middleware(request: NextRequest) {
 
   const atualPath = request.nextUrl.pathname
   const isRoutePublic = appPublicRoutes.includes(atualPath)
+  const isAdminRoute = atualPath.startsWith('/medicamentos')
 
   const userCookie = request.cookies.get(appCookies.USER)?.value
 
@@ -33,6 +34,10 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL(appRoutes.completeProfile, request.url),
       )
+    }
+
+    if (isAdminRoute && user.role !== 'admin') {
+      return NextResponse.redirect(new URL(appRoutes.dashboard, request.url))
     }
 
     if (

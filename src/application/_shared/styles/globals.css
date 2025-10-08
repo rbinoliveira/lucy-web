@@ -17,6 +17,8 @@
     --secondary: #F3F4F6;
     --danger-one: #DC2626;
     --danger-two: #EF4444;
+    --danger-three: #FECACA;
+    --danger-four: #FEE2E2;
     --text-one: #111827;
     --text-two: #4B5563;
     --text-three: #667085;
@@ -25,6 +27,9 @@
     --text-six: #6B7280;
     --text-seven: #374151;
     --green-one: #10B981;
+    --green-two: #BBF7D0;
+    --green-three: #DCFCE7;
+    --green-four: #16A34A;
     --yellow-one: #F59E0B;
     --icon: #9CA3AF;
     --white: #ffffff;
@@ -49,6 +54,8 @@
   --color-secondary: var(--secondary);
   --color-danger-one: var(--danger-one);
   --color-danger-two: var(--danger-two);
+  --color-danger-three: var(--danger-three);
+  --color-danger-four: var(--danger-four);
   --color-text-one: var(--text-one);
   --color-text-two: var(--text-two);
   --color-text-three: var(--text-three);
@@ -57,6 +64,9 @@
   --color-text-six: var(--text-six);
   --color-text-seven: var(--text-seven);
   --color-green-one: var(--green-one);
+  --color-green-two: var(--green-two);
+  --color-green-three: var(--green-three);
+  --color-green-four: var(--green-four);
   --color-yellow-one: var(--yellow-one);
   --color-icon: var(--icon);
   --color-white: var(--white);

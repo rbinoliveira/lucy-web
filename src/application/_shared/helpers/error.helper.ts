@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'sonner'
 
@@ -8,9 +9,7 @@ type ErrorType = {
 
 export function handleError({ message, err }: ErrorType) {
   if (err && err.response?.data?.message && err.response?.status !== 500) {
-    return toast('Error', {
-      description: err.response.data.message,
-    })
+    return toast.error(err.response.data.message)
   }
 
   if (
@@ -18,9 +17,7 @@ export function handleError({ message, err }: ErrorType) {
     err instanceof FirebaseError &&
     err.code === 'auth/invalid-credential'
   ) {
-    return toast('Error', {
-      description: 'E-mail ou senha inválidos',
-    })
+    return toast.error('E-mail ou senha inválidos')
   }
 
   if (
@@ -28,10 +25,9 @@ export function handleError({ message, err }: ErrorType) {
     err instanceof FirebaseError &&
     err.code === 'auth/email-already-in-use'
   ) {
-    return toast('Error', {
-      description:
-        'E-mail já cadastrado, tente fazer login ou recupere sua senha',
-    })
+    return toast.error(
+      'E-mail já cadastrado, tente fazer login ou recupere sua senha',
+    )
   }
 
   if (
@@ -39,12 +35,16 @@ export function handleError({ message, err }: ErrorType) {
     err instanceof FirebaseError &&
     err.code === 'auth/weak-password'
   ) {
-    return toast('Error', {
-      description: 'Senha fraca, sua senha deve ter pelo menos 6 caracteres',
-    })
+    return toast.error(
+      'Senha fraca, sua senha deve ter pelo menos 6 caracteres',
+    )
   }
 
-  return toast('Error', {
-    description: message ?? 'Um erro inesperado ocorreu',
+  if (err instanceof AxiosError) {
+    return toast.error(err.response?.data.error)
+  }
+
+  return toast.error(message ?? 'Um erro inesperado ocorreu', {
+    description: 'Por favor, tente novamente',
   })
 }

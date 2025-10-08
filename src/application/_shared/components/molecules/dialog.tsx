@@ -1,6 +1,6 @@
 import * as PrimitiveDialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import { Button } from '@/application/_shared/components/atoms/button'
 import { Separator } from '@/application/_shared/components/atoms/separator'
@@ -114,18 +114,18 @@ export type DialogProps = {
   cancelButton?: {
     label: string
     onClick?: () => void
-    disableCloseDialogAfterClick?: boolean
   }
   confirmButton: {
+    isLoading?: boolean
     label: string
-    onClick: () => void
+    onClick: () => Promise<void>
     disabled?: boolean
-    disableCloseDialogAfterClick?: boolean
   }
 }
 
 export function Dialog() {
   const { closeDialog, dialogProps } = useDialog()
+  const [isLoading, setIsLoading] = useState(false)
 
   if (!dialogProps) {
     return null
@@ -138,18 +138,13 @@ export function Dialog() {
     if (cancelButton?.onClick) {
       cancelButton.onClick()
     }
-    if (cancelButton?.disableCloseDialogAfterClick) {
-      return
-    }
     closeDialog()
   }
 
-  function confirmDialog() {
-    confirmButton.onClick()
-    if (confirmButton?.disableCloseDialogAfterClick) {
-      return
-    }
-    closeDialog()
+  async function confirmDialog() {
+    setIsLoading(true)
+    await confirmButton.onClick()
+    setIsLoading(false)
   }
 
   return (
@@ -181,6 +176,7 @@ export function Dialog() {
                 onClick={cancelDialog}
                 variant={'secondary'}
                 className="max-w-[130px]"
+                isLoading={isLoading}
               >
                 {cancelButton.label}
               </Button>
@@ -189,6 +185,7 @@ export function Dialog() {
               onClick={confirmDialog}
               className="max-w-[130px]"
               disabled={confirmButton.disabled}
+              isLoading={isLoading}
             >
               {confirmButton.label}
             </Button>
