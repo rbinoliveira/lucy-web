@@ -1,14 +1,16 @@
-import '@/application/shared/styles/globals.css'
+/* eslint-disable react/no-unknown-property */
+import '@/application/_shared/styles/globals.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import type { Metadata } from 'next'
-import { Mulish } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-import { RootProviders } from '@/application/shared/providers'
+import { RootProviders } from '@/application/_shared/providers/root.provider'
 
-const mulish = Mulish({
+const inter = Inter({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--mulish',
+  variable: '--inter',
 })
 
 export const metadata: Metadata = {
@@ -21,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning className={mulish.className}>
-      <body>
+    <html lang="pt-BR" className={`${inter.className} antialiased`}>
+      <body cz-shortcut-listen="true">
         <RootProviders>{children}</RootProviders>
       </body>
     </html>
