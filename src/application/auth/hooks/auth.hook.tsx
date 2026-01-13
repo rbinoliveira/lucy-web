@@ -60,7 +60,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     firebaseUser: FirebaseUser,
   ): Promise<UserModel> {
     const userDocument = await getUser(firebaseUser.uid)
-    console.log(userDocument)
 
     if (!userDocument) {
       const userByCookies = await getAuthCookies()
@@ -75,7 +74,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         photo: firebaseUser.photoURL ?? '',
       }
 
-      console.log(newUser)
 
       await upsertUser(firebaseUser.uid, newUser)
 

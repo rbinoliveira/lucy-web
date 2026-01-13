@@ -17,7 +17,6 @@ export function ListPrescriptionsPage() {
     search,
   })
 
-  console.log(error)
 
   return (
     <div className="flex flex-col gap-6">
