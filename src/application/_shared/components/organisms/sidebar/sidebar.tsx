@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronDown, Sun } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import * as React from 'react'
 
@@ -330,7 +331,10 @@ function AppSidebarHeader() {
           </div>
         }
         items={[
-          <button key="logout" onClick={signOut}>
+          <Link key="profile" href="/perfil">
+            Meu Perfil
+          </Link>,
+          <button key="logout" onClick={signOut} className="w-full text-left">
             Sair
           </button>,
         ]}

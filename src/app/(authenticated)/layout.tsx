@@ -8,7 +8,7 @@ import {
 } from '@/application/_shared/components/organisms/sidebar/sidebar'
 
 export const metadata: Metadata = {
-  title: 'Pill Reminder',
+  title: 'Lucy',
 }
 
 export default function DashboardLayout({

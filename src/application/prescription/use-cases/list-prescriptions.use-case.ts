@@ -36,7 +36,6 @@ export async function listPrescriptionsUseCase({
     orderBy('nameNormalized'),
   )
 
-  console.log(baseQuery)
 
   // 🔹 Se tiver busca, normalizamos nome e telefone
   if (search && search.trim()) {
@@ -82,12 +81,10 @@ export async function listPrescriptionsUseCase({
     }
   }
 
-  console.log('baseQuery')
 
   // 🔹 Caso não tenha busca
   const countSnap = await getCountFromServer(baseQuery)
 
-  console.log(countSnap)
 
   const totalItems = countSnap.data().count
   const totalPages = Math.ceil(totalItems / itemsPerPage)
@@ -115,7 +112,6 @@ export async function listPrescriptionsUseCase({
     ...(doc.data() as Omit<PrescriptionModel, 'id'>),
   }))
 
-  console.log(prescriptions)
 
   return {
     items: prescriptions,

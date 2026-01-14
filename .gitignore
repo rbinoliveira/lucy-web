@@ -1,3 +1,12 @@
 .next
 node_modules
 .env
+
+lucy-900f9-6cb94ea060bd.json
+
+.claude/
+.gemini/
+.cursor/
+.task-flow/
+CLAUDE.md
+GEMINI.md

@@ -1,7 +1,6 @@
 import { remove as removeAccents } from 'diacritics'
 import {
   collection,
-  getCountFromServer,
   getDocs,
   limit,
   orderBy,
@@ -29,8 +28,27 @@ export async function listPatientsUseCase({
   itemsPerPage,
   search,
 }: ListPatientsUseCaseInput): Promise<ListPatientsUseCaseOutput> {
+  // 🔹 Validação: se ownerId estiver vazio, retorna resultado vazio
+  if (!ownerId || ownerId.trim() === '') {
+    return {
+      items: [],
+      totalItems: 0,
+      totalPages: 0,
+      currentPage: page,
+      itemsPerPage,
+    }
+  }
+
   const usersRef = collection(db, 'users')
 
+  // 🔹 Query para contagem (sem orderBy - não precisa de índice composto)
+  const countQuery = query(
+    usersRef,
+    where('role', '==', 'patient'),
+    where('ownerId', '==', ownerId),
+  )
+
+  // 🔹 Query para buscar documentos (com orderBy)
   const baseQuery = query(
     usersRef,
     where('role', '==', 'patient'),
@@ -103,8 +121,10 @@ export async function listPatientsUseCase({
   }
 
   // 🔹 Caso não tenha busca
-  const countSnap = await getCountFromServer(baseQuery)
-  const totalItems = countSnap.data().count
+  // 🔹 Como as regras de segurança não permitem getCountFromServer no cliente,
+  // 🔹 buscamos todos os documentos para contar (alternativa: criar API route no servidor)
+  const countSnapshot = await getDocs(countQuery)
+  const totalItems = countSnapshot.size
   const totalPages = Math.ceil(totalItems / itemsPerPage)
 
   const skip = (page - 1) * itemsPerPage

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pill Reminder',
+  title: 'Lucy',
 }
 
 export default function PublicLayout({

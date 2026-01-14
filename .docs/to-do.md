@@ -1,16 +1,3 @@
-- [ ] Ajustar sonner para ficar um toast legal
-- [ ] Implementar telas responsivas
-- [ ] Implementar cadastro de paciente
-- [ ] Implementar lista de pacientes com busca
-- [ ] Implementar edição de paciente
-- [ ] Implementar exclusão de paciente
-- [ ] Implementar cadastro de prescrição de medicamento
-- [ ] Implementar edição de prescrição de medicamento
-- [ ] Implementar exclusão de prescrição de medicamento
-- [ ] Implementar lista de prescrições de medicamento com busca
-- [ ] Implementar tela de login
-- [ ] Implementar tela de cadastro
-- [ ] Implementar recuperação de senha
-- [ ] Implementar logout
-- [ ] Implementar tela de perfil
-- [ ] Implementar dropdown para sair da plataforma
+# To-Do List
+
+(Tasks moved to .task-flow/.task-flow-tasks.txt)

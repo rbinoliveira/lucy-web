@@ -107,8 +107,6 @@ export async function listMedicinesUseCase({
     ...(doc.data() as Omit<MedicineModel, 'id'>),
   }))
 
-  console.log(medicines)
-
   return {
     items: medicines,
     totalItems,
