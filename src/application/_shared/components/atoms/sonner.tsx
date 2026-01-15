@@ -23,12 +23,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       icons={{
         error: (
-          <div className="w-full h-full bg-danger-four rounded-full flex items-center justify-center">
+          <div className="bg-danger-four flex h-full w-full items-center justify-center rounded-full">
             <TriangleAlert size={16} className="text-danger-one" />
           </div>
         ),
         success: (
-          <div className="w-full h-full bg-green-three rounded-full flex items-center justify-center">
+          <div className="bg-green-three flex h-full w-full items-center justify-center rounded-full">
             <Check size={16} className="text-green-four" />
           </div>
         ),

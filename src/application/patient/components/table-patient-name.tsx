@@ -11,7 +11,7 @@ export function TablePatientName({ patient }: TablePatientNameProps) {
       <Avatar imageUrl={patient.photo} name={patient.name} />
       <div className="flex flex-col gap-[0.375rem]">
         <span className="font-semibold">{patient.name}</span>
-        <span className="text-xs text-text-six">{patient.email}</span>
+        <span className="text-text-six text-xs">{patient.email}</span>
       </div>
     </div>
   )

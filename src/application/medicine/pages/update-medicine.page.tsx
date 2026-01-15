@@ -23,7 +23,7 @@ export function UpdateMedicinePage() {
           title="Informações do Medicamento"
           subtitle="Preencha os dados abaixo para editar o medicamento"
         />
-        <SaveMedicineForm medicine={medicine} />
+        <SaveMedicineForm medicine={medicine ?? undefined} />
       </FormCard>
     </DataHandler>
   )

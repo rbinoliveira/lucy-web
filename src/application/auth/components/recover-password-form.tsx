@@ -24,7 +24,7 @@ export function RecoverPasswordForm() {
 
   return (
     <form
-      className="flex w-full flex-col gap-4 bg-white rounded-3xl p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+      className="flex w-full flex-col gap-4 rounded-3xl bg-white p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
       onSubmit={handleSubmit(handleRecoverPassword)}
     >
       <div className="flex flex-col gap-2">
@@ -47,8 +47,8 @@ export function RecoverPasswordForm() {
         Recuperar
       </Button>
 
-      <div className="inline-flex items-center self-center mt-2 gap-1">
-        <span className="text-sm text-text-two">Lembra sua senha?</span>
+      <div className="mt-2 inline-flex items-center gap-1 self-center">
+        <span className="text-text-two text-sm">Lembra sua senha?</span>
         <Button variant="link" asChild>
           <Link href="/">Voltar para login</Link>
         </Button>

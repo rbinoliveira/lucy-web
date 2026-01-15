@@ -7,7 +7,7 @@ type DataHandlerProps = {
   isLoading: boolean
   isError: boolean
   children: ReactNode
-  data?: any
+  data?: Record<string, unknown>
   attributeToCheck?: string
   skeleton?: ReactNode
 }
@@ -35,9 +35,9 @@ export function DataHandler({
 
 function ErrorComponent() {
   return (
-    <div className="flex flex-col gap-[0.5625rem] items-center justify-center m-auto">
+    <div className="m-auto flex flex-col items-center justify-center gap-[0.5625rem]">
       <AlertTriangle size={48} />
-      <p className="text-sm leading-[2.28] text-center">
+      <p className="text-center text-sm leading-[2.28]">
         Error loading this content.
         <br />
         Please try refreashing the page.

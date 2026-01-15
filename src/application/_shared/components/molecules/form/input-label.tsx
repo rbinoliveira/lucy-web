@@ -13,7 +13,7 @@ export function InputLabel({ htmlFor, label, inputSize }: InputLabelProps) {
         <label
           htmlFor={htmlFor}
           className={cn(
-            'whitespace-pre-line font-semibold text-sm',
+            'text-sm font-semibold whitespace-pre-line',
             'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
             inputSize === 'lg' && 'text-text-seven',
           )}

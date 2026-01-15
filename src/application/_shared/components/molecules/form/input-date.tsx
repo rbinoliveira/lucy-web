@@ -70,7 +70,7 @@ function InputDate<T extends FieldValues>({
             {label && (
               <Label
                 className={cn(
-                  'whitespace-pre-line font-semibold text-sm',
+                  'text-sm font-semibold whitespace-pre-line',
                   'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
                 )}
               >
@@ -81,7 +81,7 @@ function InputDate<T extends FieldValues>({
             <div className="relative w-full">
               {iconBefore && (
                 <span
-                  className={cn(svgClassName, 'left-0 pointer-events-none')}
+                  className={cn(svgClassName, 'pointer-events-none left-0')}
                 >
                   {iconBefore}
                 </span>
@@ -90,14 +90,14 @@ function InputDate<T extends FieldValues>({
               <DateInput
                 className={cn(
                   'react-aria-DateInput',
-                  'border-border-one rounded-xl h-[50px]',
-                  'flex items-center w-full',
+                  'border-border-one h-[50px] rounded-xl',
+                  'flex w-full items-center',
                   'border bg-white',
                   iconBefore && 'pl-10',
                   iconAfter && 'pr-10',
                   !!error && 'border-danger-one',
                   isFocused && 'border-primary',
-                  disabled && 'opacity-50 cursor-not-allowed',
+                  disabled && 'cursor-not-allowed opacity-50',
                 )}
               >
                 {(segment) => <DateSegment segment={segment} />}

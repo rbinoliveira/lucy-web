@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 type ErrorType = {
   message?: string
-  err?: any
+  err?: unknown
 }
 
 export function handleError({ message, err }: ErrorType) {
@@ -38,6 +38,35 @@ export function handleError({ message, err }: ErrorType) {
     return toast.error(
       'Senha fraca, sua senha deve ter pelo menos 6 caracteres',
     )
+  }
+
+  if (
+    err &&
+    err instanceof FirebaseError &&
+    err.code === 'auth/popup-closed-by-user'
+  ) {
+    return toast.error('Login cancelado', {
+      description: 'Você fechou a janela de autenticação do Google',
+    })
+  }
+
+  if (
+    err &&
+    err instanceof FirebaseError &&
+    err.code === 'auth/cancelled-popup-request'
+  ) {
+    return
+  }
+
+  if (
+    err &&
+    err instanceof FirebaseError &&
+    err.code === 'auth/account-exists-with-different-credential'
+  ) {
+    return toast.error('Conta já vinculada', {
+      description:
+        'Este e-mail já está associado a outra forma de login. Tente fazer login com e-mail e senha.',
+    })
   }
 
   if (err instanceof AxiosError) {

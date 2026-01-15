@@ -72,8 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name: firebaseUser.displayName ?? parsedUserByCookies?.name ?? '',
         role: 'dentist',
         photo: firebaseUser.photoURL ?? '',
+        status: 'pending',
       }
-
 
       await upsertUser(firebaseUser.uid, newUser)
 
@@ -88,19 +88,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       photo: userDocument.photo,
       cro: userDocument.cro,
       phone: userDocument.phone,
+      status: userDocument.status,
     }
   }
 
   async function setUserAsLoggedIn(userUpdated: UserModel | null) {
     if (userUpdated) {
-      if (userUpdated.role === 'admin' || userUpdated.role === 'dentist') {
-        await addAuthCookies({ user: userUpdated })
-      } else {
+      if (userUpdated.role !== 'admin' && userUpdated.role !== 'dentist') {
         await auth.signOut()
         handleError({
           message: 'Usuário já associado a uma conta de paciente',
         })
+        return
       }
+
+      if (userUpdated.status === 'rejected') {
+        await auth.signOut()
+        handleError({
+          message: 'Sua conta foi rejeitada. Entre em contato com o suporte.',
+        })
+        return
+      }
+
+      await addAuthCookies({ user: userUpdated })
     } else {
       await deleteAuthCookies()
     }

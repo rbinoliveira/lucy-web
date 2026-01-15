@@ -28,7 +28,7 @@ export function LoginForm() {
 
   return (
     <form
-      className="flex w-full flex-col gap-4 bg-white rounded-3xl p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
+      className="flex w-full flex-col gap-4 rounded-3xl bg-white p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
       onSubmit={handleSubmit(handleCreateSession)}
     >
       <div className="flex flex-col gap-2">
@@ -43,13 +43,13 @@ export function LoginForm() {
         <Image
           src={'/google.svg'}
           alt="Ícone do google"
-          className="w-[24px] h-[24px]"
+          className="h-[24px] w-[24px]"
         />
         Continuar com Google
         <Image
           src={'/arrow-right.svg'}
           alt="Ícone do google"
-          className="w-[18px] h-[18px]"
+          className="h-[18px] w-[18px]"
         />
       </Button>
       <Separator label="ou continue com e-mail" />
@@ -75,13 +75,13 @@ export function LoginForm() {
         <Image
           src={'/login.svg'}
           alt="Ícone de entrar"
-          className="w-[16px] h-[16px]"
+          className="h-[16px] w-[16px]"
         />
         Acessar Sistema
       </Button>
 
-      <div className="inline-flex items-center self-center mt-2 gap-1">
-        <span className="text-sm text-text-two">Primeiro acesso?</span>
+      <div className="mt-2 inline-flex items-center gap-1 self-center">
+        <span className="text-text-two text-sm">Primeiro acesso?</span>
         <Button variant="link" asChild>
           <Link href="/registrar">Crie sua conta</Link>
         </Button>

@@ -4,8 +4,7 @@ import * as React from 'react'
 
 import { cn } from '@/application/_shared/libs/tw-merge'
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
   children?: React.ReactNode
   variant?:
@@ -79,7 +78,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         <div className="flex items-center justify-center gap-2">
           {isLoading ? (
-            <LoaderCircle className="animate-spin w-5 h-5 text-white" />
+            <LoaderCircle className="h-5 w-5 animate-spin text-white" />
           ) : (
             icon
           )}

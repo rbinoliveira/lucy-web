@@ -30,7 +30,7 @@ export function SidebarContentNavItem({
           'rounded-radius flex w-full items-center',
           'gap-3 px-4 py-3 leading-[1.1875]',
           'text-text-seven',
-          '[&_svg]:shrink-0 [&_svg]:text-2xl [&_svg]:text-text-six',
+          '[&_svg]:text-text-six [&_svg]:shrink-0 [&_svg]:text-2xl',
           isActive
             ? 'bg-primary text-white [&_svg]:text-white'
             : 'hover:bg-black/10',

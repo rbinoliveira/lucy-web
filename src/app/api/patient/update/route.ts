@@ -70,14 +70,18 @@ export async function PUT(req: Request) {
     let authUser
     try {
       authUser = await authAdmin.getUser(userId)
-    } catch (err: any) {
+    } catch {
       return NextResponse.json(
         { error: 'Paciente não encontrado.' },
         { status: 404 },
       )
     }
 
-    const authUpdates: any = {}
+    const authUpdates: {
+      displayName?: string
+      email?: string
+      password?: string
+    } = {}
     if (data.name && data.name !== authUser.displayName) {
       authUpdates.displayName = data.name
     }
@@ -94,8 +98,9 @@ export async function PUT(req: Request) {
     if (Object.keys(authUpdates).length > 0) {
       try {
         await authAdmin.updateUser(userId, authUpdates)
-      } catch (err: any) {
-        if (err.code === 'auth/email-already-exists') {
+      } catch (err: unknown) {
+        const error = err as { code?: string }
+        if (error.code === 'auth/email-already-exists') {
           return NextResponse.json(
             { error: 'E-mail já está em uso por outro usuário no Auth.' },
             { status: 400 },

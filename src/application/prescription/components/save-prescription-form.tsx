@@ -56,13 +56,15 @@ export function SavePrescriptionForm({
       password: convertToNumberDate(data.dob),
       ownerId: user?.id ?? '',
     }
-    isEditPage
-      ? updatePrescription(formattedData)
-      : createPrescription(formattedData)
+    if (isEditPage) {
+      updatePrescription(formattedData)
+    } else {
+      createPrescription(formattedData)
+    }
   }
 
   return (
-    <form className="flex flex-col mt-8 gap-6">
+    <form className="mt-8 flex flex-col gap-6">
       <InputText
         placeholder="Ex: Maria da Silva Santos"
         label="Nome Completo"
@@ -77,7 +79,7 @@ export function SavePrescriptionForm({
         name="email"
         iconBefore={<AtSign />}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InputMaskedText
           label="Telefone"
           mask="phone"

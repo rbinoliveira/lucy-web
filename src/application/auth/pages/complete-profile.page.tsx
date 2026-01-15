@@ -6,8 +6,8 @@ import { CompleteProfileForm } from '@/application/auth/components/complete-prof
 
 export function CompleteProfilePage() {
   return (
-    <main className="linear-one px-6 lg:px-0 flex flex-col w-full min-h-screen items-center justify-center">
-      <section className="flex flex-col w-full max-w-[900px] mx-auto">
+    <main className="linear-one flex min-h-screen w-full flex-col items-center justify-center px-6 lg:px-0">
+      <section className="mx-auto flex w-full max-w-[900px] flex-col">
         <FormCard className="gap-8">
           <FormCardHeader
             title="Complete seu perfil"

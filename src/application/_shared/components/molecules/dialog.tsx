@@ -20,7 +20,7 @@ const PrimitiveDialogOverlay = React.forwardRef<
   <PrimitiveDialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/40',
       className,
     )}
     {...props}
@@ -38,7 +38,7 @@ const PrimitiveDialogContent = React.forwardRef<
     <PrimitiveDialogPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed left-[50%] top-[50%] z-50 grid rounded-lg w-full max-w-[633px] translate-x-[-50%] translate-y-[-50%] border border-neutral-200 bg-white px-[1.875rem] pt-6 pb-[1.875rem] shadow-md duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-[633px] translate-x-[-50%] translate-y-[-50%] rounded-lg border border-neutral-200 bg-white px-[1.875rem] pt-6 pb-[1.875rem] shadow-md duration-200',
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ const PrimitiveDialogHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('flex flex-col gap-2 items-start', className)}
+    className={cn('flex flex-col items-start gap-2', className)}
     {...props}
   />
 )
@@ -82,7 +82,7 @@ const PrimitiveDialogTitle = React.forwardRef<
   <PrimitiveDialogPrimitive.Title
     ref={ref}
     className={cn(
-      'text-[1.063rem] font-normal leading-[1.375rem] text-black',
+      'text-[1.063rem] leading-[1.375rem] font-normal text-black',
       className,
     )}
     {...props}
@@ -97,7 +97,7 @@ const PrimitiveDialogDescription = React.forwardRef<
   <PrimitiveDialogPrimitive.Description
     ref={ref}
     className={cn(
-      'text-[0.813rem] text-text-seven font-normal leading-[1.375rem]',
+      'text-text-seven text-[0.813rem] leading-[1.375rem] font-normal',
       className,
     )}
     {...props}
@@ -152,7 +152,7 @@ export function Dialog() {
       <PrimitiveDialogContent>
         <PrimitiveDialogClose
           onClick={closeDialog}
-          className="absolute right-4 top-4 opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
+          className="absolute top-4 right-4 opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
         >
           <X />
           <span className="sr-only">Close</span>
@@ -170,7 +170,7 @@ export function Dialog() {
         {customBody}
         <PrimitiveDialogFooter className="flex !flex-col">
           <Separator className="mt-5" />
-          <div className="flex items-center gap-6 mt-5 justify-end w-full">
+          <div className="mt-5 flex w-full items-center justify-end gap-6">
             {cancelButton && (
               <Button
                 onClick={cancelDialog}

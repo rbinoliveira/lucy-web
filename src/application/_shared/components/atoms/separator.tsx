@@ -10,11 +10,11 @@ type SeparatorProps = {
 export function Separator({ className, label }: SeparatorProps) {
   return (
     <div
-      className={cn('w-full flex items-center', label && 'gap-2', className)}
+      className={cn('flex w-full items-center', label && 'gap-2', className)}
     >
-      <div className="flex-1 h-[1px] bg-border-one" />
+      <div className="bg-border-one h-[1px] flex-1" />
       {label && <p className="text-text-six text-sm">{label}</p>}
-      <div className="flex-1 h-[1px] bg-border-one" />
+      <div className="bg-border-one h-[1px] flex-1" />
     </div>
   )
 }

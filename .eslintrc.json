@@ -1,21 +1,20 @@
 {
-	"extends": ["@rocketseat/eslint-config/react"],
-	"plugins": ["simple-import-sort"],
+	"extends": ["@rbinflow/eslint-config/next"],
 	"rules": {
-		"simple-import-sort/imports": "error",
-		"camelcase": "off",
-		"no-useless-constructor": "off",
-		"no-unused-vars": "off",
-		"no-redeclare": "off",
-		"no-use-before-define": "off",
-		"@typescript-eslint/no-explicit-any": "off",
-		"react/display-name": "off",
-		"@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ]
+		"prettier/prettier": [
+			"error",
+			{
+				"printWidth": 80,
+				"tabWidth": 2,
+				"useTabs": false,
+				"singleQuote": true,
+				"trailingComma": "all",
+				"arrowParens": "always",
+				"semi": false,
+				"endOfLine": "lf",
+				"bracketSpacing": true,
+				"bracketSameLine": false
+			}
+		]
 	}
 }

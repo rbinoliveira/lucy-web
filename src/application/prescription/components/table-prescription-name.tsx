@@ -13,7 +13,7 @@ export function TablePrescriptionName({
       <Avatar imageUrl={prescription.photo} name={prescription.name} />
       <div className="flex flex-col gap-[0.375rem]">
         <span className="font-semibold">{prescription.name}</span>
-        <span className="text-xs text-text-six">{prescription.email}</span>
+        <span className="text-text-six text-xs">{prescription.email}</span>
       </div>
     </div>
   )

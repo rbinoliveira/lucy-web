@@ -1,8 +1,7 @@
 import {
   createUserWithEmailAndPassword,
-  EmailAuthProvider,
   sendPasswordResetEmail,
-  signInWithCredential,
+  signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth'
 import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore'
@@ -59,10 +58,7 @@ export async function registerWithCredentials(data: RegisterSchema) {
 
 export async function signInWithCredentials(data: LoginSchema) {
   try {
-    await signInWithCredential(
-      auth,
-      EmailAuthProvider.credential(data.email, data.password),
-    )
+    await signInWithEmailAndPassword(auth, data.email, data.password)
   } catch (err) {
     handleError({ err })
   }
@@ -80,11 +76,7 @@ export async function signOut() {
 
 export async function createPatient() {
   try {
-    // Verify if user exists on authentication
-    // if not exist, create it on authentication
-    // verify if user exists on firestore
-    // if not exist, create it on firestore
-    // return user
+    await Promise.resolve()
   } catch (err) {
     handleError({ err })
   }

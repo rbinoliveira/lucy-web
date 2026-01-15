@@ -52,7 +52,7 @@ export function ProfileForm() {
 
   return (
     <form
-      className="flex w-full flex-col gap-4 bg-white rounded-3xl p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)] max-w-2xl mx-auto"
+      className="mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-3xl bg-white p-10 shadow-[0_4px_20px_rgba(0,0,0,0.1)]"
       onSubmit={handleSubmit(handleUpdateProfile)}
     >
       <div className="flex flex-col gap-2">
@@ -60,7 +60,7 @@ export function ProfileForm() {
         <p className="text-text-two">Atualize suas informações pessoais</p>
       </div>
 
-      <div className="flex flex-col gap-4 mt-4">
+      <div className="mt-4 flex flex-col gap-4">
         <InputText
           label="Nome"
           control={control}
@@ -69,7 +69,7 @@ export function ProfileForm() {
           inputSize="lg"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <InputText
             label="CRO"
             control={control}

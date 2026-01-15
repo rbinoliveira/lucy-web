@@ -28,7 +28,6 @@ export async function listPatientsUseCase({
   itemsPerPage,
   search,
 }: ListPatientsUseCaseInput): Promise<ListPatientsUseCaseOutput> {
-  // 🔹 Validação: se ownerId estiver vazio, retorna resultado vazio
   if (!ownerId || ownerId.trim() === '') {
     return {
       items: [],
@@ -41,14 +40,12 @@ export async function listPatientsUseCase({
 
   const usersRef = collection(db, 'users')
 
-  // 🔹 Query para contagem (sem orderBy - não precisa de índice composto)
   const countQuery = query(
     usersRef,
     where('role', '==', 'patient'),
     where('ownerId', '==', ownerId),
   )
 
-  // 🔹 Query para buscar documentos (com orderBy)
   const baseQuery = query(
     usersRef,
     where('role', '==', 'patient'),
@@ -56,7 +53,6 @@ export async function listPatientsUseCase({
     orderBy('nameNormalized'),
   )
 
-  // 🔹 Se tiver busca, normalizamos nome e telefone
   if (search && search.trim()) {
     const searchNormalized = removeAccents(search.trim().toLowerCase())
     const searchPhone = search.replace(/\D/g, '')
@@ -69,7 +65,6 @@ export async function listPatientsUseCase({
       String.fromCharCode(c.charCodeAt(0) + 1),
     )
 
-    // 🔹 Query por nome
     const queryByName = query(
       usersRef,
       where('role', '==', 'patient'),
@@ -79,7 +74,6 @@ export async function listPatientsUseCase({
       where('nameNormalized', '<', endName),
     )
 
-    // 🔹 Query por telefone
     const queryByPhone = query(
       usersRef,
       where('role', '==', 'patient'),
@@ -89,7 +83,6 @@ export async function listPatientsUseCase({
       where('phoneNormalized', '<', endPhone),
     )
 
-    // 🔹 Buscar os dois conjuntos e unir IDs (evita duplicados)
     const [snapName, snapPhone] = await Promise.all([
       getDocs(queryByName),
       getDocs(queryByPhone),
@@ -99,7 +92,6 @@ export async function listPatientsUseCase({
     const uniqueDocsMap = new Map(allDocs.map((doc) => [doc.id, doc]))
     const uniqueDocs = Array.from(uniqueDocsMap.values())
 
-    // 🔹 Paginação manual
     const totalItems = uniqueDocs.length
     const totalPages = Math.ceil(totalItems / itemsPerPage)
     const start = (page - 1) * itemsPerPage
@@ -120,9 +112,6 @@ export async function listPatientsUseCase({
     }
   }
 
-  // 🔹 Caso não tenha busca
-  // 🔹 Como as regras de segurança não permitem getCountFromServer no cliente,
-  // 🔹 buscamos todos os documentos para contar (alternativa: criar API route no servidor)
   const countSnapshot = await getDocs(countQuery)
   const totalItems = countSnapshot.size
   const totalPages = Math.ceil(totalItems / itemsPerPage)

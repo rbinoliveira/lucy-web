@@ -1,17 +1,18 @@
 import { TableRow } from '@/application/_shared/components/organisms/table/table-row'
 import { cn } from '@/application/_shared/libs/tw-merge'
 
-export type TableBodyProps = React.ComponentProps<'tbody'> & {
-  data: { items: any[] }
-  columns: { columnName: string; render: (row: any) => React.ReactNode }[]
-}
+export type TableBodyProps<T = Record<string, unknown>> =
+  React.ComponentProps<'tbody'> & {
+    data: { items: T[] }
+    columns: { columnName: string; render: (row: T) => React.ReactNode }[]
+  }
 
-export function TableBody({
+export function TableBody<T extends Record<string, unknown>>({
   className,
   data,
   columns,
   ...props
-}: TableBodyProps) {
+}: TableBodyProps<T>) {
   return (
     <tbody
       data-slot="table-body"
@@ -21,7 +22,7 @@ export function TableBody({
       {data.items.map((row) => (
         <TableRow
           key={row.id}
-          className={cn('px-6 py-[1.4063rem] border-t border-border-one')}
+          className={cn('border-border-one border-t px-6 py-[1.4063rem]')}
           itemsAmount={columns.length}
         >
           {columns.map((column) => (

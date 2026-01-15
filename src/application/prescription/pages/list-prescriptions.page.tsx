@@ -11,12 +11,11 @@ import { ListPrescriptionsService } from '@/application/prescription/service/lis
 export function ListPrescriptionsPage() {
   const { itemsPerPage, search, currentPage } = useTable()
 
-  const { data, isError, isLoading, error } = ListPrescriptionsService({
+  const { data, isError, isLoading } = ListPrescriptionsService({
     page: currentPage,
     itemsPerPage,
     search,
   })
-
 
   return (
     <div className="flex flex-col gap-6">

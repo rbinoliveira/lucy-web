@@ -19,22 +19,23 @@ function Img({
   imageClassName,
   isLoading,
 }: ImageProps) {
-  const [isValidatting, setIsValidatting] = useState(true)
+  const [isValidating, setIsValidating] = useState(true)
   const [isValid, setIsValid] = useState(false)
 
   useEffect(() => {
     const img = new Image()
     img.onload = () => {
       setIsValid(true)
+      setIsValidating(false)
     }
     img.onerror = () => {
       setIsValid(false)
+      setIsValidating(false)
     }
     img.src = src as string
-    setIsValidatting(false)
   }, [src])
 
-  if (isValidatting || isLoading) {
+  if (isValidating || isLoading) {
     return <Skeleton className={cn('bg-primary-light', className)} />
   }
 

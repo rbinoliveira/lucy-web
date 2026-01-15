@@ -23,6 +23,7 @@ export type TableFilterProps = {
 export function TableFilter({ search, add, className }: TableFilterProps) {
   const {
     form: { control },
+    updateItemsPerPage,
   } = useTable()
 
   return (
@@ -39,6 +40,9 @@ export function TableFilter({ search, add, className }: TableFilterProps) {
             name="itemsPerPage"
             className="max-w-[150px]"
             variant="sm"
+            onChange={(value) => {
+              updateItemsPerPage(Number(value))
+            }}
             options={[
               {
                 label: '1',

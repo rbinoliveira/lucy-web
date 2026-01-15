@@ -1,33 +1,60 @@
 import { z } from 'zod'
 
 import { optionalString } from '@/application/_shared/validations/optional-string.validation'
-import { requiredDate } from '@/application/_shared/validations/required-date.validation'
-import { requiredEmail } from '@/application/_shared/validations/required-email.validation'
 import { requiredString } from '@/application/_shared/validations/required-string.validation'
 
-export const saveMedicineSchema = z.object({
+const pharmaceuticalFormEnum = z.enum([
+  'solucao_oral',
+  'suspensao_oral',
+  'comprimido',
+  'capsula',
+  'pilula',
+  'pastilha',
+  'dragea',
+  'xarope',
+  'gotas',
+  'pomada',
+  'creme',
+  'pasta',
+  'spray',
+])
+
+const administrationRouteEnum = z.enum(['oral', 'sublingual', 'topica'])
+
+const baseMedicineSchema = z.object({
   id: optionalString({ field: 'id' }),
-  name: requiredString({ field: 'nome' }),
-  phone: requiredString({ field: 'telefone' }),
-  dob: z.union([
-    requiredDate({ field: 'data de nascimento' }),
-    requiredString({ field: 'data de nascimento' }),
-  ]),
-  email: requiredEmail(),
-  password: requiredString({ field: 'senha' }),
-  ownerId: requiredString({ field: 'ownerId' }),
+  name: requiredString({ field: 'princípio ativo' }),
+  dose: requiredString({ field: 'dose' }),
+  pharmaceuticalForm: pharmaceuticalFormEnum,
+  administrationRoute: administrationRouteEnum,
+  quantity: z.coerce.number().min(1, 'Quantidade deve ser pelo menos 1'),
+  intervalHours: z.coerce
+    .number()
+    .min(1, 'Intervalo deve ser pelo menos 1 hora'),
+  durationDays: z.coerce.number().optional(),
+  whilePain: z.boolean().optional(),
+  defaultDosage: optionalString({ field: 'posologia' }),
 })
 
-export type SaveMedicineSchema = z.infer<typeof saveMedicineSchema>
-
-export const saveMedicineFormSchema = saveMedicineSchema.omit({
-  password: true,
-  ownerId: true,
-})
+export const saveMedicineFormSchema = baseMedicineSchema.refine(
+  (data) => {
+    if (!data.whilePain && !data.durationDays) {
+      return false
+    }
+    return true
+  },
+  {
+    message: 'Informe a duração em dias ou marque "enquanto houver dor"',
+    path: ['durationDays'],
+  },
+)
 
 export type SaveMedicineFormSchema = z.infer<typeof saveMedicineFormSchema>
 
-export const saveMedicineUseCaseSchema = saveMedicineSchema
+export const saveMedicineUseCaseSchema = baseMedicineSchema.extend({
+  ownerId: requiredString({ field: 'ownerId' }),
+  nameNormalized: optionalString({ field: 'nameNormalized' }),
+})
 
 export type SaveMedicineUseCaseSchema = z.infer<
   typeof saveMedicineUseCaseSchema

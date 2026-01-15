@@ -23,7 +23,7 @@ export async function GET(
       id: docSnap.id,
       ...docSnap.data(),
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
       { status: 500 },

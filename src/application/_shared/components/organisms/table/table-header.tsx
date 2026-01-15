@@ -14,7 +14,7 @@ export function TableHeader({
     <thead
       data-slot="table-header"
       className={cn(
-        'w-full linear-one rounded-t-2xl py-[1.25rem] px-6 table-cell',
+        'linear-one table-cell w-full rounded-t-2xl px-6 py-[1.25rem]',
         className,
       )}
       {...props}
@@ -33,7 +33,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
     <th
       data-slot="table-head"
       className={cn(
-        'text-sm font-semibold leading-[1.42] text-left text-white',
+        'text-left text-sm leading-[1.42] font-semibold text-white',
         className,
       )}
       {...props}

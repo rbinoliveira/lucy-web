@@ -33,18 +33,24 @@ function DropdownMenu({ trigger, items }: DropdownMenuProps) {
         className="bg-background rounded-lg p-1 shadow-[0px_4px_20px_0px_rgba(0,0,0,0.25)]"
         style={{ minWidth: btnWidth }}
       >
-        {items.map((item, index) => (
-          <MenuItem key={index}>
-            <div
-              className={cn(
-                'rounded-md text-sm font-semibold px-4 py-2',
-                'data-[focus]:bg-primary data-[focus]:text-primary-contrast',
-              )}
-            >
-              {item}
-            </div>
-          </MenuItem>
-        ))}
+        {items.map((item, index) => {
+          const key =
+            React.isValidElement(item) && item.key
+              ? item.key
+              : `dropdown-item-${index}`
+          return (
+            <MenuItem key={key}>
+              <div
+                className={cn(
+                  'rounded-md px-4 py-2 text-sm font-semibold',
+                  'data-[focus]:bg-primary data-[focus]:text-primary-contrast',
+                )}
+              >
+                {item}
+              </div>
+            </MenuItem>
+          )
+        })}
       </MenuItems>
     </Menu>
   )

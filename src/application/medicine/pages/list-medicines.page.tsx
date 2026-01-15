@@ -2,6 +2,7 @@
 
 import { DataHandler } from '@/application/_shared/components/molecules/data-handler'
 import { Table } from '@/application/_shared/components/organisms/table/table'
+import { appRoutes } from '@/application/_shared/constants/app-routes.constant'
 import { useTable } from '@/application/_shared/hooks/table.hook'
 import { TableMedicineActions } from '@/application/medicine/components/table-medicine-actions'
 import { TableMedicineDose } from '@/application/medicine/components/table-medicine-dose'
@@ -28,12 +29,12 @@ export function ListMedicinesPage() {
               },
               add: {
                 label: 'Adicionar Medicamento',
-                href: '/medicamentos/adicionar',
+                href: `${appRoutes.medicines}/adicionar`,
               },
             }}
             columns={[
               {
-                columnLabel: 'Nome',
+                columnLabel: 'Princípio Ativo',
                 columnName: 'name',
                 render: (row) => <TableMedicineName medicine={row} />,
               },

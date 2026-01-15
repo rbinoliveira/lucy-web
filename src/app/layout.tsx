@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 import '@/application/_shared/styles/globals.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -24,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${inter.className} antialiased`}>
-      <body cz-shortcut-listen="true">
+      <body>
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

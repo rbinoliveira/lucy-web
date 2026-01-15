@@ -25,7 +25,7 @@ export async function DELETE(
       success: true,
       message: 'Prescrição excluída com sucesso.',
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         success: false,

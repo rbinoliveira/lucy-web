@@ -5,5 +5,5 @@ type TableMedicineDoseProps = {
 }
 
 export function TableMedicineDose({ medicine }: TableMedicineDoseProps) {
-  return <span className="text-sm font-medium">{medicine.phone}</span>
+  return <span className="text-sm font-medium">{medicine.dose}</span>
 }

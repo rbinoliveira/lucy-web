@@ -15,6 +15,12 @@ import { InputError } from '@/application/_shared/components/molecules/form/inpu
 import { InputLabel } from '@/application/_shared/components/molecules/form/input-label'
 import { cn } from '@/application/_shared/libs/tw-merge'
 
+export type ExtendedInputTextProps = {
+  label?: string
+  className?: string
+  inputSize?: 'base' | 'lg'
+}
+
 export interface PrimitiveInputTextProps extends React.ComponentProps<'input'> {
   isErrored?: boolean
   iconBefore?: React.ReactNode
@@ -50,17 +56,17 @@ const PrimitiveInputText = React.forwardRef<
     return (
       <div
         className={cn(
-          'bg-white rounded-xl text-text-one flex w-full',
-          'border-border-one h-[60px] relative',
+          'text-text-one flex w-full rounded-xl bg-white',
+          'border-border-one relative h-[60px]',
           inputSize === 'lg' ? 'h-[60px] border-2' : 'h-[50px] border',
           isErrored && 'border-danger-one',
           isFocused && 'border-primary',
-          disabled && 'opacity-50 cursor-not-allowed border-border-one',
+          disabled && 'border-border-one cursor-not-allowed opacity-50',
           className,
         )}
       >
         {iconBefore && (
-          <span className={cn(svgClassName, 'left-0 pointer-events-none')}>
+          <span className={cn(svgClassName, 'pointer-events-none left-0')}>
             {iconBefore}
           </span>
         )}
@@ -78,15 +84,15 @@ const PrimitiveInputText = React.forwardRef<
               : type
           }
           className={cn(
-            'focus:outline-none flex-1 px-3',
+            'flex-1 px-3 focus:outline-none',
             'placeholder:text-placeholder',
-            disabled && 'opacity-50 cursor-not-allowed',
+            disabled && 'cursor-not-allowed opacity-50',
             iconBefore && 'pl-10',
             iconAfter && 'pr-10',
           )}
         />
         {iconAfter && type !== 'password' && (
-          <span className={cn(svgClassName, 'right-0 pointer-events-none')}>
+          <span className={cn(svgClassName, 'pointer-events-none right-0')}>
             {iconAfter}
           </span>
         )}
@@ -102,12 +108,6 @@ const PrimitiveInputText = React.forwardRef<
     )
   },
 )
-
-export type ExtendedInputTextProps = {
-  label?: string
-  className?: string
-  inputSize?: 'base' | 'lg'
-}
 
 export type InputTextProps<T extends FieldValues> = PrimitiveInputTextProps &
   ExtendedInputTextProps & {

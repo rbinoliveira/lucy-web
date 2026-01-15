@@ -83,7 +83,7 @@ function SidebarSheetContent({
         {...props}
       >
         {children}
-        <SidebarSheetPrimitive.Close className="rounded-xs focus:outline-hidden absolute right-4 top-4 opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100">
+        <SidebarSheetPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-neutral-100">
           <X className="size-4" />
           <span className="sr-only">Close</span>
         </SidebarSheetPrimitive.Close>
@@ -146,11 +146,11 @@ function SidebarSheetDescription({
 
 export {
   SidebarSheet,
-  SidebarSheetTrigger,
   SidebarSheetClose,
   SidebarSheetContent,
-  SidebarSheetHeader,
-  SidebarSheetFooter,
-  SidebarSheetTitle,
   SidebarSheetDescription,
+  SidebarSheetFooter,
+  SidebarSheetHeader,
+  SidebarSheetTitle,
+  SidebarSheetTrigger,
 }

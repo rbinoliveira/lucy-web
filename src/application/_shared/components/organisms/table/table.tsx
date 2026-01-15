@@ -35,7 +35,7 @@ export function Table<T extends object>({
   return (
     <div className="flex flex-col gap-6">
       <TableFilter {...actions} />
-      <div className="flex flex-col shadow-two rounded-2xl border border-border-one">
+      <div className="shadow-two border-border-one flex flex-col rounded-2xl border">
         <TableContainer className="bg-transparent">
           <TableHeader columns={columns} />
           <TableBody data={data} columns={columns} />

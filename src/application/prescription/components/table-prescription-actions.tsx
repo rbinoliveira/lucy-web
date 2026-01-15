@@ -22,11 +22,11 @@ export function TablePrescriptionActions({
 
   async function deletePrescription() {
     try {
-      await mutateAsync({ id: 'prescription.id' })
+      await mutateAsync({ id: prescription.id })
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === listPrescriptionsQueryKey,
       })
-      toast.success('Paciente deletado com sucesso!')
+      toast.success('Prescrição deletada com sucesso!')
       closeDialog()
     } catch (err) {
       handleError({ err })
@@ -35,8 +35,8 @@ export function TablePrescriptionActions({
 
   function handleDelete() {
     openDialog({
-      title: 'Excluir paciente',
-      description: 'Tem certeza que deseja excluir este paciente?',
+      title: 'Excluir prescrição',
+      description: `Tem certeza que deseja excluir esta prescrição?`,
       confirmButton: {
         label: 'Excluir',
         onClick: deletePrescription,
@@ -51,7 +51,7 @@ export function TablePrescriptionActions({
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost" asChild>
-        <Link href={`/pacientes/editar/${prescription.id}`}>
+        <Link href={`/prescricoes/editar/${prescription.id}`}>
           <SquarePen className="text-primary-alternative" />
         </Link>
       </Button>

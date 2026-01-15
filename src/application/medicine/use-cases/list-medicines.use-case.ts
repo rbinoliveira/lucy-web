@@ -35,7 +35,6 @@ export async function listMedicinesUseCase({
     orderBy('nameNormalized'),
   )
 
-  // 🔹 Se tiver busca, normalizamos nome e telefone
   if (search && search.trim()) {
     const searchNormalized = removeAccents(search.trim().toLowerCase())
 
@@ -43,7 +42,6 @@ export async function listMedicinesUseCase({
       String.fromCharCode(c.charCodeAt(0) + 1),
     )
 
-    // 🔹 Query por nome
     const queryByName = query(
       usersRef,
       where('nameNormalized', '>=', searchNormalized),
@@ -51,14 +49,12 @@ export async function listMedicinesUseCase({
       orderBy('nameNormalized'),
     )
 
-    // 🔹 Buscar os dois conjuntos e unir IDs (evita duplicados)
     const [snapName] = await Promise.all([getDocs(queryByName)])
 
     const allDocs = [...snapName.docs]
     const uniqueDocsMap = new Map(allDocs.map((doc) => [doc.id, doc]))
     const uniqueDocs = Array.from(uniqueDocsMap.values())
 
-    // 🔹 Paginação manual
     const totalItems = uniqueDocs.length
     const totalPages = Math.ceil(totalItems / itemsPerPage)
     const start = (page - 1) * itemsPerPage
@@ -79,7 +75,6 @@ export async function listMedicinesUseCase({
     }
   }
 
-  // 🔹 Caso não tenha busca
   const countSnap = await getCountFromServer(baseQuery)
   const totalItems = countSnap.data().count
   const totalPages = Math.ceil(totalItems / itemsPerPage)

@@ -5,6 +5,9 @@ export const appRoutes = {
   register: '/registrar',
   recoverPassword: '/recuperar-senha',
   completeProfile: '/completar-perfil',
+  patients: '/pacientes',
+  prescriptions: '/prescricoes',
+  medicines: '/medicamentos',
 }
 
 export const appPublicRoutes = [

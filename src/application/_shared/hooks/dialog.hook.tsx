@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 
@@ -24,8 +25,8 @@ const DialogContext = createContext<DialogContextData>({} as DialogContextData)
 
 export function DialogProvider({ children }: DialogProviderProps) {
   const [dialogProps, setDialogProps] = useState<DialogProps | null>(null)
-
   const pathname = usePathname()
+  const prevPathnameRef = useRef(pathname)
 
   const openDialog = useCallback((newDialogProps: DialogProps) => {
     setDialogProps(newDialogProps)
@@ -36,8 +37,15 @@ export function DialogProvider({ children }: DialogProviderProps) {
   }, [])
 
   useEffect(() => {
-    setDialogProps(null)
-  }, [pathname])
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname
+      if (dialogProps) {
+        requestAnimationFrame(() => {
+          setDialogProps(null)
+        })
+      }
+    }
+  }, [pathname, dialogProps])
 
   return (
     <DialogContext.Provider

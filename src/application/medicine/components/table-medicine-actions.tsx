@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 
 import { Button } from '@/application/_shared/components/atoms/button'
+import { appRoutes } from '@/application/_shared/constants/app-routes.constant'
 import { handleError } from '@/application/_shared/helpers/error.helper'
 import { useDialog } from '@/application/_shared/hooks/dialog.hook'
 import { queryClient } from '@/application/_shared/libs/react-query'
@@ -20,11 +21,11 @@ export function TableMedicineActions({ medicine }: TableMedicineActionsProps) {
 
   async function deleteMedicine() {
     try {
-      await mutateAsync({ id: 'medicine.id' })
+      await mutateAsync({ id: medicine.id })
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === listMedicinesQueryKey,
       })
-      toast.success('Paciente deletado com sucesso!')
+      toast.success('Medicamento deletado com sucesso!')
       closeDialog()
     } catch (err) {
       handleError({ err })
@@ -33,8 +34,8 @@ export function TableMedicineActions({ medicine }: TableMedicineActionsProps) {
 
   function handleDelete() {
     openDialog({
-      title: 'Excluir paciente',
-      description: 'Tem certeza que deseja excluir este paciente?',
+      title: 'Excluir medicamento',
+      description: `Tem certeza que deseja excluir o medicamento "${medicine.name}"?`,
       confirmButton: {
         label: 'Excluir',
         onClick: deleteMedicine,
@@ -49,7 +50,7 @@ export function TableMedicineActions({ medicine }: TableMedicineActionsProps) {
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost" asChild>
-        <Link href={`/pacientes/editar/${medicine.id}`}>
+        <Link href={`${appRoutes.medicines}/editar/${medicine.id}`}>
           <SquarePen className="text-primary-alternative" />
         </Link>
       </Button>

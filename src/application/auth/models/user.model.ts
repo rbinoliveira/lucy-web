@@ -1,3 +1,5 @@
+export type UserStatus = 'pending' | 'approved' | 'rejected'
+
 export type UserModel = {
   id: string
   email: string
@@ -6,4 +8,5 @@ export type UserModel = {
   photo?: string
   cro?: string
   phone?: string
+  status?: UserStatus
 }

@@ -21,7 +21,7 @@ export default function DashboardLayout({
       <AppSidebar />
       <SidebarInset className="flex w-full flex-col">
         <AppSidebarHeader />
-        <main className="py-6 px-6 2xl:px-0 w-full max-w-[1200px] mx-auto">
+        <main className="mx-auto w-full max-w-[1200px] px-6 py-6 2xl:px-0">
           {children}
         </main>
       </SidebarInset>

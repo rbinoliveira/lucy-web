@@ -11,10 +11,10 @@ type TablePatientDobProps = {
 export function TablePatientDob({ patient }: TablePatientDobProps) {
   return (
     <div className="flex flex-col">
-      <span className="font-medium text-sm">
+      <span className="text-sm font-medium">
         {convertToDateString(patient.dob)}
       </span>
-      <span className="text-xs text-text-six">
+      <span className="text-text-six text-xs">
         {getDifferenceInYears(patient.dob)} anos
       </span>
     </div>

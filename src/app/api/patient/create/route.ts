@@ -40,8 +40,9 @@ export async function POST(req: Request) {
     let authUser = null
     try {
       authUser = await authAdmin.getUserByEmail(data.email)
-    } catch (err: any) {
-      if (err.code !== 'auth/user-not-found') {
+    } catch (err: unknown) {
+      const error = err as { code?: string }
+      if (error.code !== 'auth/user-not-found') {
         return NextResponse.json(
           { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
           { status: 500 },
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
       message: 'Paciente criado com sucesso.',
       uid: newAuthUser.uid,
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
       { status: 500 },

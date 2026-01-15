@@ -10,7 +10,7 @@ export function FormCard({ children, className }: FormCardProps) {
   return (
     <div
       className={cn(
-        'border border-border-one flex flex-col bg-white p-8 rounded-2xl',
+        'border-border-one flex flex-col rounded-2xl border bg-white p-8',
         'shadow-three',
         className,
       )}
@@ -28,9 +28,9 @@ export function FormCardFooter({
   className?: string
 }) {
   return (
-    <div className={cn('w-full flex flex-col items-end', className)}>
+    <div className={cn('flex w-full flex-col items-end', className)}>
       <Separator />
-      <div className="flex items-center justify-end gap-4 mt-6 w-full">
+      <div className="mt-6 flex w-full items-center justify-end gap-4">
         {children}
       </div>
     </div>

@@ -1,14 +1,15 @@
-import api from '@/application/_shared/libs/axios'
-import { PatientModel } from '@/application/patient/models/patient.model'
+import { deleteDoc, doc } from 'firebase/firestore'
+
+import { db } from '@/application/_shared/libs/firebase'
 
 export type DeletePatientUseCaseInput = {
   id: string
 }
-export type DeletePatientUseCaseOutput = PatientModel
+export type DeletePatientUseCaseOutput = void
 
 export async function deletePatientUseCase(
   params: DeletePatientUseCaseInput,
 ): Promise<DeletePatientUseCaseOutput> {
-  const response = await api.delete(`/api/patient/delete/${params.id}`)
-  return response.data
+  const patientRef = doc(db, 'users', params.id)
+  await deleteDoc(patientRef)
 }

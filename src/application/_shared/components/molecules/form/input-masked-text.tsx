@@ -14,6 +14,12 @@ import { InputError } from '@/application/_shared/components/molecules/form/inpu
 import { InputLabel } from '@/application/_shared/components/molecules/form/input-label'
 import { cn } from '@/application/_shared/libs/tw-merge'
 
+export type ExtendedInputTextProps = {
+  label?: string
+  className?: string
+  inputSize?: 'base' | 'lg'
+}
+
 export interface PrimitiveInputMaskedTextProps {
   isErrored?: boolean
   iconBefore?: React.ReactNode
@@ -86,9 +92,9 @@ export const PrimitiveInputMaskedText = React.forwardRef<
     return (
       <div
         className={cn(
-          'bg-white rounded-xl text-text-one flex w-full',
+          'text-text-one flex w-full rounded-xl bg-white',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          'border-border-one h-[60px] relative',
+          'border-border-one relative h-[60px]',
           inputSize === 'lg' ? 'h-[60px] border-2' : 'h-[50px] border',
           isErrored && 'border-danger-one',
           isFocused && 'border-primary',
@@ -96,7 +102,7 @@ export const PrimitiveInputMaskedText = React.forwardRef<
         )}
       >
         {iconBefore && (
-          <span className={cn(svgClassName, 'left-0 pointer-events-none')}>
+          <span className={cn(svgClassName, 'pointer-events-none left-0')}>
             {iconBefore}
           </span>
         )}
@@ -106,7 +112,7 @@ export const PrimitiveInputMaskedText = React.forwardRef<
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           className={cn(
-            'focus:outline-none flex-1 px-3',
+            'flex-1 px-3 focus:outline-none',
             'placeholder:text-placeholder',
             iconBefore && 'pl-10',
             elementAfter && 'pr-10',
@@ -119,12 +125,6 @@ export const PrimitiveInputMaskedText = React.forwardRef<
     )
   },
 )
-
-export type ExtendedInputTextProps = {
-  label?: string
-  className?: string
-  inputSize?: 'base' | 'lg'
-}
 
 export type InputMaskedTextProps<T extends FieldValues> =
   PrimitiveInputMaskedTextProps &

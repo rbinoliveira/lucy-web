@@ -35,12 +35,12 @@ export function TablePagination({
   return (
     <nav
       className={cn(
-        'flex w-full items-center justify-between linear-four rounded-b-2xl',
-        'py-[1.25rem] px-6 border-t border-border-three',
+        'linear-four flex w-full items-center justify-between rounded-b-2xl',
+        'border-border-three border-t px-6 py-[1.25rem]',
       )}
       aria-label="Table navigation"
     >
-      <span className="font-medium text-text-seven text-sm">
+      <span className="text-text-seven text-sm font-medium">
         {pagesCountText}
       </span>
       <ul className="flex items-center gap-2">
@@ -149,7 +149,7 @@ function TablePaginationButton({
       variant="pagination"
       className={cn(
         className,
-        isActive && 'bg-primary text-white border-primary',
+        isActive && 'bg-primary border-primary text-white',
       )}
       {...props}
     />

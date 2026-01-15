@@ -4,6 +4,9 @@ await import('./src/application/_shared/config/env/env.mjs')
 const nextConfig = {
   /* config options here */
   output: 'standalone',
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
 }
 
 export default nextConfig

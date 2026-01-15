@@ -9,7 +9,7 @@ export function InputError({ error, customError }: InputErrorProps) {
   return (
     <>
       {(error?.message || (customError && error)) && (
-        <span className="text-xs text-danger-one">
+        <span className="text-danger-one text-xs">
           {customError || error?.message}
         </span>
       )}

@@ -15,8 +15,7 @@ export type ExtendedInputSearchProps = {
   inputSize?: 'base' | 'lg'
 }
 
-export interface PrimitiveInputSearchProps
-  extends React.ComponentProps<'input'> {
+export interface PrimitiveInputSearchProps extends React.ComponentProps<'input'> {
   isErrored?: boolean
   iconBefore?: React.ReactNode
   iconAfter?: React.ReactNode
@@ -47,12 +46,19 @@ const PrimitiveInputSearch = React.forwardRef<
       updateSearchRef.current = updateSearch
     }, [updateSearch])
 
+    const prevSearchRef = useRef(search)
     useEffect(() => {
-      if (!isFocused && search !== localValue) {
-        setLocalValue(search ?? '')
+      if (
+        !isFocused &&
+        prevSearchRef.current !== search &&
+        search !== localValue
+      ) {
+        prevSearchRef.current = search
+        requestAnimationFrame(() => {
+          setLocalValue(search ?? '')
+        })
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search, isFocused])
+    }, [search, isFocused, localValue])
 
     useEffect(() => {
       const t = setTimeout(() => {
@@ -67,16 +73,16 @@ const PrimitiveInputSearch = React.forwardRef<
     return (
       <div
         className={cn(
-          'bg-white rounded-xl text-text-one flex w-full',
-          'border-border-one h-[60px] relative',
+          'text-text-one flex w-full rounded-xl bg-white',
+          'border-border-one relative h-[60px]',
           inputSize === 'lg' ? 'h-[60px] border-2' : 'h-[50px] border',
           isErrored && 'border-danger-one',
           isFocused && 'border-primary',
-          disabled && 'opacity-50 cursor-not-allowed border-border-one',
+          disabled && 'border-border-one cursor-not-allowed opacity-50',
           className,
         )}
       >
-        <span className={cn(svgClassName, 'left-0 pointer-events-none')}>
+        <span className={cn(svgClassName, 'pointer-events-none left-0')}>
           <Search size={16} className="text-icon" />
         </span>
         <input
@@ -98,9 +104,9 @@ const PrimitiveInputSearch = React.forwardRef<
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}
           className={cn(
-            'focus:outline-none flex-1 px-3 pl-10',
+            'flex-1 px-3 pl-10 focus:outline-none',
             'placeholder:text-placeholder',
-            disabled && 'opacity-50 cursor-not-allowed',
+            disabled && 'cursor-not-allowed opacity-50',
           )}
         />
       </div>

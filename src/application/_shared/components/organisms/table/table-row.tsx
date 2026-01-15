@@ -9,7 +9,7 @@ export function TableRow({ className, itemsAmount, ...props }: TableRowProps) {
     <tr
       data-slot="table-row"
       className={cn(
-        'w-full grid',
+        'grid w-full',
         itemsAmount === 1 && 'grid-cols-[repeat(1,minmax(200px,1fr))]',
         itemsAmount === 2 && 'grid-cols-[repeat(2,minmax(200px,1fr))]',
         itemsAmount === 3 && 'grid-cols-[repeat(3,minmax(200px,1fr))]',

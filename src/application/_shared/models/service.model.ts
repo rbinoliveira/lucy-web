@@ -1,4 +1,4 @@
-export type ServiceModel = {
-  onSuccess?: (data?: any) => void
+export type ServiceModel<T = unknown> = {
+  onSuccess?: (data?: T) => void
   onError?: () => void
 }
