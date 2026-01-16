@@ -37,7 +37,6 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      {/* Metric Cards */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           icon={<Users className="h-7 w-7 text-white" />}
@@ -69,11 +68,8 @@ export function DashboardPage() {
         />
       </section>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Left Column - Alerts and Prescriptions */}
         <div className="flex flex-col gap-6 lg:col-span-2">
-          {/* Alert Notifications */}
           <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
             <div className="flex items-center justify-between">
               <h3 className="text-text-one text-lg font-semibold">
@@ -117,7 +113,6 @@ export function DashboardPage() {
             </div>
           </section>
 
-          {/* Recent Prescriptions */}
           <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
             <div className="flex items-center justify-between">
               <h3 className="text-text-one text-lg font-semibold">
@@ -155,11 +150,9 @@ export function DashboardPage() {
           </section>
         </div>
 
-        {/* Right Column - Quick Actions and Activities */}
         <div className="flex flex-col gap-6 lg:col-span-1">
           <QuickActions />
 
-          {/* Recent Activities */}
           <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
             <h3 className="text-text-one text-lg font-semibold">
               Últimas Atividades

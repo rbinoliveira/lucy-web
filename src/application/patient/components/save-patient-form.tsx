@@ -104,7 +104,6 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
 
   return (
     <form className="mt-8 flex flex-col gap-6">
-      {/* Required Fields */}
       <InputText
         placeholder="Ex: Maria da Silva Santos"
         label="Nome Completo"
@@ -137,7 +136,6 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
         options={genderOptions}
       />
 
-      {/* Toggle Optional Fields */}
       <button
         type="button"
         onClick={() => setShowOptionalFields(!showOptionalFields)}
@@ -148,7 +146,6 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
           : '+ Mostrar campos opcionais (email, CPF, endereço, SUS)'}
       </button>
 
-      {/* Optional Fields */}
       {showOptionalFields && (
         <div className="border-border-one flex flex-col gap-6 border-t pt-4">
           <h4 className="text-text-one text-sm font-semibold">
@@ -240,7 +237,6 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
         </div>
       )}
 
-      {/* Info Box */}
       <div className="flex items-start gap-3 rounded-lg bg-blue-50 p-4">
         <Info className="text-primary mt-0.5 h-5 w-5 flex-shrink-0" />
         <div className="flex flex-col gap-1">
