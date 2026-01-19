@@ -1,14 +1,14 @@
 'use client'
 
-import { DataHandler } from '@/shared/components/molecules/data-handler'
-import { Table } from '@/shared/components/organisms/table/table'
-import { useTable } from '@/shared/hooks/table.hook'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { TablePatientActions } from '@/features/patient/components/table-patient-actions'
 import { TablePatientDob } from '@/features/patient/components/table-patient-dob'
 import { TablePatientName } from '@/features/patient/components/table-patient-name'
 import { TablePatientPhone } from '@/features/patient/components/table-patient-phone'
 import { ListPatientsService } from '@/features/patient/service/list-patients.service'
+import { DataHandler } from '@/shared/components/molecules/data-handler'
+import { Table } from '@/shared/components/organisms/table/table'
+import { useTable } from '@/shared/hooks/table.hook'
 
 export function ListPatientsPage() {
   const { user } = useAuth()

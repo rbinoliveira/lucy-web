@@ -16,6 +16,9 @@ import {
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
+import { MetricCard } from '@/features/dashboard/components/metric-card'
+import { genderLabels } from '@/features/patient/models/patient.model'
+import { ShowPatientService } from '@/features/patient/service/show-patient.service'
 import { Button } from '@/shared/components/atoms/button'
 import { DataHandler } from '@/shared/components/molecules/data-handler'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
@@ -23,9 +26,6 @@ import {
   convertToDateString,
   getDifferenceInYears,
 } from '@/shared/helpers/date.helper'
-import { MetricCard } from '@/features/dashboard/components/metric-card'
-import { genderLabels } from '@/features/patient/models/patient.model'
-import { ShowPatientService } from '@/features/patient/service/show-patient.service'
 
 export function ViewPatientProfilePage() {
   const params = useParams<{ id: string }>()

@@ -3,7 +3,6 @@
 import { AlertTriangle, CheckCircle, TrendingUp, Users } from 'lucide-react'
 import Link from 'next/link'
 
-import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { AlertNotification } from '@/features/dashboard/components/alert-notification'
 import { MetricCard } from '@/features/dashboard/components/metric-card'
@@ -14,6 +13,7 @@ import { GetDashboardMetricsService } from '@/features/dashboard/service/get-das
 import { GetRecentActivitiesService } from '@/features/dashboard/service/get-recent-activities.service'
 import { GetRecentPrescriptionsService } from '@/features/dashboard/service/get-recent-prescriptions.service'
 import { formatTimeAgo } from '@/features/dashboard/utils/format-time-ago'
+import { appRoutes } from '@/shared/constants/app-routes.constant'
 
 export function DashboardPage() {
   const { user } = useAuth()

@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 
+import { PatientModel } from '@/features/patient/models/patient.model'
+import { savePatientUseCaseSchema } from '@/features/patient/schemas/save-patient.schema'
 import {
   normalizeName,
   normalizePhone,
 } from '@/shared/helpers/normalize-string.helper'
 import { authAdmin, dbAdmin } from '@/shared/libs/firebase-admin'
-import { PatientModel } from '@/features/patient/models/patient.model'
-import { savePatientUseCaseSchema } from '@/features/patient/schemas/save-patient.schema'
 
 export async function PUT(req: Request) {
   try {

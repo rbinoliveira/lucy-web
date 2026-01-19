@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { handleError } from '@/shared/helpers/error.helper'
-import { queryClient } from '@/shared/libs/react-query'
-import { ServiceModel } from '@/shared/models/service.model'
 import { listPrescriptionsQueryKey } from '@/features/prescription/service/list-prescriptions.service'
 import {
   createPrescriptionUseCase,
   CreatePrescriptionUseCaseInput,
 } from '@/features/prescription/use-cases/create-prescription.use-case'
+import { handleError } from '@/shared/helpers/error.helper'
+import { queryClient } from '@/shared/libs/react-query'
+import { ServiceModel } from '@/shared/models/service.model'
 
 export function CreatePrescriptionService({ onSuccess }: ServiceModel) {
   const mutation = useMutation({

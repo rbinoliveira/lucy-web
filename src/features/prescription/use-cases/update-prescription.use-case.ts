@@ -1,6 +1,6 @@
-import api from '@/shared/libs/axios'
 import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
 import { SavePrescriptionUseCaseSchema } from '@/features/prescription/schemas/save-prescription.schema'
+import api from '@/shared/libs/axios'
 
 export type UpdatePrescriptionUseCaseInput = SavePrescriptionUseCaseSchema
 export type UpdatePrescriptionUseCaseOutput = PrescriptionModel

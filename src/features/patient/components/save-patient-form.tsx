@@ -1,6 +1,5 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import {
   Calendar,
   Check,
@@ -17,13 +16,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Button } from '@/shared/components/atoms/button'
-import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
-import { InputDate } from '@/shared/components/molecules/form/input-date'
-import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
-import { InputSelect } from '@/shared/components/molecules/form/input-select'
-import { InputText } from '@/shared/components/molecules/form/input-text'
-import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import {
   genderLabels,
@@ -35,6 +27,14 @@ import {
 } from '@/features/patient/schemas/save-patient.schema'
 import { CreatePatientService } from '@/features/patient/service/create-patient.service'
 import { UpdatePatientService } from '@/features/patient/service/update-patient.service'
+import { Button } from '@/shared/components/atoms/button'
+import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
+import { InputDate } from '@/shared/components/molecules/form/input-date'
+import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
+import { InputSelect } from '@/shared/components/molecules/form/input-select'
+import { InputText } from '@/shared/components/molecules/form/input-text'
+import { appRoutes } from '@/shared/constants/app-routes.constant'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 type SavePatientFormProps = {
   patient?: PatientModel

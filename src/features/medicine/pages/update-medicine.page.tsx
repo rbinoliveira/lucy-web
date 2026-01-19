@@ -2,13 +2,13 @@
 
 import { useParams } from 'next/navigation'
 
+import { SaveMedicineForm } from '@/features/medicine/components/save-medicine-form'
+import { ShowMedicineService } from '@/features/medicine/service/show-medicine.service'
 import { DataHandler } from '@/shared/components/molecules/data-handler'
 import {
   FormCard,
   FormCardHeader,
 } from '@/shared/components/molecules/form/form-card'
-import { SaveMedicineForm } from '@/features/medicine/components/save-medicine-form'
-import { ShowMedicineService } from '@/features/medicine/service/show-medicine.service'
 
 export function UpdateMedicinePage() {
   const params = useParams<{ id: string }>()

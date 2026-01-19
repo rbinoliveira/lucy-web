@@ -10,9 +10,9 @@ import {
   where,
 } from 'firebase/firestore'
 
+import { MedicineModel } from '@/features/medicine/models/medicine.model'
 import { db } from '@/shared/libs/firebase'
 import { ListPaginatedModel } from '@/shared/models/list-paginated.model'
-import { MedicineModel } from '@/features/medicine/models/medicine.model'
 
 export type ListMedicinesUseCaseInput = {
   page: number

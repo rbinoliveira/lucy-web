@@ -1,17 +1,17 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import { Send } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
-import { Button } from '@/shared/components/atoms/button'
-import { InputText } from '@/shared/components/molecules/form/input-text'
 import {
   RecoverPasswordSchema,
   recoverPasswordSchema,
 } from '@/features/auth/schemas/recover-password.schema'
 import { sendPasswordReset } from '@/features/auth/services/auth-firebase.service'
+import { Button } from '@/shared/components/atoms/button'
+import { InputText } from '@/shared/components/molecules/form/input-text'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function RecoverPasswordForm() {
   const { control, handleSubmit } = useForm<RecoverPasswordSchema>({

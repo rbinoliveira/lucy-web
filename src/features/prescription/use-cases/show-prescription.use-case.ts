@@ -1,5 +1,5 @@
-import api from '@/shared/libs/axios'
 import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
+import api from '@/shared/libs/axios'
 
 export type ShowPrescriptionUseCaseInput = {
   id: string

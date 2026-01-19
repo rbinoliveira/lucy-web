@@ -2,14 +2,14 @@ import { FilePlus, MessageCircle, SquarePen, Trash2, User } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
+import { PatientModel } from '@/features/patient/models/patient.model'
+import { DeletePatientService } from '@/features/patient/service/delete-patient.service'
+import { listPatientsQueryKey } from '@/features/patient/service/list-patients.service'
 import { Button } from '@/shared/components/atoms/button'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { handleError } from '@/shared/helpers/error.helper'
 import { useDialog } from '@/shared/hooks/dialog.hook'
 import { queryClient } from '@/shared/libs/react-query'
-import { PatientModel } from '@/features/patient/models/patient.model'
-import { DeletePatientService } from '@/features/patient/service/delete-patient.service'
-import { listPatientsQueryKey } from '@/features/patient/service/list-patients.service'
 
 type TablePatientActionsProps = {
   patient: PatientModel

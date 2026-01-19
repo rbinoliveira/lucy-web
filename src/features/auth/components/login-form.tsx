@@ -1,21 +1,18 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
-import { Button } from '@/shared/components/atoms/button'
-import { Separator } from '@/shared/components/atoms/separator'
-import { InputText } from '@/shared/components/molecules/form/input-text'
-import { Image } from '@/shared/components/molecules/image'
-import {
-  LoginSchema,
-  loginSchema,
-} from '@/features/auth/schemas/login.schema'
+import { LoginSchema, loginSchema } from '@/features/auth/schemas/login.schema'
 import {
   signInWithCredentials,
   signInWithGoogle,
 } from '@/features/auth/services/auth-firebase.service'
+import { Button } from '@/shared/components/atoms/button'
+import { Separator } from '@/shared/components/atoms/separator'
+import { InputText } from '@/shared/components/molecules/form/input-text'
+import { Image } from '@/shared/components/molecules/image'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function LoginForm() {
   const { control, handleSubmit } = useForm<LoginSchema>({

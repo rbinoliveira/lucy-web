@@ -1,20 +1,20 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { Button } from '@/shared/components/atoms/button'
-import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
-import { InputText } from '@/shared/components/molecules/form/input-text'
-import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import {
   ProfileSchema,
   profileSchema,
 } from '@/features/auth/schemas/profile.schema'
 import { upsertUser } from '@/features/auth/services/auth-firebase.service'
+import { Button } from '@/shared/components/atoms/button'
+import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
+import { InputText } from '@/shared/components/molecules/form/input-text'
+import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function ProfileForm() {
   const { user, updateUser } = useAuth()

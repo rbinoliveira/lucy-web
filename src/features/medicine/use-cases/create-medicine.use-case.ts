@@ -1,12 +1,12 @@
 import { remove as removeAccents } from 'diacritics'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 
-import { db } from '@/shared/libs/firebase'
 import {
   generateDosage,
   MedicineModel,
 } from '@/features/medicine/models/medicine.model'
 import { SaveMedicineUseCaseSchema } from '@/features/medicine/schemas/save-medicine.schema'
+import { db } from '@/shared/libs/firebase'
 
 export type CreateMedicineUseCaseInput = SaveMedicineUseCaseSchema
 export type CreateMedicineUseCaseOutput = MedicineModel

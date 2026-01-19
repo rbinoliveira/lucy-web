@@ -1,7 +1,7 @@
 import { doc, getDoc } from 'firebase/firestore'
 
-import { db } from '@/shared/libs/firebase'
 import { MedicineModel } from '@/features/medicine/models/medicine.model'
+import { db } from '@/shared/libs/firebase'
 
 export type ShowMedicineUseCaseInput = {
   id: string

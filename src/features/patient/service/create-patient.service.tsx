@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { handleError } from '@/shared/helpers/error.helper'
-import { queryClient } from '@/shared/libs/react-query'
-import { ServiceModel } from '@/shared/models/service.model'
 import { listPatientsQueryKey } from '@/features/patient/service/list-patients.service'
 import {
   createPatientUseCase,
   CreatePatientUseCaseInput,
 } from '@/features/patient/use-cases/create-patient.use-case'
+import { handleError } from '@/shared/helpers/error.helper'
+import { queryClient } from '@/shared/libs/react-query'
+import { ServiceModel } from '@/shared/models/service.model'
 
 export function CreatePatientService({ onSuccess }: ServiceModel) {
   const mutation = useMutation({

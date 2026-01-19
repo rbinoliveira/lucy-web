@@ -12,7 +12,9 @@ export function handleError({ message, err }: ErrorType) {
     if (err.response?.data?.message && err.response?.status !== 500) {
       return toast.error(err.response.data.message)
     }
-    return toast.error(err.response?.data?.error ?? message ?? 'Erro de conexão')
+    return toast.error(
+      err.response?.data?.error ?? message ?? 'Erro de conexão',
+    )
   }
 
   if (

@@ -1,12 +1,9 @@
 import { remove as removeAccents } from 'diacritics'
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 
-import { db } from '@/shared/libs/firebase'
-import {
-  Gender,
-  PatientModel,
-} from '@/features/patient/models/patient.model'
+import { Gender, PatientModel } from '@/features/patient/models/patient.model'
 import { SavePatientUseCaseSchema } from '@/features/patient/schemas/save-patient.schema'
+import { db } from '@/shared/libs/firebase'
 
 export type UpdatePatientUseCaseInput = SavePatientUseCaseSchema & {
   id: string

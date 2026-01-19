@@ -1,6 +1,6 @@
+import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { SidebarContentNavItem } from '@/shared/components/organisms/sidebar/sidebar-content-nav-item'
 import { sidebarContentNavItems } from '@/shared/components/organisms/sidebar/sidebar-content-nav-items'
-import { useAuth } from '@/features/auth/hooks/auth.hook'
 
 export function SidebarContentNav() {
   const { user } = useAuth()

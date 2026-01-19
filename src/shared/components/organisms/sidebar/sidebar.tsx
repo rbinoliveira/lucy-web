@@ -5,11 +5,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import * as React from 'react'
 
+import { useAuth } from '@/features/auth/hooks/auth.hook'
+import { signOut } from '@/features/auth/services/auth-firebase.service'
 import { Avatar } from '@/shared/components/atoms/avatar'
-import {
-  Button,
-  ButtonProps,
-} from '@/shared/components/atoms/button'
+import { Button, ButtonProps } from '@/shared/components/atoms/button'
 import { DropdownMenu } from '@/shared/components/atoms/dropdown-menu'
 import { TooltipProvider } from '@/shared/components/atoms/tooltip'
 import { SidebarContentNav } from '@/shared/components/organisms/sidebar/sidebar-content-nav'
@@ -24,8 +23,6 @@ import {
 import { getCompoundName } from '@/shared/helpers/name-manipulator.helper'
 import { useIsMobile } from '@/shared/helpers/use-mobile'
 import { cn } from '@/shared/libs/tw-merge'
-import { useAuth } from '@/features/auth/hooks/auth.hook'
-import { signOut } from '@/features/auth/services/auth-firebase.service'
 
 const SIDEBAR_WIDTH = '256px'
 

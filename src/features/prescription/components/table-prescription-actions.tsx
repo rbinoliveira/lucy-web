@@ -2,13 +2,13 @@ import { SquarePen, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
+import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
+import { DeletePrescriptionService } from '@/features/prescription/service/delete-prescription.service'
+import { listPrescriptionsQueryKey } from '@/features/prescription/service/list-prescriptions.service'
 import { Button } from '@/shared/components/atoms/button'
 import { handleError } from '@/shared/helpers/error.helper'
 import { useDialog } from '@/shared/hooks/dialog.hook'
 import { queryClient } from '@/shared/libs/react-query'
-import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
-import { DeletePrescriptionService } from '@/features/prescription/service/delete-prescription.service'
-import { listPrescriptionsQueryKey } from '@/features/prescription/service/list-prescriptions.service'
 
 type TablePrescriptionActionsProps = {
   prescription: PrescriptionModel

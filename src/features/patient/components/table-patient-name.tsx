@@ -1,5 +1,5 @@
-import { Avatar } from '@/shared/components/atoms/avatar'
 import { PatientModel } from '@/features/patient/models/patient.model'
+import { Avatar } from '@/shared/components/atoms/avatar'
 
 type TablePatientNameProps = {
   patient: PatientModel

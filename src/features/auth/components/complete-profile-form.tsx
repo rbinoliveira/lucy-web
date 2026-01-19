@@ -1,12 +1,14 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { useAuth } from '@/features/auth/hooks/auth.hook'
+import { UserSchema, userSchema } from '@/features/auth/schemas/user.schema'
+import { upsertUser } from '@/features/auth/services/auth-firebase.service'
 import { Button } from '@/shared/components/atoms/button'
 import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
 import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
@@ -14,9 +16,7 @@ import { InputText } from '@/shared/components/molecules/form/input-text'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
 import { handleError } from '@/shared/helpers/error.helper'
-import { useAuth } from '@/features/auth/hooks/auth.hook'
-import { UserSchema, userSchema } from '@/features/auth/schemas/user.schema'
-import { upsertUser } from '@/features/auth/services/auth-firebase.service'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function CompleteProfileForm() {
   const { user, updateUser } = useAuth()

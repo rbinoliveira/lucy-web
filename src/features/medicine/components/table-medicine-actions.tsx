@@ -2,14 +2,14 @@ import { SquarePen, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
+import { MedicineModel } from '@/features/medicine/models/medicine.model'
+import { DeleteMedicineService } from '@/features/medicine/service/delete-medicine.service'
+import { listMedicinesQueryKey } from '@/features/medicine/service/list-medicines.service'
 import { Button } from '@/shared/components/atoms/button'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { handleError } from '@/shared/helpers/error.helper'
 import { useDialog } from '@/shared/hooks/dialog.hook'
 import { queryClient } from '@/shared/libs/react-query'
-import { MedicineModel } from '@/features/medicine/models/medicine.model'
-import { DeleteMedicineService } from '@/features/medicine/service/delete-medicine.service'
-import { listMedicinesQueryKey } from '@/features/medicine/service/list-medicines.service'
 
 type TableMedicineActionsProps = {
   medicine: MedicineModel

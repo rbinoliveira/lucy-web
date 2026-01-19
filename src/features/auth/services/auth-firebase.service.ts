@@ -7,13 +7,13 @@ import {
 import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore'
 import { toast } from 'sonner'
 
-import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
-import { handleError } from '@/shared/helpers/error.helper'
-import { auth, db, googleProvider } from '@/shared/libs/firebase'
 import { UserModel } from '@/features/auth/models/user.model'
 import { LoginSchema } from '@/features/auth/schemas/login.schema'
 import { RecoverPasswordSchema } from '@/features/auth/schemas/recover-password.schema'
 import { RegisterSchema } from '@/features/auth/schemas/register.schema'
+import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
+import { handleError } from '@/shared/helpers/error.helper'
+import { auth, db, googleProvider } from '@/shared/libs/firebase'
 
 export async function signInWithGoogle() {
   try {

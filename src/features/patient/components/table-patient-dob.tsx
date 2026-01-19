@@ -1,8 +1,8 @@
+import { PatientModel } from '@/features/patient/models/patient.model'
 import {
   convertToDateString,
   getDifferenceInYears,
 } from '@/shared/helpers/date.helper'
-import { PatientModel } from '@/features/patient/models/patient.model'
 
 type TablePatientDobProps = {
   patient: PatientModel

@@ -9,9 +9,9 @@ import {
   where,
 } from 'firebase/firestore'
 
+import { PatientModel } from '@/features/patient/models/patient.model'
 import { db } from '@/shared/libs/firebase'
 import { ListPaginatedModel } from '@/shared/models/list-paginated.model'
-import { PatientModel } from '@/features/patient/models/patient.model'
 
 export type ListPatientsUseCaseInput = {
   ownerId: string

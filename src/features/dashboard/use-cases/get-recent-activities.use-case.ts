@@ -7,8 +7,8 @@ import {
   where,
 } from 'firebase/firestore'
 
-import { db } from '@/shared/libs/firebase'
 import { ActivityType } from '@/features/dashboard/components/recent-activity'
+import { db } from '@/shared/libs/firebase'
 
 export type RecentActivityItem = {
   id: string

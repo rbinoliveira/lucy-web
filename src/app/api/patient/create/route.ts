@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 
 import {
+  SavePatientUseCaseSchema,
+  savePatientUseCaseSchema,
+} from '@/features/patient/schemas/save-patient.schema'
+import {
   normalizeName,
   normalizePhone,
 } from '@/shared/helpers/normalize-string.helper'
 import { authAdmin, dbAdmin } from '@/shared/libs/firebase-admin'
-import {
-  SavePatientUseCaseSchema,
-  savePatientUseCaseSchema,
-} from '@/features/patient/schemas/save-patient.schema'
 
 export async function POST(req: Request) {
   try {

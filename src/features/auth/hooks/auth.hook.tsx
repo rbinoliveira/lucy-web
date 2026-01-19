@@ -9,6 +9,11 @@ import {
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 
+import { UserModel } from '@/features/auth/models/user.model'
+import {
+  getUser,
+  upsertUser,
+} from '@/features/auth/services/auth-firebase.service'
 import {
   appPublicRoutes,
   appRoutes,
@@ -19,11 +24,6 @@ import { handleError } from '@/shared/helpers/error.helper'
 import { generateRandomPassword } from '@/shared/helpers/generate-password'
 import { getAuthCookies } from '@/shared/helpers/get-auth-cookies.helper'
 import { auth } from '@/shared/libs/firebase'
-import { UserModel } from '@/features/auth/models/user.model'
-import {
-  getUser,
-  upsertUser,
-} from '@/features/auth/services/auth-firebase.service'
 
 type AuthContextType = {
   user: UserModel | null

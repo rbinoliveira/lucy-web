@@ -1,13 +1,13 @@
 'use client'
 
-import { DataHandler } from '@/shared/components/molecules/data-handler'
-import { Table } from '@/shared/components/organisms/table/table'
-import { appRoutes } from '@/shared/constants/app-routes.constant'
-import { useTable } from '@/shared/hooks/table.hook'
 import { TableMedicineActions } from '@/features/medicine/components/table-medicine-actions'
 import { TableMedicineDose } from '@/features/medicine/components/table-medicine-dose'
 import { TableMedicineName } from '@/features/medicine/components/table-medicine-name'
 import { ListMedicinesService } from '@/features/medicine/service/list-medicines.service'
+import { DataHandler } from '@/shared/components/molecules/data-handler'
+import { Table } from '@/shared/components/organisms/table/table'
+import { appRoutes } from '@/shared/constants/app-routes.constant'
+import { useTable } from '@/shared/hooks/table.hook'
 
 export function ListMedicinesPage() {
   const { itemsPerPage, search, currentPage } = useTable()

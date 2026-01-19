@@ -1,12 +1,12 @@
 'use client'
 
-import { DataHandler } from '@/shared/components/molecules/data-handler'
-import { Table } from '@/shared/components/organisms/table/table'
-import { useTable } from '@/shared/hooks/table.hook'
 import { TablePrescriptionActions } from '@/features/prescription/components/table-prescription-actions'
 import { TablePrescriptionDose } from '@/features/prescription/components/table-prescription-dose'
 import { TablePrescriptionName } from '@/features/prescription/components/table-prescription-name'
 import { ListPrescriptionsService } from '@/features/prescription/service/list-prescriptions.service'
+import { DataHandler } from '@/shared/components/molecules/data-handler'
+import { Table } from '@/shared/components/organisms/table/table'
+import { useTable } from '@/shared/hooks/table.hook'
 
 export function ListPrescriptionsPage() {
   const { itemsPerPage, search, currentPage } = useTable()

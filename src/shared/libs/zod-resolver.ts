@@ -1,7 +1,9 @@
 import type { FieldErrors, FieldValues, Resolver } from 'react-hook-form'
 import type { ZodError, ZodSchema } from 'zod'
 
-function parseZodErrors<T extends FieldValues>(error: ZodError): FieldErrors<T> {
+function parseZodErrors<T extends FieldValues>(
+  error: ZodError,
+): FieldErrors<T> {
   const errors: FieldErrors<T> = {}
 
   for (const issue of error.issues) {

@@ -1,17 +1,11 @@
 'use client'
 
-import { zodResolver } from '@/shared/libs/zod-resolver'
 import { Check, Info, Pill } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 
-import { Button } from '@/shared/components/atoms/button'
-import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
-import { InputSelect } from '@/shared/components/molecules/form/input-select'
-import { InputText } from '@/shared/components/molecules/form/input-text'
-import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import {
   AdministrationRoute,
@@ -27,6 +21,12 @@ import {
 } from '@/features/medicine/schemas/save-medicine.schema'
 import { CreateMedicineService } from '@/features/medicine/service/create-medicine.service'
 import { UpdateMedicineService } from '@/features/medicine/service/update-medicine.service'
+import { Button } from '@/shared/components/atoms/button'
+import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
+import { InputSelect } from '@/shared/components/molecules/form/input-select'
+import { InputText } from '@/shared/components/molecules/form/input-text'
+import { appRoutes } from '@/shared/constants/app-routes.constant'
+import { zodResolver } from '@/shared/libs/zod-resolver'
 
 type SaveMedicineFormProps = {
   medicine?: MedicineModel

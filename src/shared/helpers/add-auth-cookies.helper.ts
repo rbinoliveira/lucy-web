@@ -1,7 +1,7 @@
 import { setCookie } from 'cookies-next'
 
-import { appCookies } from '@/shared/constants/app-cookies.constant'
 import { UserModel } from '@/features/auth/models/user.model'
+import { appCookies } from '@/shared/constants/app-cookies.constant'
 
 type AddAuthCookiesProps = {
   user: UserModel
