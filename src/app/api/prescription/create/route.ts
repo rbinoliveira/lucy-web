@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { savePrescriptionUseCaseSchema } from '@/features/prescription/schemas/save-prescription.schema'
+import { getCurrentUserApi } from '@/shared/helpers/get-current-user-api.helper'
 import { normalizeName } from '@/shared/helpers/normalize-string.helper'
 import { dbAdmin } from '@/shared/libs/firebase-admin'
 
@@ -18,6 +19,15 @@ export async function POST(req: Request) {
 
     const data = parsed.data
 
+    const currentUser = await getCurrentUserApi()
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
+    }
+
+    if (currentUser.role !== 'admin' && data.ownerId !== currentUser.id) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 403 })
+    }
+
     const prescriptionsRef = dbAdmin.collection('prescriptions')
     const newDocRef = prescriptionsRef.doc()
 
@@ -34,7 +44,7 @@ export async function POST(req: Request) {
       durationDays: data.durationDays ?? null,
       durationDescription: data.durationDescription ?? null,
       notes: data.notes ?? null,
-      ownerId: data.ownerId,
+      ownerId: currentUser.role === 'admin' ? data.ownerId : currentUser.id,
       status: data.status || 'active',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

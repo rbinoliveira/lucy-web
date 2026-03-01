@@ -68,9 +68,16 @@ export async function POST(req: Request) {
       })
     }
 
+    const dob = new Date(data.dob)
+    const dd = String(dob.getDate()).padStart(2, '0')
+    const mm = String(dob.getMonth() + 1).padStart(2, '0')
+    const yyyy = dob.getFullYear()
+    const initialPassword = `${dd}${mm}${yyyy}`
+
     const newAuthUser = await authAdmin.createUser({
       email,
       displayName: data.name,
+      password: initialPassword,
     })
 
     await createPatientInFirestore(newAuthUser.uid, data)

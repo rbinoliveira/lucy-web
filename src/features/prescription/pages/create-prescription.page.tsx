@@ -1,8 +1,7 @@
+import { Suspense } from 'react'
+
 import { SavePrescriptionForm } from '@/features/prescription/components/save-prescription-form'
-import {
-  FormCard,
-  FormCardHeader,
-} from '@/shared/components/molecules/form/form-card'
+import { FormCard, FormCardHeader } from '@/shared/components/form-card'
 
 export function CreatePrescriptionPage() {
   return (
@@ -11,7 +10,9 @@ export function CreatePrescriptionPage() {
         title="Nova Prescrição"
         subtitle="Preencha os dados abaixo para criar uma nova prescrição"
       />
-      <SavePrescriptionForm />
+      <Suspense>
+        <SavePrescriptionForm />
+      </Suspense>
     </FormCard>
   )
 }

@@ -3,7 +3,7 @@
 import NextImage, { ImageProps as NextImageProps } from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { Skeleton } from '@/shared/components/atoms/skeleton'
+import { Skeleton } from '@/shared/components/skeleton'
 import { cn } from '@/shared/libs/tw-merge'
 
 type ImageProps = NextImageProps & {

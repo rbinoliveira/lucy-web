@@ -42,7 +42,7 @@ export async function updatePatientUseCase(
     gender: data.gender as Gender,
     role: 'patient',
     ownerId: data.ownerId,
-    email: data.email || undefined,
+    email: data.email,
     cpf: data.cpf || undefined,
     susNumber: data.susNumber || undefined,
     address: data.address || undefined,

@@ -9,8 +9,8 @@ import {
   recoverPasswordSchema,
 } from '@/features/auth/schemas/recover-password.schema'
 import { sendPasswordReset } from '@/features/auth/services/auth-firebase.service'
-import { Button } from '@/shared/components/atoms/button'
-import { InputText } from '@/shared/components/molecules/form/input-text'
+import { Button } from '@/shared/components/button'
+import { InputText } from '@/shared/components/input-text'
 import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function RecoverPasswordForm() {

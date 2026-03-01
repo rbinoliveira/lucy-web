@@ -9,9 +9,9 @@ import {
   signInWithCredentials,
   signInWithGoogle,
 } from '@/features/auth/services/auth-firebase.service'
-import { Button } from '@/shared/components/atoms/button'
-import { Separator } from '@/shared/components/atoms/separator'
-import { InputText } from '@/shared/components/molecules/form/input-text'
+import { Button } from '@/shared/components/button'
+import { InputText } from '@/shared/components/input-text'
+import { Separator } from '@/shared/components/separator'
 import { zodResolver } from '@/shared/libs/zod-resolver'
 
 export function LoginForm() {

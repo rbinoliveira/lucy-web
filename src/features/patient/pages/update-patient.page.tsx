@@ -4,11 +4,8 @@ import { useParams } from 'next/navigation'
 
 import { SavePatientForm } from '@/features/patient/components/save-patient-form'
 import { ShowPatientService } from '@/features/patient/service/show-patient.service'
-import { DataHandler } from '@/shared/components/molecules/data-handler'
-import {
-  FormCard,
-  FormCardHeader,
-} from '@/shared/components/molecules/form/form-card'
+import { DataHandler } from '@/shared/components/data-handler'
+import { FormCard, FormCardHeader } from '@/shared/components/form-card'
 
 export function UpdatePatientPage() {
   const params = useParams<{ id: string }>()

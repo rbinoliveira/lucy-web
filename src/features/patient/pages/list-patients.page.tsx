@@ -6,7 +6,7 @@ import { TablePatientDob } from '@/features/patient/components/table-patient-dob
 import { TablePatientName } from '@/features/patient/components/table-patient-name'
 import { TablePatientPhone } from '@/features/patient/components/table-patient-phone'
 import { ListPatientsService } from '@/features/patient/service/list-patients.service'
-import { DataHandler } from '@/shared/components/molecules/data-handler'
+import { DataHandler } from '@/shared/components/data-handler'
 import { Table } from '@/shared/components/organisms/table/table'
 import { useTable } from '@/shared/hooks/table.hook'
 

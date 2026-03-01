@@ -16,7 +16,7 @@ export type PatientModel = {
   gender: Gender
   role: 'patient'
   ownerId: string
-  email?: string | null
+  email: string
   cpf?: string | null
   susNumber?: string | null
   address?: {

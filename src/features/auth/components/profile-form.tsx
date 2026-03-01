@@ -10,9 +10,9 @@ import {
   profileSchema,
 } from '@/features/auth/schemas/profile.schema'
 import { upsertUser } from '@/features/auth/services/auth-firebase.service'
-import { Button } from '@/shared/components/atoms/button'
-import { InputMaskedText } from '@/shared/components/molecules/form/input-masked-text'
-import { InputText } from '@/shared/components/molecules/form/input-text'
+import { Button } from '@/shared/components/button'
+import { InputMaskedText } from '@/shared/components/input-masked-text'
+import { InputText } from '@/shared/components/input-text'
 import { addAuthCookies } from '@/shared/helpers/add-auth-cookies.helper'
 import { zodResolver } from '@/shared/libs/zod-resolver'
 

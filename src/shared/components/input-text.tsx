@@ -10,9 +10,9 @@ import {
   PathValue,
 } from 'react-hook-form'
 
-import { Button } from '@/shared/components/atoms/button'
-import { InputError } from '@/shared/components/molecules/form/input-error'
-import { InputLabel } from '@/shared/components/molecules/form/input-label'
+import { Button } from '@/shared/components/button'
+import { InputError } from '@/shared/components/input-error'
+import { InputLabel } from '@/shared/components/input-label'
 import { cn } from '@/shared/libs/tw-merge'
 
 export type ExtendedInputTextProps = {
@@ -33,7 +33,7 @@ const svgClassName = cn(
   '[&>*]:h-[1.125rem] [&>*]:w-[1.125rem] text-icon',
 )
 
-const PrimitiveInputText = React.forwardRef<
+export const PrimitiveInputText = React.forwardRef<
   HTMLInputElement,
   PrimitiveInputTextProps
 >(

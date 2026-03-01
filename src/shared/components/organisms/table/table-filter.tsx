@@ -3,9 +3,9 @@
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 
-import { Button } from '@/shared/components/atoms/button'
-import { InputSearch } from '@/shared/components/molecules/form/input-search'
-import { InputSelect } from '@/shared/components/molecules/form/input-select'
+import { Button } from '@/shared/components/button'
+import { InputSearch } from '@/shared/components/input-search'
+import { InputSelect } from '@/shared/components/input-select'
 import { useTable } from '@/shared/hooks/table.hook'
 import { cn } from '@/shared/libs/tw-merge'
 

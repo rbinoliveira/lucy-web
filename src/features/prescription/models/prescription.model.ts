@@ -5,8 +5,10 @@ export type PrescriptionModel = {
   patientId: string
   patientEmail: string
   patientName: string
+  patientNameNormalized: string
   medicineId: string
   medicineName: string
+  medicineNameNormalized: string
   dosage: string
   durationDays?: number | null
   durationDescription?: string | null

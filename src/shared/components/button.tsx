@@ -51,10 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         'rounded-xl font-medium border border-border-one px-4 bg-white',
         'text-text-seven hover:border-primary/30 hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed',
       ],
-      ghost: [
-        'flex items-center justify-center',
-        'hover:bg-primary/10',
-      ],
+      ghost: ['flex items-center justify-center', 'hover:bg-primary/10'],
       google: [
         'flex justify-center items-center gap-2 h-[52px]',
         'border-2 border-border-one rounded-xl shadow-one font-semibold',

@@ -1,13 +1,8 @@
 'use client'
 
-import {
-  AlertTriangle,
-  CheckCircle,
-  TrendingUp,
-  Users,
-} from 'lucide-react'
+import { AlertTriangle, CheckCircle, TrendingUp, Users } from 'lucide-react'
 
-import { TiltCard } from '@/shared/components/atoms/tilt-card'
+import { TiltCard } from '@/shared/components/tilt-card'
 
 type DashboardStatsCardsProps = {
   activePrescriptions: number
@@ -33,7 +28,9 @@ export function DashboardStatsCards({
           <div>
             <p className="stat-label">Tratamentos ativos</p>
             <div className="stat-value">{display(activePrescriptions)}</div>
-            <span className="stat-change neutral">prescrições em andamento</span>
+            <span className="stat-change neutral">
+              prescrições em andamento
+            </span>
           </div>
           <div className="stat-icon icon-primary">
             <CheckCircle className="h-[26px] w-[26px]" />

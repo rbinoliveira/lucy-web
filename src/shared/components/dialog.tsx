@@ -2,8 +2,8 @@ import * as PrimitiveDialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import React, { ReactNode, useState } from 'react'
 
-import { Button } from '@/shared/components/atoms/button'
-import { Separator } from '@/shared/components/atoms/separator'
+import { Button } from '@/shared/components/button'
+import { Separator } from '@/shared/components/separator'
 import { useDialog } from '@/shared/hooks/dialog.hook'
 import { cn } from '@/shared/libs/tw-merge'
 

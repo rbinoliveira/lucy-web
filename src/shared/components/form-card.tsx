@@ -1,4 +1,4 @@
-import { Separator } from '@/shared/components/atoms/separator'
+import { Separator } from '@/shared/components/separator'
 import { cn } from '@/shared/libs/tw-merge'
 
 type FormCardProps = {

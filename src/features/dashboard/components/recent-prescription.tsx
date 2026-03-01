@@ -1,4 +1,4 @@
-import { Avatar } from '@/shared/components/atoms/avatar'
+import { Avatar } from '@/shared/components/avatar'
 import { cn } from '@/shared/libs/tw-merge'
 
 type SyncStatus = 'synced' | 'pending'

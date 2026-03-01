@@ -3,7 +3,7 @@
 import { FileText, Info, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 
-import { Button } from '@/shared/components/atoms/button'
+import { Button } from '@/shared/components/button'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 
 export function QuickActions() {

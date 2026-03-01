@@ -17,8 +17,8 @@ import {
   PathValue,
 } from 'react-hook-form'
 
-import { InputError } from '@/shared/components/molecules/form/input-error'
-import { InputLabel } from '@/shared/components/molecules/form/input-label'
+import { InputError } from '@/shared/components/input-error'
+import { InputLabel } from '@/shared/components/input-label'
 import { cn } from '@/shared/libs/tw-merge'
 
 export type PrimitiveInputSelectProps = {

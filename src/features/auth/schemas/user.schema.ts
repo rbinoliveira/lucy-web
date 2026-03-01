@@ -8,7 +8,7 @@ export const userSchema = z.object({
   id: optionalString({ field: 'id' }),
   email: requiredEmail(),
   name: requiredString({ field: 'nome' }),
-  role: requiredString({ field: 'role' }),
+  role: z.enum(['admin', 'dentist', 'patient']),
   photo: optionalString({ field: 'foto' }),
   cro: z
     .string()

@@ -1,5 +1,5 @@
 import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
-import { Avatar } from '@/shared/components/atoms/avatar'
+import { Avatar } from '@/shared/components/avatar'
 
 type TablePrescriptionNameProps = {
   prescription: PrescriptionModel

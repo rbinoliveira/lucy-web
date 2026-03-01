@@ -54,5 +54,4 @@ export const sidebarNavGroups = (role?: string): SidebarNavGroup[] => {
 
 export const sidebarContentNavItems = (
   role?: string,
-): SidebarContentNavItem[] =>
-  sidebarNavGroups(role).flatMap((g) => g.items)
+): SidebarContentNavItem[] => sidebarNavGroups(role).flatMap((g) => g.items)

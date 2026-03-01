@@ -27,7 +27,7 @@ export const savePatientFormSchema = z.object({
     requiredString({ field: 'data de nascimento' }),
   ]),
   gender: genderEnum,
-  email: optionalString({ field: 'email' }),
+  email: requiredString({ field: 'email' }),
   cpf: optionalString({ field: 'CPF' }),
   susNumber: optionalString({ field: 'número do SUS' }),
   address: addressSchema,

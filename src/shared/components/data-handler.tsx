@@ -1,7 +1,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { ReactNode } from 'react'
 
-import { Skeleton } from '@/shared/components/atoms/skeleton'
+import { Skeleton } from '@/shared/components/skeleton'
 
 type DataHandlerProps = {
   isLoading: boolean

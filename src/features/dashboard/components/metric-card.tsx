@@ -19,10 +19,7 @@ export function MetricCard({
 }: MetricCardProps) {
   return (
     <div
-      className={cn(
-        'glass-card flex items-center justify-between',
-        className,
-      )}
+      className={cn('glass-card flex items-center justify-between', className)}
     >
       <div className="flex flex-col gap-1">
         <span className="text-text-one text-4xl font-bold">{value}</span>

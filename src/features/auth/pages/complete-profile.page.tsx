@@ -1,8 +1,5 @@
 import { CompleteProfileForm } from '@/features/auth/components/complete-profile-form'
-import {
-  FormCard,
-  FormCardHeader,
-} from '@/shared/components/molecules/form/form-card'
+import { FormCard, FormCardHeader } from '@/shared/components/form-card'
 
 export function CompleteProfilePage() {
   return (

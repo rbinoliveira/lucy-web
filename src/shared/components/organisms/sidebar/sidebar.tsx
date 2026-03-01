@@ -7,11 +7,9 @@ import * as React from 'react'
 
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { signOut } from '@/features/auth/services/auth-firebase.service'
-import { Avatar } from '@/shared/components/atoms/avatar'
-import { Button, ButtonProps } from '@/shared/components/atoms/button'
-import { DropdownMenu } from '@/shared/components/atoms/dropdown-menu'
-import { TooltipProvider } from '@/shared/components/atoms/tooltip'
-import { appRoutes } from '@/shared/constants/app-routes.constant'
+import { Avatar } from '@/shared/components/avatar'
+import { Button, ButtonProps } from '@/shared/components/button'
+import { DropdownMenu } from '@/shared/components/dropdown-menu'
 import { SidebarContentNav } from '@/shared/components/organisms/sidebar/sidebar-content-nav'
 import { sidebarContentNavItems } from '@/shared/components/organisms/sidebar/sidebar-content-nav-items'
 import {
@@ -21,6 +19,8 @@ import {
   SidebarSheetHeader,
   SidebarSheetTitle,
 } from '@/shared/components/organisms/sidebar/sidebar-sheet'
+import { TooltipProvider } from '@/shared/components/tooltip'
+import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { getCompoundName } from '@/shared/helpers/name-manipulator.helper'
 import { useIsMobile } from '@/shared/helpers/use-mobile'
 import { cn } from '@/shared/libs/tw-merge'
@@ -215,7 +215,7 @@ function SidebarTrigger({
   const { updateSidebarState, state } = useSidebar()
 
   return (
-      <Button
+    <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
@@ -283,10 +283,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="sidebar-footer"
       data-sidebar="footer"
-      className={cn(
-        'flex flex-col border-t border-white/50 pt-5',
-        className,
-      )}
+      className={cn('flex flex-col border-t border-white/50 pt-5', className)}
       {...props}
     />
   )
@@ -421,7 +418,10 @@ function AppSidebarHeader() {
               </span>
             }
             items={[
-              <Link key="prescription" href={appRoutes.prescriptions + '/adicionar'}>
+              <Link
+                key="prescription"
+                href={appRoutes.prescriptions + '/adicionar'}
+              >
                 Nova Prescrição
               </Link>,
               <Link key="patient" href={appRoutes.patients + '/adicionar'}>

@@ -20,10 +20,10 @@ import {
 } from '@/features/medicine/schemas/save-medicine.schema'
 import { CreateMedicineService } from '@/features/medicine/service/create-medicine.service'
 import { UpdateMedicineService } from '@/features/medicine/service/update-medicine.service'
-import { Button } from '@/shared/components/atoms/button'
-import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
-import { InputSelect } from '@/shared/components/molecules/form/input-select'
-import { InputText } from '@/shared/components/molecules/form/input-text'
+import { Button } from '@/shared/components/button'
+import { FormCardFooter } from '@/shared/components/form-card'
+import { InputSelect } from '@/shared/components/input-select'
+import { InputText, PrimitiveInputText } from '@/shared/components/input-text'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { zodResolver } from '@/shared/libs/zod-resolver'
 
@@ -200,21 +200,26 @@ export function SaveMedicineForm({ medicine }: SaveMedicineFormProps) {
         <Controller
           name="durationDays"
           control={control}
-          render={({ field }) => (
-            <InputText
-              placeholder="Ex: 7"
-              label="Duração (dias)"
-              control={control}
-              type="number"
-              disabled={whilePain}
-              value={whilePain ? '' : (field.value ?? '')}
-              onChange={(e) => {
-                if (!whilePain) {
-                  handleDurationDaysChange(e.target.value)
-                  field.onChange(e)
-                }
-              }}
-            />
+          render={({ field, fieldState: { error } }) => (
+            <div className="flex w-full flex-col gap-2">
+              <label className="text-sm font-medium">Duração (dias)</label>
+              <PrimitiveInputText
+                placeholder="Ex: 7"
+                type="number"
+                disabled={whilePain}
+                value={whilePain ? '' : (field.value ?? '')}
+                isErrored={!!error}
+                onChange={(e) => {
+                  if (!whilePain) {
+                    handleDurationDaysChange(e.target.value)
+                    field.onChange(e)
+                  }
+                }}
+              />
+              {error && (
+                <span className="text-danger-one text-xs">{error.message}</span>
+              )}
+            </div>
           )}
         />
         <div className="flex flex-col justify-end gap-2">

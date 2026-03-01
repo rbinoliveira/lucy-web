@@ -10,7 +10,7 @@ import {
   PathValue,
 } from 'react-hook-form'
 
-import { InputError } from '@/shared/components/molecules/form/input-error'
+import { InputError } from '@/shared/components/input-error'
 import { toCalendarDate, toNativeDate } from '@/shared/helpers/date.helper'
 import { cn } from '@/shared/libs/tw-merge'
 

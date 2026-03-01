@@ -1,8 +1,5 @@
 import { SavePatientForm } from '@/features/patient/components/save-patient-form'
-import {
-  FormCard,
-  FormCardHeader,
-} from '@/shared/components/molecules/form/form-card'
+import { FormCard, FormCardHeader } from '@/shared/components/form-card'
 
 export function CreatePatientPage() {
   return (

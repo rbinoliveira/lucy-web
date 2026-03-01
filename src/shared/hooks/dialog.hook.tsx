@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react'
 
-import { DialogProps } from '@/shared/components/molecules/dialog'
+import { DialogProps } from '@/shared/components/dialog'
 
 type DialogContextData = {
   dialogProps: DialogProps | null

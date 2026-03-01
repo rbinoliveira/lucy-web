@@ -10,8 +10,8 @@ import {
 } from 'react-hook-form'
 import { withMask } from 'use-mask-input'
 
-import { InputError } from '@/shared/components/molecules/form/input-error'
-import { InputLabel } from '@/shared/components/molecules/form/input-label'
+import { InputError } from '@/shared/components/input-error'
+import { InputLabel } from '@/shared/components/input-label'
 import { cn } from '@/shared/libs/tw-merge'
 
 export type ExtendedInputTextProps = {
@@ -20,14 +20,15 @@ export type ExtendedInputTextProps = {
   inputSize?: 'base' | 'lg'
 }
 
-export interface PrimitiveInputMaskedTextProps {
+export interface PrimitiveInputMaskedTextProps extends Omit<
+  React.ComponentProps<'input'>,
+  'ref'
+> {
   isErrored?: boolean
   iconBefore?: React.ReactNode
   elementAfter?: React.ReactNode
   inputSize?: ExtendedInputTextProps['inputSize']
-  className?: string
   mask?: 'only-numbers' | 'phone' | 'date' | 'cpf' | 'cep'
-  id?: string
 }
 
 const svgClassName = cn(

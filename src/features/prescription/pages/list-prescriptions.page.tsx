@@ -5,7 +5,7 @@ import { TablePrescriptionActions } from '@/features/prescription/components/tab
 import { TablePrescriptionDose } from '@/features/prescription/components/table-prescription-dose'
 import { TablePrescriptionName } from '@/features/prescription/components/table-prescription-name'
 import { ListPrescriptionsService } from '@/features/prescription/service/list-prescriptions.service'
-import { DataHandler } from '@/shared/components/molecules/data-handler'
+import { DataHandler } from '@/shared/components/data-handler'
 import { Table } from '@/shared/components/organisms/table/table'
 import { useTable } from '@/shared/hooks/table.hook'
 

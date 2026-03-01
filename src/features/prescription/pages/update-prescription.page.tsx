@@ -4,11 +4,8 @@ import { useParams } from 'next/navigation'
 
 import { SavePrescriptionForm } from '@/features/prescription/components/save-prescription-form'
 import { ShowPrescriptionService } from '@/features/prescription/service/show-prescription.service'
-import { DataHandler } from '@/shared/components/molecules/data-handler'
-import {
-  FormCard,
-  FormCardHeader,
-} from '@/shared/components/molecules/form/form-card'
+import { DataHandler } from '@/shared/components/data-handler'
+import { FormCard, FormCardHeader } from '@/shared/components/form-card'
 
 export function UpdatePrescriptionPage() {
   const params = useParams<{ id: string }>()
