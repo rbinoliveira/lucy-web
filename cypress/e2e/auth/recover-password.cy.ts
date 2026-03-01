@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-const RECOVER_URL = '/recuperar-senha'
+import { RECOVER_URL } from '../constants'
 
 describe('Recover password page', () => {
   beforeEach(() => {

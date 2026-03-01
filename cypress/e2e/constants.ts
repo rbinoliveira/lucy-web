@@ -1,0 +1,7 @@
+export const LOGIN_URL = '/'
+export const REGISTER_URL = '/registrar'
+export const RECOVER_URL = '/recuperar-senha'
+export const DASHBOARD_URL = '/dashboard'
+export const COMPLETE_PROFILE_URL = '/completar-perfil'
+export const CREATE_PATIENT_URL = '/pacientes/adicionar'
+export const CREATE_MEDICINE_URL = '/medicamentos/adicionar'

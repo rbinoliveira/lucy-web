@@ -1,9 +1,6 @@
 /// <reference types="cypress" />
 
-// The login page lives at "/" (appRoutes.signIn = '/')
-// The middleware redirects unauthenticated users to /entrar, but the login
-// form itself is rendered at "/". Adjust this constant if the route changes.
-const LOGIN_URL = '/'
+import { LOGIN_URL } from '../constants'
 
 describe('Login page', () => {
   beforeEach(() => {

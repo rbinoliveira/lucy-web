@@ -9,6 +9,17 @@ type LoginByFirebaseOptions = {
   password: string
 }
 
+type UserCookiePayload = {
+  id: string
+  email: string
+  name: string
+  role: 'admin' | 'dentist' | 'patient'
+  photo?: string
+  cro?: string | null
+  phone?: string | null
+  status?: 'pending' | 'approved' | 'rejected'
+}
+
 Cypress.Commands.add(
   'loginByFirebase',
   ({ email, password }: LoginByFirebaseOptions) => {
@@ -55,11 +66,19 @@ Cypress.Commands.add(
   },
 )
 
+Cypress.Commands.add('setAuthCookie', (user: UserCookiePayload) => {
+  cy.setCookie(AUTH_COOKIE_NAME, JSON.stringify(user), {
+    sameSite: 'lax',
+    secure: false,
+  })
+})
+
+export {}
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       loginByFirebase(options: LoginByFirebaseOptions): Chainable<void>
+      setAuthCookie(user: UserCookiePayload): Chainable<void>
     }
   }
 }

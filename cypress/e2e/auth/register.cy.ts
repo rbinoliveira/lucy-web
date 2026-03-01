@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-const REGISTER_URL = '/registrar'
+import { REGISTER_URL } from '../constants'
 
 describe('Register page', () => {
   beforeEach(() => {
