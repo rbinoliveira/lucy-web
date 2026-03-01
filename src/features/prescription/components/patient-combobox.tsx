@@ -149,7 +149,7 @@ export function PatientCombobox({
                     value={patient}
                     className={cn(
                       'text-text-one cursor-pointer px-4 py-3 text-sm',
-                      'data-focus:bg-primary-light data-focus:text-white',
+                      'data-focus:bg-primary data-focus:text-primary-contrast',
                       'transition-colors',
                     )}
                   >

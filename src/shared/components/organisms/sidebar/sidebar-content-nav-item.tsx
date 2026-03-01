@@ -22,19 +22,18 @@ export function SidebarContentNavItem({
   const isActive = pathname.includes(href)
 
   return (
-    <li key={href} className={cn('flex w-full items-center', 'justify-start')}>
+    <li className="flex w-full items-center justify-start">
       <Link
         href={href}
         className={cn(
-          'transition-colors',
-          'rounded-radius flex w-full items-center',
-          'gap-3 px-4 py-3 leading-[1.1875]',
-          'text-text-seven',
-          '[&_svg]:text-text-six [&_svg]:shrink-0 [&_svg]:text-2xl',
+          'flex w-full items-center gap-[14px]',
+          'rounded-xl px-[18px] py-[14px]',
+          'text-sm font-medium leading-[1.1875]',
+          'transition-all duration-200',
+          '[&_svg]:h-[22px] [&_svg]:w-[22px] [&_svg]:shrink-0',
           isActive
-            ? 'bg-primary text-white [&_svg]:text-white'
-            : 'hover:bg-black/10',
-          'justify-start',
+            ? 'bg-primary/12 border border-primary/20 text-text-one [&_svg]:text-primary'
+            : 'text-text-two border border-transparent [&_svg]:text-text-three hover:bg-primary/10 hover:text-text-one hover:[&_svg]:text-primary',
         )}
       >
         {icon}

@@ -43,7 +43,7 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        'flex size-full items-center justify-center rounded-full bg-neutral-100',
+        'flex size-full items-center justify-center bg-primary/10 text-primary font-semibold text-xs',
         className,
       )}
       {...props}
@@ -74,7 +74,7 @@ function Avatar({
           'size-14': size === 'md',
           'size-16': size === 'lg',
           'rounded-full': roundedFull,
-          'rounded-radius': !roundedFull,
+          'rounded-xl': !roundedFull,
         },
         className,
       )}
@@ -82,7 +82,7 @@ function Avatar({
       <AvatarImage
         className={cn({
           'rounded-full': roundedFull,
-          'rounded-radius': !roundedFull,
+          'rounded-xl': !roundedFull,
         })}
         src={imageUrl ?? undefined}
         alt={name ?? undefined}
@@ -90,7 +90,7 @@ function Avatar({
       <AvatarFallback
         className={cn({
           'rounded-full': roundedFull,
-          'rounded-radius': !roundedFull,
+          'rounded-xl': !roundedFull,
         })}
       >
         {generateInitials(name ?? undefined)}

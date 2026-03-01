@@ -139,7 +139,7 @@ export function SavePatientForm({ patient }: SavePatientFormProps) {
       <button
         type="button"
         onClick={() => setShowOptionalFields(!showOptionalFields)}
-        className="text-primary text-left text-sm font-medium hover:underline"
+        className="text-primary text-left text-sm font-medium hover:text-primary-alternative hover:underline"
       >
         {showOptionalFields
           ? '− Ocultar campos opcionais'

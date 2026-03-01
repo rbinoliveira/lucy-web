@@ -23,6 +23,7 @@ import { CreatePrescriptionService } from '@/features/prescription/service/creat
 import { UpdatePrescriptionService } from '@/features/prescription/service/update-prescription.service'
 import { Button } from '@/shared/components/atoms/button'
 import { FormCardFooter } from '@/shared/components/molecules/form/form-card'
+import { InputText } from '@/shared/components/molecules/form/input-text'
 import { InputTextarea } from '@/shared/components/molecules/form/input-textarea'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
 import { zodResolver } from '@/shared/libs/zod-resolver'
@@ -53,6 +54,9 @@ export function SavePrescriptionForm({
           medicineId: prescription.medicineId,
           medicineName: prescription.medicineName,
           dosage: prescription.dosage,
+          durationDays: prescription.durationDays ?? undefined,
+          durationDescription: prescription.durationDescription ?? '',
+          notes: prescription.notes ?? '',
         }
       : {
           patientId: '',
@@ -61,6 +65,9 @@ export function SavePrescriptionForm({
           medicineId: '',
           medicineName: '',
           dosage: '',
+          durationDays: undefined,
+          durationDescription: '',
+          notes: '',
         },
   })
 
@@ -136,13 +143,11 @@ export function SavePrescriptionForm({
   }
 
   async function onSubmit(data: SavePrescriptionFormSchema) {
-    console.log('Form submitted with data:', data)
     const formattedData = {
       ...data,
       ownerId: user?.id ?? '',
       status: prescription?.status ?? 'active',
     }
-    console.log('Formatted data:', formattedData)
     if (isEditPage && prescription?.id) {
       updatePrescription({ ...formattedData, id: prescription.id })
     } else {
@@ -185,6 +190,27 @@ export function SavePrescriptionForm({
         control={control}
         name="dosage"
         rows={4}
+      />
+      <InputText
+        label="Duração (dias)"
+        placeholder="Ex: 7"
+        control={control}
+        name="durationDays"
+        type="number"
+        min={0}
+      />
+      <InputText
+        label="Duração (texto)"
+        placeholder="Ex: Enquanto houver dor"
+        control={control}
+        name="durationDescription"
+      />
+      <InputTextarea
+        label="Observações"
+        placeholder="Informações adicionais para o paciente"
+        control={control}
+        name="notes"
+        rows={3}
       />
       <FormCardFooter>
         <Button

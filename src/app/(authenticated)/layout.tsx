@@ -18,12 +18,15 @@ export default function DashboardLayout({
 }>) {
   return (
     <SidebarProvider>
+      <div className="orb orb-1" aria-hidden />
+      <div className="orb orb-2" aria-hidden />
+      <div className="orb orb-3" aria-hidden />
       <AppSidebar />
       <SidebarInset className="flex w-full flex-col">
-        <AppSidebarHeader />
-        <main className="mx-auto w-full max-w-[1200px] px-6 py-6 2xl:px-0">
+        <div className="mx-auto w-full max-w-[1400px] flex-1 p-4 sm:p-5 md:p-[30px]">
+          <AppSidebarHeader />
           {children}
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )

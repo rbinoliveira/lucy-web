@@ -8,7 +8,7 @@ import { appRoutes } from '@/shared/constants/app-routes.constant'
 
 export function QuickActions() {
   return (
-    <div className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
+    <div className="glass-card flex flex-col gap-4">
       <h3 className="text-text-one text-lg font-semibold">Ações Rápidas</h3>
 
       <Button

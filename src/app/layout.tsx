@@ -2,18 +2,25 @@ import '@/shared/styles/globals.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Outfit, Space_Mono as SpaceMono } from 'next/font/google'
 
 import { RootProviders } from '@/shared/providers/root.provider'
 
-const inter = Inter({
-  weight: ['400', '500', '600', '700'],
+const outfit = Outfit({
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--inter',
+  variable: '--font-outfit',
+})
+
+const spaceMono = SpaceMono({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-space-mono',
 })
 
 export const metadata: Metadata = {
-  title: 'Create Next App',
+  title: 'Lucy',
+  description: 'Sistema de prescrições para dentistas',
 }
 
 export default function RootLayout({
@@ -22,8 +29,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" className={`${inter.className} antialiased`}>
-      <body suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${outfit.variable} ${spaceMono.variable} antialiased`}
+    >
+      <body suppressHydrationWarning className={outfit.className}>
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

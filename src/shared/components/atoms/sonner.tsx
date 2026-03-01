@@ -17,8 +17,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
           ),
           error: '!border-danger-three shadow-two',
           success: '!border-green-two shadow-two',
-          title: '!font-semibold !text-sm !font-inter !text-text-one',
-          description: '!text-text-two !font-inter !text-xs',
+          title: '!font-semibold !text-sm !text-text-one',
+          description: '!text-text-two !text-xs',
         },
       }}
       icons={{

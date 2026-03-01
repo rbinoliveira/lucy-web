@@ -8,6 +8,9 @@ export type PrescriptionModel = {
   medicineId: string
   medicineName: string
   dosage: string
+  durationDays?: number | null
+  durationDescription?: string | null
+  notes?: string | null
   ownerId: string
   status: PrescriptionStatus
   createdAt?: Date | string

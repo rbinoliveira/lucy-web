@@ -1,12 +1,10 @@
 'use client'
 
-import { AlertTriangle, CheckCircle, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { AlertNotification } from '@/features/dashboard/components/alert-notification'
-import { MetricCard } from '@/features/dashboard/components/metric-card'
-import { QuickActions } from '@/features/dashboard/components/quick-actions'
+import { DashboardStatsCards } from '@/features/dashboard/components/dashboard-stats-cards'
 import { RecentPrescription } from '@/features/dashboard/components/recent-prescription'
 import { GetDashboardMetricsService } from '@/features/dashboard/service/get-dashboard-metrics.service'
 import { GetRecentPrescriptionsService } from '@/features/dashboard/service/get-recent-prescriptions.service'
@@ -28,89 +26,30 @@ export function DashboardPage() {
     })
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <MetricCard
-          icon={<CheckCircle className="h-7 w-7 text-white" />}
-          iconBgColor="bg-green-500"
-          value={isLoadingMetrics ? '-' : (metrics?.activePrescriptions ?? 0)}
-          label="Tratamentos Ativos"
-          description="Pacientes em tratamento"
-        />
-        <MetricCard
-          icon={<TrendingUp className="h-7 w-7 text-white" />}
-          iconBgColor="bg-purple-500"
-          value={isLoadingMetrics ? '-' : `${metrics?.adherenceRate ?? 0}%`}
-          label="Adesão Média"
-          description="Aderência às medicações"
-        />
-        <MetricCard
-          icon={<AlertTriangle className="h-7 w-7 text-white" />}
-          iconBgColor="bg-[#DC2626]"
-          value={isLoadingMetrics ? '-' : (metrics?.pendingAlerts ?? 0)}
-          label="Alertas Pendentes"
-          description="Requerem atenção"
-        />
-      </section>
+    <div className="flex flex-col gap-4 md:gap-[30px]">
+      <DashboardStatsCards
+        activePrescriptions={metrics?.activePrescriptions ?? 0}
+        totalPatients={metrics?.totalPatients ?? 0}
+        adherenceRate={metrics?.adherenceRate ?? 0}
+        pendingAlerts={metrics?.pendingAlerts ?? 0}
+        isLoading={isLoadingMetrics}
+      />
 
-      <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-text-one text-lg font-semibold">
-            Notificações de Alerta
-          </h3>
-          <Link
-            href="#"
-            className="text-primary text-sm font-medium hover:underline"
-          >
-            Ver todas
-          </Link>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          {metrics?.pendingAlerts === 0 ? (
-            <p className="text-text-two py-4 text-center text-sm">
-              Nenhum alerta pendente
-            </p>
-          ) : (
-            <>
-              <AlertNotification
-                type="danger"
-                title="Maria Silva não confirmou dose há 3 dias"
-                description="Amoxicilina 500mg - Última confirmação: 15/01/2024"
-                onContact={() => {}}
-              />
-              <AlertNotification
-                type="warning"
-                title="João Santos atrasou dose por 2 horas"
-                description="Ibuprofeno 600mg - Horário previsto: 14:00"
-                onContact={() => {}}
-              />
-              <AlertNotification
-                type="info"
-                title="Ana Costa perdeu dose de ontem"
-                description="Paracetamol 750mg - Dose não confirmada: 17/01/2024"
-                onContact={() => {}}
-              />
-            </>
-          )}
-        </div>
-      </section>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6 lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <h3 className="text-text-one text-lg font-semibold">
-              Últimas Prescrições
-            </h3>
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-2 md:gap-[30px]">
+        <div className="glass-card flex flex-col">
+          <div className="card-header">
+            <div>
+              <h2 className="card-title">Últimas Prescrições</h2>
+              <p className="card-subtitle">Prescrições recentes</p>
+            </div>
             <Link
               href={appRoutes.prescriptions}
-              className="text-primary text-sm font-medium hover:underline"
+              className="text-primary text-sm font-medium hover:text-primary-alternative hover:underline"
             >
               Ver todas
             </Link>
           </div>
-
-          <div className="divide-border-one flex flex-col divide-y">
+          <div className="flex flex-col divide-y divide-border-one">
             {isLoadingPrescriptions ? (
               <p className="text-text-two py-4 text-center text-sm">
                 Carregando...
@@ -131,10 +70,53 @@ export function DashboardPage() {
               </p>
             )}
           </div>
-        </section>
+        </div>
 
-        <QuickActions />
-      </div>
+        <div className="glass-card">
+          <div className="card-header">
+            <div>
+              <h2 className="card-title">Alertas</h2>
+              <p className="card-subtitle">
+                Notificações que requerem sua atenção
+              </p>
+            </div>
+            <Link
+              href="#"
+              className="text-primary text-sm font-medium hover:text-primary-alternative hover:underline"
+            >
+              Ver todas
+            </Link>
+          </div>
+          <div className="flex flex-col gap-3">
+            {metrics?.pendingAlerts === 0 ? (
+              <p className="text-text-three text-sm">
+                Nenhum alerta pendente no momento.
+              </p>
+            ) : (
+              <>
+                <AlertNotification
+                  type="danger"
+                  title="Maria Silva não confirmou dose há 3 dias"
+                  description="Amoxicilina 500mg - Última confirmação: 15/01/2024"
+                  onContact={() => {}}
+                />
+                <AlertNotification
+                  type="warning"
+                  title="João Santos atrasou dose por 2 horas"
+                  description="Ibuprofeno 600mg - Horário previsto: 14:00"
+                  onContact={() => {}}
+                />
+                <AlertNotification
+                  type="info"
+                  title="Ana Costa perdeu dose de ontem"
+                  description="Paracetamol 750mg - Dose não confirmada: 17/01/2024"
+                  onContact={() => {}}
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

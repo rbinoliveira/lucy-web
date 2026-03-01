@@ -19,6 +19,7 @@ import { useParams } from 'next/navigation'
 import { useAuth } from '@/features/auth/hooks/auth.hook'
 import { MetricCard } from '@/features/dashboard/components/metric-card'
 import { genderLabels } from '@/features/patient/models/patient.model'
+import { PatientAdherenceBehavior } from '@/features/patient/components/patient-adherence-behavior'
 import { ShowPatientService } from '@/features/patient/service/show-patient.service'
 import { TablePrescriptionActions } from '@/features/prescription/components/table-prescription-actions'
 import { TablePrescriptionName } from '@/features/prescription/components/table-prescription-name'
@@ -26,7 +27,7 @@ import { ListPrescriptionsService } from '@/features/prescription/service/list-p
 import { Button } from '@/shared/components/atoms/button'
 import { DataHandler } from '@/shared/components/molecules/data-handler'
 import { appRoutes } from '@/shared/constants/app-routes.constant'
-import { getDifferenceInYears } from '@/shared/helpers/date.helper'
+import { convertToDateString, getDifferenceInYears } from '@/shared/helpers/date.helper'
 import { useTable } from '@/shared/hooks/table.hook'
 
 export function ViewPatientProfilePage() {
@@ -74,96 +75,114 @@ export function ViewPatientProfilePage() {
   const finishedPrescriptions = 0
   const adherenceRate = 0
 
+  const adherenceBehavior = null
+
   return (
     <DataHandler isError={isError} isLoading={isLoading}>
-      <div className="flex flex-col gap-6 p-6">
-        <div>
-          <h1 className="text-text-one text-2xl font-bold">{patient.name}</h1>
-          <p className="text-text-two text-sm">
-            ({age} {age === 1 ? 'ano' : 'anos'})
-          </p>
-        </div>
-
-        <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-text-one text-lg font-semibold">
-              Informações do Paciente
-            </h2>
+      <div className="flex flex-col gap-8">
+        <header className="rounded-2xl border border-white/40 bg-white/60 px-5 py-6 shadow-three backdrop-blur-sm md:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h1 className="text-text-one text-2xl font-bold tracking-tight md:text-3xl">
+                {patient.name}
+              </h1>
+              <p className="text-text-two mt-1 text-sm">
+                {convertToDateString(patient.dob)} · {age}{' '}
+                {age === 1 ? 'ano' : 'anos'}
+              </p>
+            </div>
             <Button variant="secondary" asChild>
-              <Link href={`${appRoutes.patients}/${patient.id}/editar`}>
+              <Link
+                href={`${appRoutes.patients}/${patient.id}/editar`}
+                className="gap-2"
+              >
                 <Edit className="h-4 w-4" />
                 Editar
               </Link>
             </Button>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex items-start gap-3">
-              <User className="text-text-three mt-0.5 h-5 w-5" />
-              <div className="flex flex-col">
-                <span className="text-text-two text-xs">Nome</span>
-                <span className="text-text-one text-sm font-medium">
-                  {patient.name}
-                </span>
+        </header>
+
+        <section className="glass-card">
+          <div className="card-header">
+            <div>
+              <h2 className="card-title">Informações do Paciente</h2>
+              <p className="card-subtitle">Dados cadastrais</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <User className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-text-three text-xs">Nome</span>
+                <p className="text-text-one font-medium">{patient.name}</p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <Calendar className="text-text-three mt-0.5 h-5 w-5" />
-              <div className="flex flex-col">
-                <span className="text-text-two text-xs">
+            <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Calendar className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-text-three text-xs">
                   Data de Nascimento
                 </span>
-                <span className="text-text-one text-sm font-medium">
-                  ({age} {age === 1 ? 'ano' : 'anos'})
-                </span>
+                <p className="text-text-one font-medium">
+                  {convertToDateString(patient.dob)} ({age}{' '}
+                  {age === 1 ? 'ano' : 'anos'})
+                </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <User className="text-text-three mt-0.5 h-5 w-5" />
-              <div className="flex flex-col">
-                <span className="text-text-two text-xs">Gênero</span>
-                <span className="text-text-one text-sm font-medium">
+            <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <User className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-text-three text-xs">Gênero</span>
+                <p className="text-text-one font-medium">
                   {genderLabels[patient.gender]}
-                </span>
+                </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <Phone className="text-text-three mt-0.5 h-5 w-5" />
-              <div className="flex flex-col">
-                <span className="text-text-two text-xs">Telefone</span>
-                <span className="text-text-one text-sm font-medium">
-                  {patient.phone}
-                </span>
+            <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Phone className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-text-three text-xs">Telefone</span>
+                <p className="text-text-one font-medium">{patient.phone}</p>
               </div>
             </div>
             {patient.email && (
-              <div className="flex items-start gap-3">
-                <Mail className="text-text-three mt-0.5 h-5 w-5" />
-                <div className="flex flex-col">
-                  <span className="text-text-two text-xs">E-mail</span>
-                  <span className="text-text-one text-sm font-medium">
-                    {patient.email}
-                  </span>
+              <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-text-three text-xs">E-mail</span>
+                  <p className="text-text-one font-medium">{patient.email}</p>
                 </div>
               </div>
             )}
             {patient.address && (
-              <div className="flex items-start gap-3">
-                <MapPin className="text-text-three mt-0.5 h-5 w-5" />
-                <div className="flex flex-col">
-                  <span className="text-text-two text-xs">Endereço</span>
-                  <span className="text-text-one text-sm font-medium">
-                    {formatAddress()}
-                  </span>
+              <div className="flex items-start gap-3 rounded-xl bg-black/2 p-3 sm:col-span-2 lg:col-span-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-text-three text-xs">Endereço</span>
+                  <p className="text-text-one font-medium">{formatAddress()}</p>
                 </div>
               </div>
             )}
           </div>
         </section>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="stats-grid">
           <MetricCard
             icon={<FileText className="h-7 w-7 text-white" />}
-            iconBgColor="bg-blue-500"
+            iconBgColor="bg-primary/90"
             value={totalPrescriptions}
             label="Total de Prescrições"
             description="Prescrições cadastradas"
@@ -191,11 +210,24 @@ export function ViewPatientProfilePage() {
           />
         </div>
 
-        <section className="shadow-one flex flex-col gap-4 rounded-2xl bg-white p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-text-one text-lg font-semibold">
-              Histórico de Prescrições
-            </h2>
+        <section className="glass-card">
+          <div className="card-header">
+            <div>
+              <h2 className="card-title">Comportamento de adesão</h2>
+              <p className="card-subtitle">
+                Como o paciente está tomando as medicações
+              </p>
+            </div>
+          </div>
+          <PatientAdherenceBehavior counts={adherenceBehavior} />
+        </section>
+
+        <section className="glass-card">
+          <div className="card-header">
+            <div>
+              <h2 className="card-title">Histórico de Prescrições</h2>
+              <p className="card-subtitle">Prescrições vinculadas ao paciente</p>
+            </div>
             <Button variant="primary" asChild>
               <Link
                 href={`${appRoutes.prescriptions}/adicionar?patientName=${encodeURIComponent(patient.name)}`}
@@ -210,11 +242,11 @@ export function ViewPatientProfilePage() {
             isLoading={isLoadingPrescriptions}
           >
             {prescriptionsData && prescriptionsData.items.length > 0 ? (
-              <div className="divide-border-one flex flex-col divide-y">
+              <div className="divide-border-one flex flex-col divide-y rounded-xl">
                 {prescriptionsData.items.map((prescription) => (
                   <div
                     key={prescription.id}
-                    className="flex items-center justify-between p-4"
+                    className="flex items-center justify-between gap-4 px-1 py-4 first:pt-0"
                   >
                     <TablePrescriptionName prescription={prescription} />
                     <TablePrescriptionActions prescription={prescription} />
@@ -222,7 +254,7 @@ export function ViewPatientProfilePage() {
                 ))}
               </div>
             ) : (
-              <p className="text-text-two py-4 text-center text-sm">
+              <p className="text-text-two py-8 text-center text-sm">
                 Nenhuma prescrição encontrada
               </p>
             )}

@@ -20,7 +20,7 @@ export function MetricCard({
   return (
     <div
       className={cn(
-        'shadow-one flex items-center justify-between rounded-2xl bg-white p-6',
+        'glass-card flex items-center justify-between',
         className,
       )}
     >

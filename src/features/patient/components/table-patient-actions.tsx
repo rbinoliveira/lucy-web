@@ -48,19 +48,27 @@ export function TablePatientActions({ patient }: TablePatientActionsProps) {
   }
 
   return (
-    <div className="flex items-center gap-1">
-      <Button variant="ghost" size="sm" asChild title="Ver perfil">
-        <Link href={`${appRoutes.patients}/${patient.id}`}>
-          <Eye className="text-primary h-4 w-4" />
+    <div className="flex items-center gap-3">
+      <Button
+        variant="ghost"
+        asChild
+        title="Ver perfil"
+        className="rounded-lg p-2.5 hover:bg-primary/10"
+      >
+        <Link
+          href={`${appRoutes.patients}/${patient.id}`}
+          className="flex items-center justify-center"
+        >
+          <Eye className="text-primary h-5 w-5" />
         </Link>
       </Button>
       <Button
         variant="ghost"
-        size="sm"
         onClick={handleDelete}
         title="Excluir paciente"
+        className="rounded-lg p-2.5 hover:bg-danger-one/10"
       >
-        <Trash2 className="text-danger-one h-4 w-4" />
+        <Trash2 className="text-danger-one h-5 w-5" />
       </Button>
     </div>
   )
