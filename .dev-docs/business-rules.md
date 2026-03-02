@@ -6,7 +6,6 @@ Version: 2.1
 - Collections raiz:
   - `users/{uid}`
   - `prescriptions/{id}`
-  - `medicines/{id}`
 - O isolamento entre dentistas é por `ownerId`.
 
 ## 2) Regras de autenticação e sessão (web)
@@ -43,37 +42,28 @@ Version: 2.1
 - `nameNormalized` e `phoneNormalized` são gerados no backend/repository.
 - Regra de negócio esperada: paciente pertence a um único dentista (bloquear vínculo cruzado por outro dentista).
 
-## 5) Regras de medicamentos
-- Catálogo global em `medicines` (sem `ownerId`).
-- Apenas admin cria/edita/exclui medicamentos.
-- Campos mínimos de posologia:
-  - `quantity >= 1`
-  - `intervalHours >= 1`
-  - `durationDays` OU `whilePain=true`
-- `nameNormalized` e `defaultDosage` devem ser derivados por regra de domínio (não confiar em payload cru do front).
-
-## 6) Regras de prescrições
-- Cada prescrição é um documento independente para 1 medicamento e 1 paciente.
+## 5) Regras de prescrições
+- Cada prescrição é um documento independente para 1 paciente.
 - Campos obrigatórios de vínculo:
   - `patientId`
-  - `medicineId`
+  - `medicineName` (texto livre; catálogo de medicamentos fica em outro projeto)
   - `ownerId`
+- `medicineId` é opcional (vazio quando o medicamento é informado apenas por nome).
 - `ownerId` deve refletir o dentista dono (ou ser controlado por admin).
 - `patientName`, `patientEmail` e `medicineName` são desnormalizados no momento da criação (sem sincronização retroativa obrigatória).
 - Dentista não pode acessar prescrições de outro dentista.
 
-## 7) Regras de segurança (Firestore)
+## 6) Regras de segurança (Firestore)
 - Sem leitura pública; requer autenticação.
 - `isAdmin()` nas rules é por email hardcoded (superadmin), não por `role` do documento.
-- `medicines`: leitura para autenticado, escrita só admin.
 - `users` e `prescriptions`: acesso por dono (`uid`/`ownerId`) ou admin.
 
-## 8) Plano de testes Cypress (matriz plano -> E2E)
+## 7) Plano de testes Cypress (matriz plano -> E2E)
 
-### 8.1 Objetivo
+### 7.1 Objetivo
 Garantir que cada plano de teste funcional tenha cobertura E2E, exceto itens inviáveis por dependência externa (providers OAuth e enforcement de rules no backend gerenciado).
 
-### 8.2 Planos e cobertura implementada
+### 7.2 Planos e cobertura implementada
 
 | ID | Plano de teste | Cobertura E2E |
 |---|---|---|
@@ -82,14 +72,11 @@ Garantir que cada plano de teste funcional tenha cobertura E2E, exceto itens inv
 | P03 | Recuperação de senha: validações e feedback de envio | `cypress/e2e/auth/recover-password.cy.ts` |
 | P04 | Guardas de rota: público/protegido, cookie inválido, redirects de sessão | `cypress/e2e/business/access-control.cy.ts` |
 | P05 | Perfil incompleto: obrigatoriedade de CRO e telefone para operar | `cypress/e2e/business/complete-profile-rules.cy.ts` |
-| P06 | Role-based UI: menu de medicamentos visível apenas para admin | `cypress/e2e/business/access-control.cy.ts` |
-| P07 | Medicamentos: regra `durationDays OR whilePain` | `cypress/e2e/business/medicine-rules.cy.ts` |
-| P08 | Medicamentos: mínimos `quantity >= 1` e `intervalHours >= 1` | `cypress/e2e/business/medicine-rules.cy.ts` |
-| P09 | Pacientes: e-mail obrigatório no fluxo de cadastro | `cypress/e2e/business/patient-rules.cy.ts` |
-| P10 | Prescrições: campos obrigatórios de vínculo e posologia | `cypress/e2e/business/prescription-rules.cy.ts` |
-| P11 | Prescrição: prefill por query param `patientName` | `cypress/e2e/business/prescription-rules.cy.ts` |
+| P06 | Pacientes: e-mail obrigatório no fluxo de cadastro | `cypress/e2e/business/patient-rules.cy.ts` |
+| P07 | Prescrições: campos obrigatórios de vínculo e posologia | `cypress/e2e/business/prescription-rules.cy.ts` |
+| P08 | Prescrição: prefill por query param `patientName` | `cypress/e2e/business/prescription-rules.cy.ts` |
 
-### 8.3 Planos não viáveis em E2E puro (nesta stack)
+### 7.3 Planos não viáveis em E2E puro (nesta stack)
 
 | ID | Plano de teste | Motivo técnico |
 |---|---|---|
@@ -97,7 +84,7 @@ Garantir que cada plano de teste funcional tenha cobertura E2E, exceto itens inv
 | X02 | Firestore Security Rules (isAdmin por email hardcoded, ownerId enforcement no backend gerenciado) | Rules são avaliadas no backend Firebase; E2E browser não valida rule engine isoladamente |
 | X03 | Aprovação/rejeição persistida por admin em projeto web separado | Fluxo depende de outro projeto/admin panel e estado compartilhado externo |
 
-### 8.4 Expansão recomendada para fechar X01-X03
+### 7.4 Expansão recomendada para fechar X01-X03
 - Criar suíte de integração com Firebase Emulator Suite para validar rules e autorização por `ownerId`.
-- Criar suíte de contrato para APIs `/api/medicine/*`, `/api/prescription/*`, `/api/patient/*` com fixtures controladas.
-- Criar smoke tests dedicados para admin web separado (aprovação/rejeição de dentistas).
+- Criar suíte de contrato para APIs `/api/prescription/*`, `/api/patient/*` com fixtures controladas.
+- Criar smoke tests dedicados para admin web separado (aprovação/rejeição de dentistas; catálogo de medicamentos em outro projeto).

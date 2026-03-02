@@ -23,19 +23,19 @@ describe('Business rules - complete profile', () => {
   it('requires CRO with only digits and 4 to 7 characters', () => {
     cy.get('input#cro').clear().type('123')
     cy.get('input#phone').clear().type('11999999999')
-    cy.contains('button', 'Completar').click()
 
     cy.contains(
       'CRO inválido — deve conter somente dígitos (4 a 7 caracteres).',
     ).should('be.visible')
+    cy.contains('button', 'Completar').should('be.disabled')
   })
 
   it('requires complete phone number', () => {
     cy.get('input#cro').clear().type('12345')
     cy.get('input#phone').clear().type('1199999')
-    cy.contains('button', 'Completar').click()
 
     cy.contains('Complete o telefone').should('be.visible')
+    cy.contains('button', 'Completar').should('be.disabled')
   })
 
   it('enables submit when profile data is valid', () => {

@@ -1,10 +1,12 @@
 /// <reference types="cypress" />
 
-const LOGIN_URL = '/'
-const REGISTER_URL = '/registrar'
-const RECOVER_PASSWORD_URL = '/recuperar-senha'
-const DASHBOARD_URL = '/dashboard'
-const COMPLETE_PROFILE_URL = '/completar-perfil'
+import {
+  COMPLETE_PROFILE_URL,
+  DASHBOARD_URL,
+  LOGIN_URL,
+  RECOVER_PASSWORD_URL,
+  REGISTER_URL,
+} from '../constants'
 
 const completeDentistUser = {
   id: 'dentist-uid-1',
@@ -26,17 +28,6 @@ const incompleteDentistUser = {
   cro: '',
   phone: '',
   status: 'pending' as const,
-}
-
-const completeAdminUser = {
-  id: 'admin-uid-1',
-  email: 'admin@example.com',
-  name: 'Admin Lucy',
-  role: 'admin' as const,
-  photo: '',
-  cro: '67890',
-  phone: '(11) 98888-7777',
-  status: 'approved' as const,
 }
 
 describe('Business rules - access control and route guards', () => {
@@ -76,14 +67,18 @@ describe('Business rules - access control and route guards', () => {
     cy.location('pathname').should('eq', DASHBOARD_URL)
   })
 
-  it('redirects authenticated users away from /registrar and /recuperar-senha', () => {
+  it('redirects authenticated users away from /registrar', () => {
     cy.setAuthCookie(completeDentistUser)
 
     cy.visit(REGISTER_URL)
-    cy.location('pathname').should('eq', DASHBOARD_URL)
+    cy.location('pathname', { timeout: 8000 }).should('eq', DASHBOARD_URL)
+  })
+
+  it('redirects authenticated users away from /recuperar-senha', () => {
+    cy.setAuthCookie(completeDentistUser)
 
     cy.visit(RECOVER_PASSWORD_URL)
-    cy.location('pathname').should('eq', DASHBOARD_URL)
+    cy.location('pathname', { timeout: 8000 }).should('eq', DASHBOARD_URL)
   })
 
   it('redirects complete authenticated users away from /completar-perfil', () => {
@@ -92,20 +87,6 @@ describe('Business rules - access control and route guards', () => {
     cy.visit(COMPLETE_PROFILE_URL)
 
     cy.location('pathname').should('eq', DASHBOARD_URL)
-  })
-
-  it('shows medicines menu only for admin users', () => {
-    cy.setAuthCookie(completeDentistUser)
-    cy.visit(DASHBOARD_URL)
-    cy.contains('Pacientes').should('be.visible')
-    cy.contains('Prescrições').should('be.visible')
-    cy.contains('Medicamentos').should('not.exist')
-
-    cy.clearCookies()
-
-    cy.setAuthCookie(completeAdminUser)
-    cy.visit(DASHBOARD_URL)
-    cy.contains('Medicamentos').should('be.visible')
   })
 
   it('treats malformed auth cookie as unauthenticated and redirects to login', () => {

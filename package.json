@@ -10,6 +10,8 @@
     "lint": "NODE_OPTIONS='--no-warnings' ESLINT_USE_FLAT_CONFIG=false eslint . && echo '✅ Lint concluído com sucesso!'",
     "lint:fix": "NODE_OPTIONS='--no-warnings' ESLINT_USE_FLAT_CONFIG=false eslint . --fix && echo '✅ Lint:fix concluído com sucesso!'",
     "clean": "chmod +x clean.sh && ./clean.sh",
+    "cy:open": "cypress open",
+    "cy:headless": "cypress run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test": "cypress run"

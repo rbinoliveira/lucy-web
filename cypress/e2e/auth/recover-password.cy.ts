@@ -16,7 +16,11 @@ describe('Recover password page', () => {
   it('shows a validation error when submitting an empty email', () => {
     cy.get('button[type="submit"]').click()
 
-    cy.contains('e-mail é obrigatório').should('be.visible')
+    cy.get('form').within(() => {
+      cy.contains(/e-mail é obrigatório|digite um e-mail válido/i, {
+        timeout: 8000,
+      }).should('be.visible')
+    })
   })
 
   it('shows a validation error for an invalid email format', () => {

@@ -26,7 +26,6 @@ describe('Business rules - prescriptions', () => {
 
     cy.contains('paciente é obrigatório').should('be.visible')
     cy.contains('e-mail do paciente é obrigatório').should('be.visible')
-    cy.contains('medicamento é obrigatório').should('be.visible')
     cy.contains('nome do medicamento é obrigatório').should('be.visible')
     cy.contains('posologia é obrigatório').should('be.visible')
   })

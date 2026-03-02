@@ -55,7 +55,7 @@ export async function PUT(req: Request) {
       patientEmail: data.patientEmail,
       patientName: data.patientName,
       patientNameNormalized: normalizeName(data.patientName),
-      medicineId: data.medicineId,
+      medicineId: data.medicineId ?? '',
       medicineName: data.medicineName,
       medicineNameNormalized: normalizeName(data.medicineName),
       dosage: data.dosage,

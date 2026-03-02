@@ -61,9 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (!userDocument) {
       const userByCookies = await getAuthCookies()
-      const parsedUserByCookies = userByCookies
-        ? JSON.parse(userByCookies)
-        : null
+      let parsedUserByCookies: { name?: string } | null = null
+      if (userByCookies) {
+        try {
+          parsedUserByCookies = JSON.parse(userByCookies)
+        } catch {
+          parsedUserByCookies = null
+        }
+      }
       const newUser: UserModel = {
         id: firebaseUser.uid,
         email: firebaseUser.email ?? '',
@@ -181,8 +186,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function getUser() {
       const authCookie = await getAuthCookies()
-      if (authCookie) {
+      if (!authCookie) return
+      try {
         setUser(JSON.parse(authCookie))
+      } catch {
+        await deleteAuthCookies()
+        setUser(null)
       }
     }
 

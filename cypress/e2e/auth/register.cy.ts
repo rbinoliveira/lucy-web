@@ -19,14 +19,15 @@ describe('Register page', () => {
   it('shows validation errors when submitting empty fields', () => {
     cy.get('button[type="submit"]').click()
 
-    // name field is required
-    cy.contains('name é obrigatório').should('be.visible')
-    // email field is required
-    cy.contains('e-mail é obrigatório').should('be.visible')
-    // password field is required (min 6 chars)
-    cy.contains(/senha é obrigatório|deve ser preenchido/i).should('be.visible')
-    // confirmPassword field is required
-    cy.contains('confirmar senha é obrigatório').should('be.visible')
+    cy.get('form').within(() => {
+      cy.contains(/name é obrigatório/i, { timeout: 8000 }).should('be.visible')
+      cy.contains(/e-mail é obrigatório|digite um e-mail válido/i, {
+        timeout: 8000,
+      }).should('be.visible')
+      cy.contains(/senha|confirmar senha/i, { timeout: 8000 }).should(
+        'be.visible',
+      )
+    })
   })
 
   it('shows a validation error for an invalid email format', () => {

@@ -7,12 +7,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useAuth } from '@/features/auth/hooks/auth.hook'
-import {
-  generateDosage,
-  MedicineModel,
-} from '@/features/medicine/models/medicine.model'
 import { PatientModel } from '@/features/patient/models/patient.model'
-import { MedicineCombobox } from '@/features/prescription/components/medicine-combobox'
 import { PatientCombobox } from '@/features/prescription/components/patient-combobox'
 import { PrescriptionModel } from '@/features/prescription/models/prescription.model'
 import {
@@ -42,7 +37,6 @@ export function SavePrescriptionForm({
     control,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<SavePrescriptionFormSchema>({
     resolver: zodResolver(savePrescriptionFormSchema),
@@ -98,30 +92,6 @@ export function SavePrescriptionForm({
     }
   }
 
-  function handleMedicineSelect(medicine: MedicineModel | null) {
-    if (medicine) {
-      setValue('medicineId', medicine.id, {
-        shouldValidate: true,
-        shouldDirty: true,
-      })
-      setValue('medicineName', medicine.name, {
-        shouldValidate: true,
-        shouldDirty: true,
-      })
-      const currentDosage = watch('dosage')
-      if (!currentDosage || currentDosage.trim() === '') {
-        const generatedDosage = generateDosage(medicine)
-        setValue('dosage', generatedDosage, {
-          shouldValidate: true,
-          shouldDirty: true,
-        })
-      }
-    } else {
-      setValue('medicineId', '', { shouldValidate: true, shouldDirty: true })
-      setValue('medicineName', '', { shouldValidate: true, shouldDirty: true })
-    }
-  }
-
   const { push } = useRouter()
   const pathname = usePathname()
   const isEditPage = pathname.includes('editar')
@@ -166,9 +136,6 @@ export function SavePrescriptionForm({
       {errors.patientEmail && (
         <p className="text-danger-one text-xs">{errors.patientEmail.message}</p>
       )}
-      {errors.medicineId && (
-        <p className="text-danger-one text-xs">{errors.medicineId.message}</p>
-      )}
       {errors.medicineName && (
         <p className="text-danger-one text-xs">{errors.medicineName.message}</p>
       )}
@@ -180,9 +147,11 @@ export function SavePrescriptionForm({
         onPatientSelect={handlePatientSelect}
         initialPatientName={patientName ?? undefined}
       />
-      <MedicineCombobox
+      <InputText
+        label="Nome do medicamento"
+        placeholder="Ex: Amoxicilina 500mg"
         control={control}
-        onMedicineSelect={handleMedicineSelect}
+        name="medicineName"
       />
       <InputTextarea
         label="Posologia"

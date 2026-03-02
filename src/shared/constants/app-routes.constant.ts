@@ -7,7 +7,6 @@ export const appRoutes = {
   completeProfile: '/completar-perfil',
   patients: '/pacientes',
   prescriptions: '/prescricoes',
-  medicines: '/medicamentos',
 }
 
 export const appPublicRoutes = [

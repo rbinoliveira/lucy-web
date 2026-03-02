@@ -19,8 +19,11 @@ describe('Login page', () => {
   it('shows validation errors when submitting empty fields', () => {
     cy.get('button[type="submit"]').click()
 
-    // email is required
-    cy.contains('e-mail é obrigatório').should('be.visible')
+    // Depending on zod evaluation order for empty string, email can be reported
+    // as required or invalid format.
+    cy.contains(/e-mail é obrigatório|digite um e-mail válido/i).should(
+      'be.visible',
+    )
     // password is required (field label is "password")
     cy.contains('password é obrigatório').should('be.visible')
   })

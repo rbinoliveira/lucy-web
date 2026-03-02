@@ -14,7 +14,7 @@ export const savePrescriptionSchema = z.object({
   patientId: requiredString({ field: 'paciente' }),
   patientEmail: requiredString({ field: 'e-mail do paciente' }),
   patientName: requiredString({ field: 'nome do paciente' }),
-  medicineId: requiredString({ field: 'medicamento' }),
+  medicineId: optionalString({ field: 'id do medicamento' }),
   medicineName: requiredString({ field: 'nome do medicamento' }),
   dosage: requiredString({ field: 'posologia' }),
   durationDays: z
