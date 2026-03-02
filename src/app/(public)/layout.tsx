@@ -11,7 +11,7 @@ export default function PublicLayout({
 }>) {
   return (
     <main className="linear-one flex min-h-screen w-full flex-col md:flex-row">
-      <div className="px-6 lg:px-0 w-full items-center max-w-[1200px] mx-auto flex">
+      <div className="mx-auto flex w-full max-w-[1200px] items-center px-6 lg:px-0">
         {children}
       </div>
     </main>

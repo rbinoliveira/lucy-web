@@ -1,5 +1,5 @@
-import { ViewPatientPage } from '@/application/patient/pages/view-patient.page'
+import { ViewPatientProfilePage } from '@/features/patient/pages/view-patient-profile.page'
 
 export default function ViewPatient() {
-  return <ViewPatientPage />
+  return <ViewPatientProfilePage />
 }

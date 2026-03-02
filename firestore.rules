@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// Single admin: dramluisabraga@gmail.com — used for user management and medicines write.
+function isAdmin() {
+  return request.auth != null && request.auth.token.email == 'dramluisabraga@gmail.com';
+}
+
+function isAuthenticated() {
+  return request.auth != null;
+}
+
+function isOwner(ownerId) {
+  return isAuthenticated() && request.auth.uid == ownerId;
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: dentists/admins and patients (role == 'patient') in same collection.
+    // Own profile: read/write by request.auth.uid. Patients: read/write by ownerId. Admin: full access.
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || resource.data.ownerId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && (request.auth.uid == userId || request.resource.data.ownerId == request.auth.uid || isAdmin());
+      allow update, delete: if isAuthenticated() && (request.auth.uid == userId || resource.data.ownerId == request.auth.uid || isAdmin());
+    }
+
+    // Prescriptions: ownerId = dentist. Only owner or admin can read/write.
+    match /prescriptions/{prescriptionId} {
+      allow read: if isAuthenticated() && (resource.data.ownerId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && (request.resource.data.ownerId == request.auth.uid || isAdmin());
+      allow update, delete: if isAuthenticated() && (resource.data.ownerId == request.auth.uid || isAdmin());
+    }
+
+    // Medicines: shared; all authenticated can read; only admin can write.
+    match /medicines/{medicineId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}

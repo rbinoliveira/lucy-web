@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
-import { dbAdmin } from '@/application/_shared/libs/firebase-admin'
+import { getCurrentUserApi } from '@/shared/helpers/get-current-user-api.helper'
+import { dbAdmin } from '@/shared/libs/firebase-admin'
 
 export async function DELETE(
   _: Request,
@@ -8,6 +9,14 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
+    const user = await getCurrentUserApi()
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'Não autorizado.' },
+        { status: 401 },
+      )
+    }
 
     const docRef = dbAdmin.collection('prescriptions').doc(id)
     const docSnap = await docRef.get()
@@ -19,13 +28,22 @@ export async function DELETE(
       )
     }
 
+    const data = docSnap.data()
+
+    if (data?.ownerId !== user.id && user.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, error: 'Não autorizado.' },
+        { status: 403 },
+      )
+    }
+
     await docRef.delete()
 
     return NextResponse.json({
       success: true,
       message: 'Prescrição excluída com sucesso.',
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         success: false,

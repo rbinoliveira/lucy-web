@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 
 import {
-  normalizeName,
-  normalizePhone,
-} from '@/application/_shared/helpers/normalize-string.helper'
-import { authAdmin, dbAdmin } from '@/application/_shared/libs/firebase-admin'
-import {
   SavePatientUseCaseSchema,
   savePatientUseCaseSchema,
-} from '@/application/patient/schemas/save-patient.schema'
+} from '@/features/patient/schemas/save-patient.schema'
+import {
+  normalizeName,
+  normalizePhone,
+} from '@/shared/helpers/normalize-string.helper'
+import { authAdmin, dbAdmin } from '@/shared/libs/firebase-admin'
 
 export async function POST(req: Request) {
   try {
@@ -24,6 +24,13 @@ export async function POST(req: Request) {
 
     const data = parsed.data
 
+    if (!data.email) {
+      return NextResponse.json(
+        { error: 'E-mail é obrigatório.' },
+        { status: 400 },
+      )
+    }
+
     const usersRef = dbAdmin.collection('users')
     const existingFirestoreUser = await usersRef
       .where('email', '==', data.email)
@@ -37,11 +44,14 @@ export async function POST(req: Request) {
       )
     }
 
+    const email = data.email
+
     let authUser = null
     try {
-      authUser = await authAdmin.getUserByEmail(data.email)
-    } catch (err: any) {
-      if (err.code !== 'auth/user-not-found') {
+      authUser = await authAdmin.getUserByEmail(email)
+    } catch (err: unknown) {
+      const error = err as { code?: string }
+      if (error.code !== 'auth/user-not-found') {
         return NextResponse.json(
           { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
           { status: 500 },
@@ -58,10 +68,16 @@ export async function POST(req: Request) {
       })
     }
 
+    const dob = new Date(data.dob)
+    const dd = String(dob.getDate()).padStart(2, '0')
+    const mm = String(dob.getMonth() + 1).padStart(2, '0')
+    const yyyy = dob.getFullYear()
+    const initialPassword = `${dd}${mm}${yyyy}`
+
     const newAuthUser = await authAdmin.createUser({
-      email: data.email,
-      password: data.password,
+      email,
       displayName: data.name,
+      password: initialPassword,
     })
 
     await createPatientInFirestore(newAuthUser.uid, data)
@@ -70,7 +86,7 @@ export async function POST(req: Request) {
       message: 'Paciente criado com sucesso.',
       uid: newAuthUser.uid,
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Ocorreu um erro interno, tente novamente mais tarde.' },
       { status: 500 },

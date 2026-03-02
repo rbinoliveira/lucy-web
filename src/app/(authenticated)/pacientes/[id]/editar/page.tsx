@@ -1,4 +1,4 @@
-import { UpdatePatientPage } from '@/application/patient/pages/update-patient.page'
+import { UpdatePatientPage } from '@/features/patient/pages/update-patient.page'
 
 export default function UpdatePatient() {
   return <UpdatePatientPage />

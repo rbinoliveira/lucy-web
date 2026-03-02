@@ -1,13 +1,13 @@
-import { differenceInDays } from 'date-fns'
 import { NextResponse } from 'next/server'
 
+import { PatientModel } from '@/features/patient/models/patient.model'
+import { savePatientUseCaseSchema } from '@/features/patient/schemas/save-patient.schema'
+import { getCurrentUserApi } from '@/shared/helpers/get-current-user-api.helper'
 import {
   normalizeName,
   normalizePhone,
-} from '@/application/_shared/helpers/normalize-string.helper'
-import { authAdmin, dbAdmin } from '@/application/_shared/libs/firebase-admin'
-import { PatientModel } from '@/application/patient/models/patient.model'
-import { savePatientUseCaseSchema } from '@/application/patient/schemas/save-patient.schema'
+} from '@/shared/helpers/normalize-string.helper'
+import { authAdmin, dbAdmin } from '@/shared/libs/firebase-admin'
 
 export async function PUT(req: Request) {
   try {
@@ -41,11 +41,16 @@ export async function PUT(req: Request) {
     }
 
     const userData = userDoc.data() as PatientModel
+    const currentUser = await getCurrentUserApi()
 
-    // ------------------------
-    // ✅ Verifica e evita email duplicado no Firestore
-    // ------------------------
-    // Sugestão: normalize o email ao salvar (lowercase + trim). Aqui faço a checagem considerando o valor recebido.
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
+    }
+
+    if (userData.ownerId !== currentUser.id && currentUser.role !== 'admin') {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 403 })
+    }
+
     const newEmail = data.email?.trim()
     const currentEmail = userData.email?.trim()
 
@@ -64,38 +69,33 @@ export async function PUT(req: Request) {
       }
     }
 
-    // ------------------------
-    // Atualiza também no Auth se necessário (mesma lógica sua)
-    // ------------------------
     let authUser
     try {
       authUser = await authAdmin.getUser(userId)
-    } catch (err: any) {
+    } catch {
       return NextResponse.json(
         { error: 'Paciente não encontrado.' },
         { status: 404 },
       )
     }
 
-    const authUpdates: any = {}
+    const authUpdates: {
+      displayName?: string
+      email?: string
+    } = {}
     if (data.name && data.name !== authUser.displayName) {
       authUpdates.displayName = data.name
     }
     if (data.email && data.email !== authUser.email) {
       authUpdates.email = data.email
     }
-    if (
-      differenceInDays(new Date(data.dob), new Date(userData.dob)) !== 0 &&
-      data.password
-    ) {
-      authUpdates.password = data.password
-    }
 
     if (Object.keys(authUpdates).length > 0) {
       try {
         await authAdmin.updateUser(userId, authUpdates)
-      } catch (err: any) {
-        if (err.code === 'auth/email-already-exists') {
+      } catch (err: unknown) {
+        const error = err as { code?: string }
+        if (error.code === 'auth/email-already-exists') {
           return NextResponse.json(
             { error: 'E-mail já está em uso por outro usuário no Auth.' },
             { status: 400 },
@@ -109,9 +109,6 @@ export async function PUT(req: Request) {
       }
     }
 
-    // ------------------------
-    // Atualiza Firestore
-    // ------------------------
     await dbAdmin
       .collection('users')
       .doc(userId)

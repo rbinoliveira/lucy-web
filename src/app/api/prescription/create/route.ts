@@ -1,17 +1,14 @@
 import { NextResponse } from 'next/server'
 
-import {
-  normalizeName,
-  normalizePhone,
-} from '@/application/_shared/helpers/normalize-string.helper'
-import { dbAdmin } from '@/application/_shared/libs/firebase-admin'
-import { savePrescriptionUseCaseSchema } from '@/application/prescription/schemas/save-prescription.schema'
+import { savePrescriptionUseCaseSchema } from '@/features/prescription/schemas/save-prescription.schema'
+import { getCurrentUserApi } from '@/shared/helpers/get-current-user-api.helper'
+import { normalizeName } from '@/shared/helpers/normalize-string.helper'
+import { dbAdmin } from '@/shared/libs/firebase-admin'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    // ✅ Validação do corpo da requisição
     const parsed = savePrescriptionUseCaseSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(
@@ -22,33 +19,35 @@ export async function POST(req: Request) {
 
     const data = parsed.data
 
-    // ✅ Verifica se já existe um registro com o mesmo e-mail
-    const prescriptionsRef = dbAdmin.collection('prescriptions')
-    const existing = await prescriptionsRef
-      .where('email', '==', data.email)
-      .limit(1)
-      .get()
-
-    if (!existing.empty) {
-      return NextResponse.json(
-        { error: 'E-mail já cadastrado na plataforma, tente outro e-mail.' },
-        { status: 400 },
-      )
+    const currentUser = await getCurrentUserApi()
+    if (!currentUser) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
     }
 
-    // ✅ Cria o novo documento no Firestore
+    if (currentUser.role !== 'admin' && data.ownerId !== currentUser.id) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 403 })
+    }
+
+    const prescriptionsRef = dbAdmin.collection('prescriptions')
     const newDocRef = prescriptionsRef.doc()
+
     await newDocRef.set({
       id: newDocRef.id,
-      name: data.name,
-      phone: data.phone,
-      dob: data.dob,
-      email: data.email,
-      ownerId: data.ownerId,
-      role: 'prescription',
-      nameNormalized: normalizeName(data.name),
-      phoneNormalized: normalizePhone(data.phone),
+      patientId: data.patientId,
+      patientEmail: data.patientEmail,
+      patientName: data.patientName,
+      patientNameNormalized: normalizeName(data.patientName),
+      medicineId: data.medicineId ?? '',
+      medicineName: data.medicineName,
+      medicineNameNormalized: normalizeName(data.medicineName),
+      dosage: data.dosage,
+      durationDays: data.durationDays ?? null,
+      durationDescription: data.durationDescription ?? null,
+      notes: data.notes ?? null,
+      ownerId: currentUser.role === 'admin' ? data.ownerId : currentUser.id,
+      status: data.status || 'active',
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
 
     return NextResponse.json({

@@ -1,8 +1,11 @@
-await import('./src/application/_shared/config/env/env.mjs')
+await import('./src/shared/config/env/env.mjs')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [{ hostname: '*' }],
+  },
   output: 'standalone',
 }
 

@@ -1,0 +1,77 @@
+'use client'
+
+import { Plus } from 'lucide-react'
+import Link from 'next/link'
+
+import { Button } from '@/shared/components/button'
+import { InputSearch } from '@/shared/components/input-search'
+import { InputSelect } from '@/shared/components/input-select'
+import { useTable } from '@/shared/hooks/table.hook'
+import { cn } from '@/shared/libs/tw-merge'
+
+export type TableFilterProps = {
+  search: {
+    placeholder: string
+  }
+  add: {
+    label: string
+    href: string
+  }
+  className?: string
+}
+
+export function TableFilter({ search, add, className }: TableFilterProps) {
+  const {
+    form: { control },
+    updateItemsPerPage,
+  } = useTable()
+
+  return (
+    <div className={cn('flex items-center justify-between', className)}>
+      <div className="flex items-center gap-4">
+        <InputSearch
+          placeholder={search.placeholder}
+          className="max-w-[320px]"
+        />
+        <div className="flex items-center gap-2">
+          Mostrar:
+          <InputSelect
+            control={control}
+            name="itemsPerPage"
+            className="max-w-[150px]"
+            variant="sm"
+            onChange={(value) => {
+              updateItemsPerPage(Number(value))
+            }}
+            options={[
+              {
+                label: '1',
+                value: 1,
+              },
+              {
+                label: '10',
+                value: 10,
+              },
+              {
+                label: '20',
+                value: 20,
+              },
+              {
+                label: '50',
+                value: 50,
+              },
+              {
+                label: '100',
+                value: 100,
+              },
+            ]}
+          />
+          itens
+        </div>
+      </div>
+      <Button className="max-w-[240px]" asChild icon={<Plus size={16} />}>
+        <Link href={add.href}>{add.label}</Link>
+      </Button>
+    </div>
+  )
+}

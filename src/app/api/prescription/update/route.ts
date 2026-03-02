@@ -1,17 +1,14 @@
 import { NextResponse } from 'next/server'
 
-import {
-  normalizeName,
-  normalizePhone,
-} from '@/application/_shared/helpers/normalize-string.helper'
-import { dbAdmin } from '@/application/_shared/libs/firebase-admin'
-import { savePrescriptionUseCaseSchema } from '@/application/prescription/schemas/save-prescription.schema'
+import { savePrescriptionUseCaseSchema } from '@/features/prescription/schemas/save-prescription.schema'
+import { getCurrentUserApi } from '@/shared/helpers/get-current-user-api.helper'
+import { normalizeName } from '@/shared/helpers/normalize-string.helper'
+import { dbAdmin } from '@/shared/libs/firebase-admin'
 
 export async function PUT(req: Request) {
   try {
     const body = await req.json()
 
-    // ✅ Validação dos dados recebidos
     const parsed = savePrescriptionUseCaseSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(
@@ -30,7 +27,6 @@ export async function PUT(req: Request) {
       )
     }
 
-    // ✅ Verifica se o documento existe
     const prescriptionRef = dbAdmin
       .collection('prescriptions')
       .doc(prescriptionId)
@@ -43,15 +39,31 @@ export async function PUT(req: Request) {
       )
     }
 
-    // ✅ Atualiza os campos no Firestore
+    const prescriptionData = prescriptionSnap.data()
+    const user = await getCurrentUserApi()
+
+    if (!user) {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
+    }
+
+    if (prescriptionData?.ownerId !== user.id && user.role !== 'admin') {
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 403 })
+    }
+
     await prescriptionRef.update({
-      name: data.name,
-      phone: data.phone,
-      dob: data.dob,
-      email: data.email,
+      patientId: data.patientId,
+      patientEmail: data.patientEmail,
+      patientName: data.patientName,
+      patientNameNormalized: normalizeName(data.patientName),
+      medicineId: data.medicineId ?? '',
+      medicineName: data.medicineName,
+      medicineNameNormalized: normalizeName(data.medicineName),
+      dosage: data.dosage,
+      durationDays: data.durationDays ?? null,
+      durationDescription: data.durationDescription ?? null,
+      notes: data.notes ?? null,
       ownerId: data.ownerId,
-      nameNormalized: normalizeName(data.name),
-      phoneNormalized: normalizePhone(data.phone),
+      status: data.status || prescriptionData?.status || 'active',
       updatedAt: new Date().toISOString(),
     })
 

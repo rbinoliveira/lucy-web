@@ -4,9 +4,11 @@ node_modules
 
 lucy-900f9-6cb94ea060bd.json
 
-.claude/
 .gemini/
+
+GEMINI.md
+
+.claude/
 .cursor/
 .task-flow/
 CLAUDE.md
-GEMINI.md
