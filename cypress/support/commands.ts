@@ -75,6 +75,7 @@ Cypress.Commands.add('setAuthCookie', (user: UserCookiePayload) => {
 
 export {}
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       loginByFirebase(options: LoginByFirebaseOptions): Chainable<void>

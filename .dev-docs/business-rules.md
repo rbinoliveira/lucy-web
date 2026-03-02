@@ -1,5 +1,5 @@
 # Lucy — Regras de Negócio Consolidadas
-Version: 2.0
+Version: 2.1
 
 ## 1) Escopo e arquitetura
 - O sistema usa modelo flat no Firestore, sem collection `clinics` e sem `clinicId`.
@@ -68,32 +68,36 @@ Version: 2.0
 - `medicines`: leitura para autenticado, escrita só admin.
 - `users` e `prescriptions`: acesso por dono (`uid`/`ownerId`) ou admin.
 
-## 8) Plano de testes Cypress (cobertura desta entrega)
+## 8) Plano de testes Cypress (matriz plano -> E2E)
 
 ### 8.1 Objetivo
-Validar regras de negócio de acesso, perfil, menu por role e validações críticas de domínio no front.
+Garantir que cada plano de teste funcional tenha cobertura E2E, exceto itens inviáveis por dependência externa (providers OAuth e enforcement de rules no backend gerenciado).
 
-### 8.2 Especificações adicionadas
-- `cypress/e2e/business/access-control.cy.ts`
-  - Não autenticado em rota protegida -> redireciona para login.
-  - Autenticado com perfil incompleto -> redireciona para `/completar-perfil`.
-  - Autenticado com perfil completo -> não acessa rotas públicas.
-  - Sidebar exibe `Medicamentos` apenas para `admin`.
-- `cypress/e2e/business/complete-profile-rules.cy.ts`
-  - CRO inválido bloqueia conclusão.
-  - Telefone incompleto bloqueia conclusão.
-  - Botão `Completar` só habilita com dados válidos.
-- `cypress/e2e/business/medicine-rules.cy.ts`
-  - Obriga `durationDays` ou `whilePain`.
-  - `whilePain` desabilita campo de duração em dias.
-- `cypress/e2e/business/patient-rules.cy.ts`
-  - Email de paciente obrigatório no submit.
+### 8.2 Planos e cobertura implementada
 
-### 8.3 Itens relevantes ainda não cobertos por E2E nesta entrega
-- Fluxos dependentes de integração real com Firebase Auth/Firestore admin (aprovação/rejeição persistida, bloqueio por ownerId cruzado no backend, regras de escrita em collections).
-- Fluxo de login social (Google/Apple) e linkagem de provedores.
-- Regras de Firestore Security Rules em nível de infraestrutura.
+| ID | Plano de teste | Cobertura E2E |
+|---|---|---|
+| P01 | Login: renderização, validações e erro de credencial | `cypress/e2e/auth/login.cy.ts` |
+| P02 | Registro: validações, mismatch de senha e feedback de sucesso | `cypress/e2e/auth/register.cy.ts` |
+| P03 | Recuperação de senha: validações e feedback de envio | `cypress/e2e/auth/recover-password.cy.ts` |
+| P04 | Guardas de rota: público/protegido, cookie inválido, redirects de sessão | `cypress/e2e/business/access-control.cy.ts` |
+| P05 | Perfil incompleto: obrigatoriedade de CRO e telefone para operar | `cypress/e2e/business/complete-profile-rules.cy.ts` |
+| P06 | Role-based UI: menu de medicamentos visível apenas para admin | `cypress/e2e/business/access-control.cy.ts` |
+| P07 | Medicamentos: regra `durationDays OR whilePain` | `cypress/e2e/business/medicine-rules.cy.ts` |
+| P08 | Medicamentos: mínimos `quantity >= 1` e `intervalHours >= 1` | `cypress/e2e/business/medicine-rules.cy.ts` |
+| P09 | Pacientes: e-mail obrigatório no fluxo de cadastro | `cypress/e2e/business/patient-rules.cy.ts` |
+| P10 | Prescrições: campos obrigatórios de vínculo e posologia | `cypress/e2e/business/prescription-rules.cy.ts` |
+| P11 | Prescrição: prefill por query param `patientName` | `cypress/e2e/business/prescription-rules.cy.ts` |
 
-### 8.4 Próxima expansão recomendada
-- Suite API/integration para `/api/patient/*`, `/api/prescription/*`, `/api/medicine/*` com fixtures controladas.
-- Testes de autorização por ownerId com dois dentistas e um admin em ambiente de teste dedicado.
+### 8.3 Planos não viáveis em E2E puro (nesta stack)
+
+| ID | Plano de teste | Motivo técnico |
+|---|---|---|
+| X01 | Login social Google/Apple e linkagem de providers por e-mail | Fluxo depende de janela OAuth/provedor externo e credenciais reais |
+| X02 | Firestore Security Rules (isAdmin por email hardcoded, ownerId enforcement no backend gerenciado) | Rules são avaliadas no backend Firebase; E2E browser não valida rule engine isoladamente |
+| X03 | Aprovação/rejeição persistida por admin em projeto web separado | Fluxo depende de outro projeto/admin panel e estado compartilhado externo |
+
+### 8.4 Expansão recomendada para fechar X01-X03
+- Criar suíte de integração com Firebase Emulator Suite para validar rules e autorização por `ownerId`.
+- Criar suíte de contrato para APIs `/api/medicine/*`, `/api/prescription/*`, `/api/patient/*` com fixtures controladas.
+- Criar smoke tests dedicados para admin web separado (aprovação/rejeição de dentistas).

@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
-import {
-  COMPLETE_PROFILE_URL,
-  DASHBOARD_URL,
-  LOGIN_URL,
-} from '../constants'
+const LOGIN_URL = '/'
+const REGISTER_URL = '/registrar'
+const RECOVER_PASSWORD_URL = '/recuperar-senha'
+const DASHBOARD_URL = '/dashboard'
+const COMPLETE_PROFILE_URL = '/completar-perfil'
 
 const completeDentistUser = {
   id: 'dentist-uid-1',
@@ -76,6 +76,16 @@ describe('Business rules - access control and route guards', () => {
     cy.location('pathname').should('eq', DASHBOARD_URL)
   })
 
+  it('redirects authenticated users away from /registrar and /recuperar-senha', () => {
+    cy.setAuthCookie(completeDentistUser)
+
+    cy.visit(REGISTER_URL)
+    cy.location('pathname').should('eq', DASHBOARD_URL)
+
+    cy.visit(RECOVER_PASSWORD_URL)
+    cy.location('pathname').should('eq', DASHBOARD_URL)
+  })
+
   it('redirects complete authenticated users away from /completar-perfil', () => {
     cy.setAuthCookie(completeDentistUser)
 
@@ -96,5 +106,15 @@ describe('Business rules - access control and route guards', () => {
     cy.setAuthCookie(completeAdminUser)
     cy.visit(DASHBOARD_URL)
     cy.contains('Medicamentos').should('be.visible')
+  })
+
+  it('treats malformed auth cookie as unauthenticated and redirects to login', () => {
+    cy.setCookie('lucy_user', '{invalid-json', {
+      sameSite: 'lax',
+      secure: false,
+    })
+
+    cy.visit(DASHBOARD_URL)
+    cy.location('pathname').should('eq', LOGIN_URL)
   })
 })

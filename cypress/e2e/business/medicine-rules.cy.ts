@@ -45,4 +45,24 @@ describe('Business rules - medicines', () => {
     cy.get('input[type="checkbox"]').check({ force: true })
     cy.get('input#durationDays').should('be.disabled')
   })
+
+  it('validates minimum quantity and interval hours', () => {
+    cy.get('input#name').type('Ibuprofeno')
+    cy.get('input#dose').type('600mg')
+
+    cy.contains('label', 'Forma Farmacêutica').parent().find('button').click()
+    cy.contains('Comprimido').click()
+
+    cy.contains('label', 'Via de Administração').parent().find('button').click()
+    cy.contains('Oral').click()
+
+    cy.get('input#quantity').clear().type('0')
+    cy.get('input#intervalHours').clear().type('0')
+    cy.get('input#durationDays').clear().type('7')
+
+    cy.contains('button', 'Salvar Medicamento').click()
+
+    cy.contains('Quantidade deve ser pelo menos 1').should('be.visible')
+    cy.contains('Intervalo deve ser pelo menos 1 hora').should('be.visible')
+  })
 })
