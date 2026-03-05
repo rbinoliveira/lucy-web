@@ -5,6 +5,7 @@ export const appRoutes = {
   register: '/registrar',
   recoverPassword: '/recuperar-senha',
   completeProfile: '/completar-perfil',
+  pendingApproval: '/aguardando-aprovacao',
   patients: '/pacientes',
   prescriptions: '/prescricoes',
 }

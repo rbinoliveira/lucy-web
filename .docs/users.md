@@ -1,6 +1,6 @@
 # 🦷 Lucy — Firestore Structure
 ## Module: Users
-Version: 1.3
+Version: 1.5
 
 ---
 
@@ -12,57 +12,25 @@ users/{uid}
 
 O `{uid}` deve ser exatamente igual ao Firebase Authentication UID.
 
-Dentistas, admins e pacientes **compartilham a mesma collection**. A diferença entre eles é o campo `role`.
+Admins, dentistas e pacientes compartilham a mesma collection e a mesma estrutura de dados. A única diferença é o valor de `role`.
 
 ---
 
-# Document Structure — Dentist / Admin
+# Document Structure — Shared (Admin, Dentist, Patient)
 
 ```ts
-export type UserStatus = 'pending' | 'approved' | 'rejected'
+export type UserRole = 'admin' | 'dentist' | 'patient'
 
 export type UserModel = {
   id: string              // Firebase Auth UID
-  email: string
+  email: string           // Obrigatório para todos os roles
   name: string
-  role: 'dentist' | 'admin'
+  role: UserRole
   photo?: string | null
-  cro?: string | null     // Número do CRO (obrigatório para operar)
-  phone?: string | null   // Telefone (obrigatório para operar)
-  status?: UserStatus
-}
-```
-
-# Document Structure — Patient
-
-```ts
-export type Gender = 'male' | 'female' | 'other'
-
-export type PatientModel = {
-  id: string
-  name: string
-  nameNormalized: string      // Normalizado para busca (sem acentos, lowercase)
-  phone: string
-  phoneNormalized: string     // Normalizado para busca
-  dob: Date                   // Data de nascimento
-  gender: Gender
-  role: 'patient'             // Sempre 'patient'
-  ownerId: string             // UID do dentista que criou o paciente
-  email: string              // Obrigatório — usado para criação da conta no Firebase Auth
-  cpf?: string | null
-  susNumber?: string | null
-  address?: {
-    street?: string | null
-    number?: string | null
-    complement?: string | null
-    neighborhood?: string | null
-    city?: string | null
-    state?: string | null
-    zipCode?: string | null
-  }
-  photo?: string | null
-  createdAt?: Date
-  updatedAt?: Date
+  cro?: string | null     // Usado no fluxo operacional web de dentist/admin
+  phone?: string | null   // Usado no fluxo operacional web de dentist/admin
+  isActive: boolean       // false = aguardando aprovação/inativo; true = conta liberada
+  deletedAt?: Date | null // Soft delete permanente quando definido
 }
 ```
 
@@ -72,48 +40,37 @@ export type PatientModel = {
 
 ## `id`
 - Deve ser exatamente igual ao `request.auth.uid`.
-- Nunca gerar UUID separado para dentistas/admins.
 - Imutável após criação.
 
 ## `email`
-- Obrigatório para dentistas e admins.
-- Obrigatório para pacientes — necessário para criação da conta no Firebase Auth e para login no app Expo.
+- Obrigatório para `admin`, `dentist` e `patient`.
 - Imutável após criação.
 
 ## `role`
-Valores permitidos: `'admin'` | `'dentist'` | `'patient'`. Não existem outros roles. Um usuário só pode ter um único role.
+Valores permitidos: `'admin' | 'dentist' | 'patient'`.
 
-- `'admin'` — acesso total. Pode gerenciar medicines, todos os pacientes e prescrições. Pode ser mais de um usuário, mas somente `dramluisabraga@gmail.com` pode promover outros usuários a admin.
-- `'dentist'` — acesso operacional. Criado automaticamente no primeiro login. Pode gerenciar apenas seus próprios pacientes e prescrições (`ownerId == uid`).
-- `'patient'` — registro de paciente. **Não pode fazer login nesta aplicação web.** Criado pelo dentista via formulário. Pode fazer login no app Expo com email/senha, Google ou Apple.
+- `admin`: acesso administrativo.
+- `dentist`: acesso operacional.
+- `patient`: registro de paciente (não opera no web dashboard).
 
-Regras de negócio:
-- Novo usuário que faz login recebe `role: 'dentist'` automaticamente.
-- `patient` tentando fazer login é bloqueado com signOut imediato.
-- Role não pode ser alterado pelo próprio usuário.
-- Qualquer admin pode alterar roles, exceto promover para `'admin'` — isso é exclusivo de `dramluisabraga@gmail.com`.
-- Um paciente (`role: 'patient'`) só pode ter um `ownerId`. Tentativa de criação de paciente já cadastrado por outro dentista deve retornar erro.
+## `isActive`
+- `false`: conta não liberada ou inativa.
+- `true`: conta liberada.
 
-## `status` (somente dentists/admins)
-- `'pending'` → conta criada, aguardando aprovação. Novo dentista começa aqui.
-- `'approved'` → conta liberada para operar normalmente.
-- `'rejected'` → conta rejeitada. Usuário é deslogado automaticamente ao tentar acessar.
-- Controlado apenas pelo admin.
+## `deletedAt`
+- `null`/ausente: conta não deletada.
+- `Date`: conta desativada permanentemente (soft delete).
 
-## `cro` e `phone` (somente dentists)
-- Obrigatórios para acessar o dashboard.
-- Sem esses campos, o proxy redireciona para `/completar-perfil`.
-- Nunca salvar string vazia — usar `null`.
+## `cro` e `phone`
+- Mantidos no mesmo schema compartilhado.
+- Regras de uso na web podem exigir para fluxo operacional de dentist/admin.
 
-## `ownerId` (somente patients)
-- UID do dentista que criou o paciente.
-- Imutável após criação.
-- Nunca pode ser `null`.
-- **Um paciente só pode estar associado a um único dentista.** Se um dentista tentar cadastrar um paciente (por CPF, telefone ou qualquer identificador único) que já possui `ownerId` de outro dentista, a operação deve ser bloqueada com erro: `"Este paciente já está cadastrado no sistema por outro dentista."`. Admin não está sujeito a essa restrição.
+---
 
-## `nameNormalized` / `phoneNormalized` (somente patients)
-- Versões normalizadas para busca eficiente no Firestore.
-- Sempre gerados no repository. Nunca vindos do front diretamente.
+# ❌ Campos que não devem existir
+
+- `address`
+- `susNumber`
 
 ---
 
@@ -122,45 +79,38 @@ Regras de negócio:
 | Ação | Quem pode |
 |---|---|
 | Ler próprio documento | Próprio usuário autenticado |
-| Ler pacientes que criou | Dentista dono (`ownerId == uid`) |
 | Ler qualquer documento | Admin |
 | Criar próprio documento | Próprio usuário autenticado |
-| Criar paciente | Dentista (com `ownerId == uid`) |
+| Atualizar próprio documento | Próprio usuário (exceto campos administrativos) |
 | Atualizar qualquer documento | Admin |
-| Atualizar próprio documento | Próprio usuário |
-| Atualizar paciente | Dentista dono ou admin |
 | Deletar documento | Admin ou dono |
 
 ---
 
-# ✅ Condição de Acesso Operacional (Dentist)
+# ✅ Condição de Acesso Operacional (Web)
 
-Para que um dentista opere o sistema, **todas** as condições devem ser verdadeiras:
+Para operar o dashboard web:
 
 ```
-user.role == 'dentist' OR user.role == 'admin'
-AND user.status != 'rejected'
-AND user.cro != null (para além do /completar-perfil)
-AND user.phone != null (para além do /completar-perfil)
+(user.role == 'dentist' OR user.role == 'admin')
+AND user.isActive == true
+AND user.deletedAt == null (ou ausente)
+AND user.cro != null
+AND user.phone != null
 ```
 
 ---
 
 # 🔒 Structural Rules (MANDATORY)
 
-1. Nunca usar `undefined`. Campos opcionais devem existir com `null`.
-2. Nunca armazenar `password` no Firestore.
-3. Nunca permitir que `patient` faça login na aplicação web.
+1. Todos os roles usam o mesmo schema `UserModel`.
+2. `email` é obrigatório para todos os roles.
+3. Nunca armazenar `password` no Firestore.
 4. Nunca criar campo `permissions` customizado.
-5. Nunca criar paciente com `ownerId` de outro usuário que não seja o dentista logado (exceto admin).
-6. Nunca permitir que dentista acesse pacientes de outro dentista.
-6.1. Nunca criar paciente que já possui `ownerId` diferente do dentista logado — retornar erro explícito.
-7. Nunca restaurar conta com `status: 'rejected'`.
-8. Nunca salvar string vazia — usar `null`.
-9. `nameNormalized` e `phoneNormalized` são sempre gerados no repository.
-10. Todo paciente deve ter email — obrigatório para criação da conta no Firebase Auth.
-11. A senha inicial do paciente é gerada no server como a data de nascimento no formato `ddmmyyyy` — nunca salva no Firestore.
-12. O `id` do paciente no Firestore deve ser exatamente o UID retornado pelo Firebase Auth no momento da criação.
+5. Nunca salvar string vazia — usar `null` em campos opcionais.
+6. Nunca usar `status` — usar `isActive` e `deletedAt`.
+7. Nunca limpar `deletedAt` após definido.
+8. Não criar `address` nem `susNumber` no documento de usuário.
 
 ---
 
@@ -168,14 +118,20 @@ AND user.phone != null (para além do /completar-perfil)
 
 - Criar campo `password`.
 - Criar campo `permissions`.
-- Criar roles fora do enum `'admin' | 'dentist' | 'patient'`.
-- Permitir que `patient` faça login na aplicação web.
-- Alterar `role` via lógica de front-end.
-- Criar paciente sem `ownerId`.
-- Criar paciente sem `email`.
-- Criar ou associar paciente que já possui `ownerId` de outro dentista sem retornar erro.
-- Salvar a senha do paciente no Firestore.
-- Criar paciente no Firestore sem antes criar a conta no Firebase Auth — o UID do Auth deve ser o `id` do documento.
-- Salvar string vazia em campos nullable.
+- Criar campo `status`.
+- Criar roles fora de `'admin' | 'dentist' | 'patient'`.
+- Alterar `role`, `isActive` ou `deletedAt` pelo próprio usuário no front.
+- Criar `address` ou `susNumber` em `users`.
 
 Alterações estruturais exigem incremento de versão.
+
+---
+
+# 🧪 Definições de Teste E2E (comportamentais)
+
+- O usuário deve visualizar a tela de login na URL `/` com campos de e-mail e senha.
+- O usuário deve visualizar erro ao enviar login vazio na URL `/`.
+- O usuário deve navegar para `/registrar` ao clicar em “Crie sua conta” na URL `/`.
+- O usuário deve navegar para `/recuperar-senha` ao clicar em “Esqueci minha senha” na URL `/`.
+- O usuário deve visualizar validações de cadastro na URL `/registrar`.
+- O usuário deve ser impedido de operar dashboard se não atender as condições de acesso operacional.

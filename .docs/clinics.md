@@ -99,3 +99,24 @@ O código da aplicação verifica `role === 'admin'` para liberar funcionalidade
 - Mudar a estratégia de isolamento por `ownerId`.
 
 Alterações estruturais exigem incremento de versão.
+
+---
+
+# 🌐 Regras de Acesso Web (distribuído de business-rules)
+
+## Rotas públicas
+- `/`
+- `/registrar`
+- `/recuperar-senha`
+
+## Guardas de rota
+- Usuário não autenticado acessando rota protegida deve ser redirecionado para `/`.
+- Usuário autenticado com perfil incompleto deve ser redirecionado para `/completar-perfil`.
+- Usuário autenticado com perfil completo não deve permanecer em rota pública nem em `/completar-perfil`; deve ser redirecionado para `/dashboard`.
+- Cookie de autenticação inválido/malformado deve ser tratado como sessão não autenticada.
+
+## Definições de Teste E2E (comportamentais)
+- O usuário não autenticado deve ser redirecionado para `/` ao tentar acessar `/dashboard`.
+- O usuário com perfil incompleto deve ser redirecionado para `/completar-perfil` ao tentar acessar `/dashboard`.
+- O usuário com perfil completo deve ser redirecionado para `/dashboard` ao acessar `/`, `/registrar` e `/recuperar-senha`.
+- O usuário com cookie malformado deve ser redirecionado para `/` ao tentar acessar `/dashboard`.

@@ -27,8 +27,6 @@ export async function updatePatientUseCase(
     gender: data.gender,
     email: data.email || null,
     cpf: data.cpf || null,
-    susNumber: data.susNumber || null,
-    address: data.address || null,
     updatedAt: serverTimestamp(),
   })
 
@@ -44,7 +42,5 @@ export async function updatePatientUseCase(
     ownerId: data.ownerId,
     email: data.email,
     cpf: data.cpf || undefined,
-    susNumber: data.susNumber || undefined,
-    address: data.address || undefined,
   }
 }

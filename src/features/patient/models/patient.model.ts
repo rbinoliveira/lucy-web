@@ -18,16 +18,6 @@ export type PatientModel = {
   ownerId: string
   email: string
   cpf?: string | null
-  susNumber?: string | null
-  address?: {
-    street?: string | null
-    number?: string | null
-    complement?: string | null
-    neighborhood?: string | null
-    city?: string | null
-    state?: string | null
-    zipCode?: string | null
-  }
   photo?: string | null
   createdAt?: Date
   updatedAt?: Date

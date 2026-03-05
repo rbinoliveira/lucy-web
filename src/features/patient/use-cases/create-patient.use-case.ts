@@ -27,8 +27,6 @@ export async function createPatientUseCase(
     ownerId: data.ownerId,
     email: data.email || null,
     cpf: data.cpf || null,
-    susNumber: data.susNumber || null,
-    address: data.address || null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })
@@ -45,7 +43,5 @@ export async function createPatientUseCase(
     ownerId: data.ownerId,
     email: data.email,
     cpf: data.cpf || undefined,
-    susNumber: data.susNumber || undefined,
-    address: data.address || undefined,
   }
 }

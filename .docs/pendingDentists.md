@@ -83,3 +83,13 @@ Não existe collection `pendingAdmins`. O fluxo de aprovação de novos dentista
 - Criar lógica de aprovação fora do campo `status`.
 
 Alterações estruturais exigem incremento de versão.
+
+---
+
+# 🧪 Definições de Teste E2E (comportamentais)
+
+- O usuário com `status: 'pending'` e sem CRO/telefone deve ser mantido na URL `/completar-perfil`.
+- O usuário deve visualizar erro de CRO inválido ao tentar concluir perfil na URL `/completar-perfil`.
+- O usuário deve visualizar erro de telefone incompleto ao tentar concluir perfil na URL `/completar-perfil`.
+- O usuário deve ter o botão “Completar” habilitado apenas quando CRO e telefone estiverem válidos na URL `/completar-perfil`.
+- O usuário com `status: 'approved'` e perfil completo deve conseguir acessar a URL `/dashboard`.

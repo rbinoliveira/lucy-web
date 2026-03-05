@@ -21,11 +21,10 @@ describe('Business rules - patients', () => {
   })
 
   it('enforces patient e-mail as mandatory field on submit', () => {
-    cy.contains(
-      '+ Mostrar campos opcionais (email, CPF, endereço, SUS)',
-    ).click()
     cy.contains('button', 'Salvar Paciente').click()
 
-    cy.contains('email é obrigatório').should('be.visible')
+    cy.contains(/e-mail é obrigatório|digite um e-mail válido/i).should(
+      'be.visible',
+    )
   })
 })

@@ -151,3 +151,15 @@ export type MedicineModel = {
 - Salvar string vazia em campos nullable.
 
 Alterações estruturais exigem incremento de versão.
+
+---
+
+# 🧪 Definições de Teste E2E (comportamentais)
+
+- O usuário admin deve visualizar o item de menu “Medicamentos” na URL `/dashboard`.
+- O usuário não-admin não deve visualizar o item de menu “Medicamentos” na URL `/dashboard`.
+- O usuário deve visualizar erro ao tentar salvar medicamento sem `durationDays` e sem `whilePain` na URL `/medicamentos/adicionar`.
+- O usuário deve visualizar erro ao informar `quantity < 1` na URL `/medicamentos/adicionar`.
+- O usuário deve visualizar erro ao informar `intervalHours < 1` na URL `/medicamentos/adicionar`.
+- O usuário deve ter o campo `durationDays` desabilitado quando marcar “Enquanto houver dor” na URL `/medicamentos/adicionar`.
+- O usuário deve listar medicamentos ordenados por `nameNormalized` na URL `/medicamentos`.

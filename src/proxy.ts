@@ -21,15 +21,18 @@ export function proxy(request: NextRequest) {
 
   const isPublicRoute = appPublicRoutes.includes(pathname)
   const isCompleteProfileRoute = pathname === appRoutes.completeProfile
+  const isPendingApprovalRoute = pathname === appRoutes.pendingApproval
   const userCookie = request.cookies.get(appCookies.USER)?.value
 
   let userIsAuthenticated = false
   let profileCompleted = false
+  let isActive = false
 
   try {
     if (userCookie) {
       const user = JSON.parse(userCookie)
       userIsAuthenticated = !!user && !!user.id
+      isActive = user.isActive === true
 
       if (userIsAuthenticated) {
         const parsed = userSchema.safeParse(user)
@@ -39,23 +42,37 @@ export function proxy(request: NextRequest) {
   } catch {
     userIsAuthenticated = false
     profileCompleted = false
+    isActive = false
   }
 
-  if (!isPublicRoute && !isCompleteProfileRoute && !userIsAuthenticated) {
+  // Não autenticado tentando acessar rota protegida
+  if (!isPublicRoute && !userIsAuthenticated) {
     return NextResponse.redirect(new URL(appRoutes.signIn, request.url))
   }
 
-  if (userIsAuthenticated && !profileCompleted) {
-    if (pathname !== appRoutes.completeProfile) {
-      return NextResponse.redirect(
-        new URL(appRoutes.completeProfile, request.url),
-      )
+  if (userIsAuthenticated) {
+    // Perfil incompleto → /completar-perfil
+    if (!profileCompleted) {
+      if (!isCompleteProfileRoute) {
+        return NextResponse.redirect(
+          new URL(appRoutes.completeProfile, request.url),
+        )
+      }
+      return NextResponse.next()
     }
-    return NextResponse.next()
-  }
 
-  if (userIsAuthenticated && profileCompleted) {
-    if (isPublicRoute || isCompleteProfileRoute) {
+    // Perfil completo mas não aprovado → /aguardando-aprovacao
+    if (!isActive) {
+      if (!isPendingApprovalRoute) {
+        return NextResponse.redirect(
+          new URL(appRoutes.pendingApproval, request.url),
+        )
+      }
+      return NextResponse.next()
+    }
+
+    // Aprovado tentando acessar rota pública ou de onboarding → /dashboard
+    if (isPublicRoute || isCompleteProfileRoute || isPendingApprovalRoute) {
       return NextResponse.redirect(new URL(appRoutes.dashboard, request.url))
     }
   }

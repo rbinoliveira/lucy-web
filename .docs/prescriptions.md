@@ -133,3 +133,18 @@ export type PrescriptionModel = {
 - Sincronizar automaticamente `patientName`/`medicineName` após criação.
 
 Alterações estruturais exigem incremento de versão.
+
+---
+
+# 🧩 Regras Operacionais Web (distribuído de business-rules)
+
+- Cada prescrição representa uma única indicação para um paciente.
+- Campos obrigatórios de vínculo no fluxo web atual: `patientId`, `patientEmail`, `patientName`, `medicineId`, `medicineName`, `ownerId`, `dosage`.
+- O campo de paciente pode ser pré-preenchido via query string (`patientName`) ao abrir `/prescricoes/adicionar`.
+- O dentista não pode operar prescrições de outro dentista (isolamento por `ownerId`).
+
+# 🧪 Definições de Teste E2E (comportamentais)
+
+- O usuário deve visualizar erro de obrigatoriedade de paciente, medicamento e posologia ao salvar vazio na URL `/prescricoes/adicionar`.
+- O usuário deve abrir a URL `/prescricoes/adicionar?patientName={nome}` e visualizar o campo de paciente pré-preenchido com o nome informado.
+- O usuário deve listar prescrições na URL `/prescricoes` filtradas pelo `ownerId` do usuário autenticado.

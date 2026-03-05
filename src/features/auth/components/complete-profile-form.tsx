@@ -36,7 +36,13 @@ export function CompleteProfileForm() {
   async function onSubmit(data: UserSchema) {
     try {
       if (!user?.id) return
-      const updatedUser = { ...data, id: user.id, photo: user.photo }
+      const updatedUser = {
+        ...data,
+        id: user.id,
+        photo: user.photo,
+        isActive: user.isActive,
+        deletedAt: user.deletedAt ?? null,
+      }
       await upsertUser(user.id, updatedUser)
       await addAuthCookies({
         user: updatedUser,

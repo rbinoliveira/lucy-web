@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, Mail, MapPin, Phone, User } from 'lucide-react'
+import { Calendar, Mail, Phone, User } from 'lucide-react'
 
 import {
   genderLabels,
@@ -13,19 +13,6 @@ import {
 
 type PatientInfoCardProps = {
   patient: PatientModel
-}
-
-function formatAddress(patient: PatientModel): string {
-  if (!patient.address) return 'Não informado'
-  const addr = patient.address
-  const parts = [
-    addr.street && addr.number && `${addr.street}, ${addr.number}`,
-    addr.complement,
-    addr.neighborhood,
-    addr.city && addr.state && `${addr.city} - ${addr.state}`,
-    addr.zipCode,
-  ].filter(Boolean)
-  return parts.length > 0 ? parts.join(', ') : 'Não informado'
 }
 
 function InfoItem({
@@ -86,21 +73,11 @@ export function PatientInfoCard({ patient }: PatientInfoCardProps) {
           label="Telefone"
           value={patient.phone}
         />
-        {patient.email && (
-          <InfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="E-mail"
-            value={patient.email}
-          />
-        )}
-        {patient.address && (
-          <InfoItem
-            icon={<MapPin className="h-5 w-5" />}
-            label="Endereço"
-            value={formatAddress(patient)}
-            colSpan="sm:col-span-2 lg:col-span-3"
-          />
-        )}
+        <InfoItem
+          icon={<Mail className="h-5 w-5" />}
+          label="E-mail"
+          value={patient.email}
+        />
       </div>
     </section>
   )

@@ -1,7 +1,5 @@
 'use client'
 
-import Link from 'next/link'
-
 import { AlertNotification } from '@/features/dashboard/components/alert-notification'
 
 type DashboardAlertsCardProps = {
@@ -18,12 +16,6 @@ export function DashboardAlertsCard({
           <h2 className="card-title">Alertas</h2>
           <p className="card-subtitle">Notificações que requerem sua atenção</p>
         </div>
-        <Link
-          href="#"
-          className="text-primary text-sm font-medium hover:text-primary-alternative hover:underline"
-        >
-          Ver todas
-        </Link>
       </div>
       <div className="flex flex-col gap-3">
         {pendingAlerts === 0 ? (

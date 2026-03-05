@@ -74,8 +74,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: firebaseUser.email ?? '',
         name: firebaseUser.displayName ?? parsedUserByCookies?.name ?? '',
         role: 'dentist',
-        photo: firebaseUser.photoURL ?? '',
-        status: 'pending',
+        photo: firebaseUser.photoURL ?? null,
+        cro: null,
+        phone: null,
+        isActive: false,
+        deletedAt: null,
       }
 
       await upsertUser(firebaseUser.uid, newUser)
@@ -88,29 +91,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email: userDocument.email,
       name: userDocument.name,
       role: userDocument.role,
-      photo: userDocument.photo,
-      cro: userDocument.cro,
-      phone: userDocument.phone,
-      status: userDocument.status,
+      photo: userDocument.photo ?? null,
+      cro: userDocument.cro ?? null,
+      phone: userDocument.phone ?? null,
+      isActive: userDocument.isActive,
+      deletedAt: userDocument.deletedAt ?? null,
     }
   }
 
   async function setUserAsLoggedIn(userUpdated: UserModel | null) {
     if (userUpdated) {
-      if (userUpdated.role !== 'admin' && userUpdated.role !== 'dentist') {
+      if (userUpdated.role !== 'dentist') {
         await auth.signOut()
         await deleteAuthCookies()
         handleError({
-          message: 'Usuário já associado a uma conta de paciente',
+          message:
+            userUpdated.role === 'admin'
+              ? 'Acesso restrito. Use o painel administrativo.'
+              : 'Usuário já associado a uma conta de paciente',
         })
         return
       }
 
-      if (userUpdated.status === 'rejected') {
+      if (userUpdated.deletedAt) {
         await auth.signOut()
         await deleteAuthCookies()
         handleError({
-          message: 'Sua conta foi rejeitada. Entre em contato com o suporte.',
+          message: 'Sua conta foi desativada. Entre em contato com o suporte.',
         })
         return
       }

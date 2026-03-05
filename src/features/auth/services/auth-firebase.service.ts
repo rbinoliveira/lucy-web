@@ -44,11 +44,15 @@ export async function registerWithCredentials(data: RegisterSchema) {
 
     await addAuthCookies({
       user: {
+        id: userCredential.user.uid,
         email: data.email,
         name: data.name,
         role: 'dentist',
-        photo: '',
-        id: userCredential.user.uid,
+        photo: null,
+        cro: null,
+        phone: null,
+        isActive: false,
+        deletedAt: null,
       },
     })
 
